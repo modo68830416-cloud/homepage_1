@@ -3,8 +3,10 @@ import styles from './Header.module.css'
 
 const NAV_ITEMS = [
   { href: '#home', label: '홈' },
+  { href: '#news', label: '건강뉴스' },
   { href: '#categories', label: '건강정보' },
-  { href: '#articles', label: '건강이야기' },
+  { href: '#tips', label: '건강팁' },
+  { href: '#doctors', label: '명의' },
   { href: '#consult', label: '상담예약' },
   { href: '#footer', label: '문의' },
 ]
