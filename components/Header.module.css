@@ -19,10 +19,29 @@
 
 .logo {
   display: flex;
-  align-items: baseline;
-  gap: 6px;
+  align-items: center;
+  gap: 10px;
   text-decoration: none;
   color: #17663f;
+}
+
+.logoImg {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(15, 59, 38, 0.25);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.logo:hover .logoImg {
+  transform: translateY(-1px) scale(1.04);
+  box-shadow: 0 6px 16px rgba(15, 59, 38, 0.32);
+}
+
+.logoText {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
 }
 
 .logoMark {
@@ -35,7 +54,7 @@
   font-size: 0.7rem;
   font-weight: 600;
   color: #7fae95;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.15em;
 }
 
 .nav {

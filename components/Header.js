@@ -16,8 +16,11 @@ export default function Header() {
     <header className={styles.header}>
       <div className={styles.inner}>
         <a href="#home" className={styles.logo}>
-          <span className={styles.logoMark}>리얼</span>
-          <span className={styles.logoSub}>REAL</span>
+          <img src="/logo.svg" alt="리얼 로고" className={styles.logoImg} />
+          <span className={styles.logoText}>
+            <span className={styles.logoMark}>리얼</span>
+            <span className={styles.logoSub}>REAL</span>
+          </span>
         </a>
 
         <nav className={`${styles.nav} ${open ? styles.navOpen : ''}`}>

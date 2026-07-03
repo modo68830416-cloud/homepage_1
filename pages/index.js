@@ -58,6 +58,7 @@ function Home() {
 
       <main className={styles.main}>
         <section id="home" className={styles.hero}>
+          <img src="/logo.svg" alt="리얼 로고" className={styles.heroLogo} />
           <p className={styles.heroKicker}>REAL HEALTH STORY</p>
           <h1 className={styles.heroTitle}>
             리얼이 전하는

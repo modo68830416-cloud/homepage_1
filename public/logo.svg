@@ -1,0 +1,21 @@
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="realLogoGradient" x1="4" y1="4" x2="60" y2="60" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#1ec278"/>
+      <stop offset="100%" stop-color="#0f3b26"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="2" y="2" width="60" height="60" rx="18" fill="url(#realLogoGradient)"/>
+
+  <path
+    d="M11 34.5H21.5L25 25L31 42L35.5 30.5L38.5 34.5H53"
+    stroke="#ffffff"
+    stroke-width="3.4"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    fill="none"
+  />
+
+  <circle cx="46" cy="18" r="4.5" fill="#ffffff" fill-opacity="0.9"/>
+</svg>
