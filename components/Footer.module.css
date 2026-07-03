@@ -1,6 +1,6 @@
 .footer {
-  background: #0f3b26;
-  color: #dcefe4;
+  background: #4a0620;
+  color: #fbe3ea;
   padding: 40px 20px 20px;
   margin-top: 60px;
 }
@@ -22,14 +22,14 @@
 
 .desc {
   margin: 0;
-  color: #9fc9ae;
+  color: #d69ab0;
   font-size: 0.9rem;
 }
 
 .contactBlock p {
   margin: 0 0 4px;
   font-size: 0.9rem;
-  color: #bfe0cd;
+  color: #f0c3d2;
 }
 
 .socialBlock {
@@ -44,9 +44,9 @@
   align-items: center;
   gap: 6px;
   padding: 8px 12px;
-  border-radius: 999px;
+  border-radius: 6px;
   background: rgba(255, 255, 255, 0.08);
-  color: #dcefe4;
+  color: #fbe3ea;
   text-decoration: none;
   font-size: 0.85rem;
   transition: background 0.15s ease;
@@ -58,7 +58,7 @@
 
 .copyright {
   text-align: center;
-  color: #6f9c81;
+  color: #a67a89;
   font-size: 0.8rem;
   margin: 32px 0 0;
 }
