@@ -1,0 +1,64 @@
+.footer {
+  background: #0f3b26;
+  color: #dcefe4;
+  padding: 40px 20px 20px;
+  margin-top: 60px;
+}
+
+.inner {
+  max-width: 1080px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 32px;
+  justify-content: space-between;
+}
+
+.brand {
+  font-size: 1.2rem;
+  font-weight: 800;
+  margin: 0 0 6px;
+}
+
+.desc {
+  margin: 0;
+  color: #9fc9ae;
+  font-size: 0.9rem;
+}
+
+.contactBlock p {
+  margin: 0 0 4px;
+  font-size: 0.9rem;
+  color: #bfe0cd;
+}
+
+.socialBlock {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-content: flex-start;
+}
+
+.socialBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #dcefe4;
+  text-decoration: none;
+  font-size: 0.85rem;
+  transition: background 0.15s ease;
+}
+
+.socialBtn:hover {
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.copyright {
+  text-align: center;
+  color: #6f9c81;
+  font-size: 0.8rem;
+  margin: 32px 0 0;
+}
