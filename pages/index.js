@@ -76,9 +76,9 @@ const CARE_GROUPS = [
 ]
 
 const FEATURED_NEWS = [
-  { tag: '푸드', emoji: '🍯', title: '"매일 먹으면 좋다"는 그 식품, 진짜 효과 있을까' },
-  { tag: '생활건강', emoji: '🧴', title: '"몸속 염증 키운다"… 무심코 반복하는 습관들' },
-  { tag: '다이어트', emoji: '🥗', title: '굶지 않고 체중 뺀 사람들의 공통된 식사법' },
+  { tag: '푸드', image: '/images/news-food.jpg', title: '"매일 먹으면 좋다"는 그 식품, 진짜 효과 있을까' },
+  { tag: '생활건강', image: '/images/news-lifestyle.jpg', title: '"몸속 염증 키운다"… 무심코 반복하는 습관들' },
+  { tag: '다이어트', image: '/images/news-diet.jpg', title: '굶지 않고 체중 뺀 사람들의 공통된 식사법' },
   { tag: '이슈', emoji: '🔬', title: 'AI로 질환 조기 발견… 어디까지 왔나' },
 ]
 
@@ -286,7 +286,13 @@ function Home() {
           <div className={styles.newsStrip}>
             {FEATURED_NEWS.map((n) => (
               <article key={n.title} className={styles.newsCard}>
-                <div className={styles.newsThumb}>{n.emoji}</div>
+                <div className={styles.newsThumb}>
+                  {n.image ? (
+                    <img src={n.image} alt={n.tag} className={styles.newsThumbImg} />
+                  ) : (
+                    n.emoji
+                  )}
+                </div>
                 <span className={styles.newsTag}>{n.tag}</span>
                 <h3 className={styles.newsTitle}>{n.title}</h3>
               </article>

@@ -350,8 +350,8 @@
 
 .newsStrip {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
 }
 
 .newsCard {
@@ -372,12 +372,25 @@
 
 .newsThumb {
   width: 100%;
-  aspect-ratio: 16 / 10;
+  aspect-ratio: 4 / 3;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 2.4rem;
   background: linear-gradient(135deg, #eaf2fb, #d3e6fb);
+  overflow: hidden;
+}
+
+.newsThumbImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.25s ease;
+}
+
+.newsCard:hover .newsThumbImg {
+  transform: scale(1.04);
 }
 
 .newsTag {
