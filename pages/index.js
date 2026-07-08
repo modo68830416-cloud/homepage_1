@@ -1,4 +1,5 @@
 
+
 import { useCallback, useEffect, useState } from 'react'
 import Head from 'next/head'
 import Header from '../components/Header'
@@ -20,6 +21,60 @@ const CATEGORIES = [
   { icon: '📅', label: '상담 예약', desc: '전문가와 1:1 건강 상담을 예약하세요.' },
 ]
 
+const QUICK_ACTIONS = [
+  {
+    icon: '🔍',
+    title: '건강정보 검색',
+    desc: '증상, 질환명, 키워드로 검색해 원하는 정보를 바로 찾아보세요.',
+    cta: '검색하러 가기',
+    href: '#categories',
+  },
+  {
+    icon: '📍',
+    title: '가까운 병원 찾기',
+    desc: '전국 제휴 병·의원 300여 곳 중 내 위치에서 가장 가까운 곳을 안내합니다.',
+    cta: '병원 찾기',
+    href: '#doctors',
+  },
+  {
+    icon: '🗓️',
+    title: '진료 예약하기',
+    desc: '대면 진료와 비대면(화상) 진료 중 원하는 방식으로 예약할 수 있어요.',
+    cta: '예약하러 가기',
+    href: '#consult',
+  },
+]
+
+const SYMPTOM_SLIDES = [
+  { icon: '🤒', title: '감기·몸살 기운이 있어요', desc: '발열, 근육통 등 감기 증상이 있을 때 확인해야 할 것들.' },
+  { icon: '🤢', title: '속이 더부룩하고 소화가 안 돼요', desc: '반복되는 소화불량, 원인과 생활 관리법을 알아보세요.' },
+  { icon: '🤕', title: '두통이나 어지럼증이 있어요', desc: '단순 두통과 병원에 가야 하는 두통을 구분하는 방법.' },
+  { icon: '🌿', title: '피부 트러블이 계속돼요', desc: '만성 피부 트러블의 흔한 원인과 관리 팁.' },
+  { icon: '😣', title: '스트레스·불안감이 심해요', desc: '마음 건강을 위한 첫걸음, 전문가와 상담해보세요.' },
+  { icon: '🦵', title: '관절이나 근육이 아파요', desc: '일상 속 통증 관리와 병원을 찾아야 할 신호들.' },
+]
+
+const CARE_GROUPS = [
+  {
+    icon: '🏥',
+    title: '진료받기',
+    desc: '지금 필요한 진료와 검진을 안내해드려요.',
+    items: ['건강검진', '상담 예약', '응급처치', '만성질환 관리'],
+  },
+  {
+    icon: '🌱',
+    title: '건강하게 살기',
+    desc: '일상 속 습관으로 건강을 관리하는 방법.',
+    items: ['운동/피트니스', '영양/식단', '수면 관리', '다이어트'],
+  },
+  {
+    icon: '🤝',
+    title: '이런 도움이 필요하신가요',
+    desc: '생애주기와 상황에 맞는 맞춤 건강정보.',
+    items: ['정신 건강', '시니어 건강', '여성 건강', '남성 건강'],
+  },
+]
+
 const FEATURED_NEWS = [
   { tag: '푸드', emoji: '🍯', title: '"매일 먹으면 좋다"는 그 식품, 진짜 효과 있을까' },
   { tag: '생활건강', emoji: '🧴', title: '"몸속 염증 키운다"… 무심코 반복하는 습관들' },
@@ -38,12 +93,27 @@ const TIP_SIDE = [
   { tag: '체중관리', emoji: '🏃‍♂️', title: '반 년 만에 체중 감량에 성공한 사람들의 공통점' },
 ]
 
-const TIP_LIST = [
-  '커피 끊기 힘든 사람을 위한 혈당 관리 팁 3가지',
-  '앉아있는 시간이 긴 직장인을 위한 5분 스트레칭',
-  '나이보다 어려 보이는 사람들의 수분 섭취 습관',
-  '봄철 알레르기, 약보다 먼저 챙겨야 할 생활 수칙',
-  '아침 공복 운동, 정말 다이어트에 효과적일까',
+const FAQ_ITEMS = [
+  {
+    q: '커피 끊기 힘든 사람을 위한 혈당 관리 팁 3가지',
+    a: '카페인을 완전히 끊기보다 섭취 시간과 양을 조절하는 것이 현실적이에요. 공복 커피는 피하고, 식후 30분 이후에 마시면 혈당 스파이크를 줄일 수 있습니다.',
+  },
+  {
+    q: '앉아있는 시간이 긴 직장인을 위한 5분 스트레칭',
+    a: '1시간마다 자리에서 일어나 목·어깨·허리를 순서대로 풀어주는 것만으로도 혈액순환과 자세 개선에 큰 도움이 됩니다.',
+  },
+  {
+    q: '나이보다 어려 보이는 사람들의 수분 섭취 습관',
+    a: '한 번에 많이 마시기보다 하루 8~10회, 소량씩 나눠 마시는 습관이 피부 탄력과 컨디션 유지에 효과적이에요.',
+  },
+  {
+    q: '봄철 알레르기, 약보다 먼저 챙겨야 할 생활 수칙',
+    a: '외출 후 옷을 털고 바로 세안하기, 창문 대신 공기청정기 사용하기 등 노출을 줄이는 습관이 약물 못지않게 중요합니다.',
+  },
+  {
+    q: '아침 공복 운동, 정말 다이어트에 효과적일까',
+    a: '체질과 컨디션에 따라 다릅니다. 저강도 유산소는 공복에도 무리가 적지만, 고강도 운동은 가벼운 간식 후 진행하는 것이 안전해요.',
+  },
 ]
 
 const DOCTORS = [
@@ -88,6 +158,8 @@ function Home() {
   const [activeCategory, setActiveCategory] = useState(null)
   const [activeTab, setActiveTab] = useState(0)
   const [showTop, setShowTop] = useState(false)
+  const [symptomIndex, setSymptomIndex] = useState(0)
+  const [openFaq, setOpenFaq] = useState(0)
 
   useEffect(() => {
     const onScroll = () => setShowTop(window.scrollY > 400)
@@ -103,7 +175,20 @@ function Home() {
     setActiveCategory((current) => (current === label ? null : label))
   }, [])
 
+  const prevSymptom = useCallback(() => {
+    setSymptomIndex((i) => (i - 1 + SYMPTOM_SLIDES.length) % SYMPTOM_SLIDES.length)
+  }, [])
+
+  const nextSymptom = useCallback(() => {
+    setSymptomIndex((i) => (i + 1) % SYMPTOM_SLIDES.length)
+  }, [])
+
+  const toggleFaq = useCallback((index) => {
+    setOpenFaq((current) => (current === index ? -1 : index))
+  }, [])
+
   const activeInfo = CATEGORIES.find((c) => c.label === activeCategory)
+  const activeSymptom = SYMPTOM_SLIDES[symptomIndex]
 
   return (
     <>
@@ -136,6 +221,64 @@ function Home() {
           </div>
         </section>
 
+        <section className={styles.quickSection}>
+          <div className={styles.quickGrid}>
+            {QUICK_ACTIONS.map((q) => (
+              <a key={q.title} href={q.href} className={styles.quickCard}>
+                <span className={styles.quickIcon}>{q.icon}</span>
+                <h3 className={styles.quickTitle}>{q.title}</h3>
+                <p className={styles.quickDesc}>{q.desc}</p>
+                <span className={styles.quickCta}>{q.cta} →</span>
+              </a>
+            ))}
+          </div>
+        </section>
+
+        <section className={styles.section}>
+          <h2 className={styles.sectionTitle}>어떤 도움이 필요하신가요?</h2>
+          <p className={styles.sectionDesc}>지금 느끼는 증상을 골라보면 관련 정보를 바로 안내해드려요.</p>
+
+          <div className={styles.symptomCarousel}>
+            <button
+              type="button"
+              className={styles.symptomArrow}
+              aria-label="이전 증상"
+              onClick={prevSymptom}
+            >
+              ‹
+            </button>
+
+            <div className={styles.symptomSlide}>
+              <span className={styles.symptomIcon}>{activeSymptom.icon}</span>
+              <div>
+                <p className={styles.symptomTitle}>{activeSymptom.title}</p>
+                <p className={styles.symptomDesc}>{activeSymptom.desc}</p>
+              </div>
+            </div>
+
+            <button
+              type="button"
+              className={styles.symptomArrow}
+              aria-label="다음 증상"
+              onClick={nextSymptom}
+            >
+              ›
+            </button>
+          </div>
+
+          <div className={styles.symptomDots}>
+            {SYMPTOM_SLIDES.map((s, i) => (
+              <button
+                key={s.title}
+                type="button"
+                aria-label={`${i + 1}번째 증상 보기`}
+                className={`${styles.symptomDot} ${i === symptomIndex ? styles.symptomDotActive : ''}`}
+                onClick={() => setSymptomIndex(i)}
+              />
+            ))}
+          </div>
+        </section>
+
         <section id="news" className={styles.section}>
           <h2 className={styles.sectionTitle}>최신 건강 이야기</h2>
           <p className={styles.sectionDesc}>리얼 에디터가 매일 엄선해 전하는 오늘의 소식.</p>
@@ -155,19 +298,36 @@ function Home() {
           <h2 className={styles.sectionTitle}>관심 있는 건강 주제를 선택하세요</h2>
           <p className={styles.sectionDesc}>버튼을 누르면 간단한 설명을 바로 확인할 수 있어요.</p>
 
-          <div className={styles.categoryGrid}>
-            {CATEGORIES.map((c) => (
-              <button
-                key={c.label}
-                type="button"
-                className={`${styles.categoryBtn} ${
-                  activeCategory === c.label ? styles.categoryBtnActive : ''
-                }`}
-                onClick={() => toggleCategory(c.label)}
-              >
-                <span className={styles.categoryIcon}>{c.icon}</span>
-                <span>{c.label}</span>
-              </button>
+          <div className={styles.careGroups}>
+            {CARE_GROUPS.map((group) => (
+              <div key={group.title} className={styles.careGroup}>
+                <div className={styles.careGroupHead}>
+                  <span className={styles.careGroupIcon}>{group.icon}</span>
+                  <div>
+                    <p className={styles.careGroupTitle}>{group.title}</p>
+                    <p className={styles.careGroupDesc}>{group.desc}</p>
+                  </div>
+                </div>
+
+                <div className={styles.categoryGrid}>
+                  {group.items.map((label) => {
+                    const c = CATEGORIES.find((cat) => cat.label === label)
+                    return (
+                      <button
+                        key={label}
+                        type="button"
+                        className={`${styles.categoryBtn} ${
+                          activeCategory === label ? styles.categoryBtnActive : ''
+                        }`}
+                        onClick={() => toggleCategory(label)}
+                      >
+                        <span className={styles.categoryIcon}>{c.icon}</span>
+                        <span>{c.label}</span>
+                      </button>
+                    )
+                  })}
+                </div>
+              </div>
             ))}
           </div>
 
@@ -205,13 +365,25 @@ function Home() {
               ))}
             </div>
 
-            <ul className={styles.tipTextList}>
-              {TIP_LIST.map((title) => (
-                <li key={title}>
-                  <a href="#tips">{title}</a>
-                </li>
-              ))}
-            </ul>
+            <div className={styles.accordion}>
+              {FAQ_ITEMS.map((item, i) => {
+                const isOpen = openFaq === i
+                return (
+                  <div key={item.q} className={styles.accordionItem}>
+                    <button
+                      type="button"
+                      className={styles.accordionHead}
+                      aria-expanded={isOpen}
+                      onClick={() => toggleFaq(i)}
+                    >
+                      <span>{item.q}</span>
+                      <span className={styles.accordionToggle}>{isOpen ? '접기 −' : '더보기 +'}</span>
+                    </button>
+                    {isOpen && <p className={styles.accordionBody}>{item.a}</p>}
+                  </div>
+                )
+              })}
+            </div>
           </div>
         </section>
 

@@ -1,6 +1,6 @@
 .footer {
-  background: #4a0620;
-  color: #fbe3ea;
+  background: #002D72;
+  color: #eaf2fb;
   padding: 40px 20px 20px;
   margin-top: 60px;
 }
@@ -8,10 +8,15 @@
 .inner {
   max-width: 1080px;
   margin: 0 auto;
+}
+
+.topRow {
   display: flex;
   flex-wrap: wrap;
-  gap: 32px;
+  gap: 40px;
   justify-content: space-between;
+  padding-bottom: 28px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
 }
 
 .brand {
@@ -21,15 +26,61 @@
 }
 
 .desc {
-  margin: 0;
-  color: #d69ab0;
+  margin: 0 0 16px;
+  color: #a9c2e6;
   font-size: 0.9rem;
 }
 
-.contactBlock p {
-  margin: 0 0 4px;
+.brandBlock {
+  flex: 1 1 220px;
+  max-width: 280px;
+}
+
+.columns {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(120px, 1fr));
+  gap: 24px;
+  flex: 2 1 480px;
+}
+
+.columnTitle {
+  margin: 0 0 12px;
   font-size: 0.9rem;
-  color: #f0c3d2;
+  font-weight: 700;
+  color: #fff;
+}
+
+.columnList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.columnList a {
+  color: #a9c2e6;
+  text-decoration: none;
+  font-size: 0.85rem;
+  transition: color 0.15s ease;
+}
+
+.columnList a:hover {
+  color: #fff;
+}
+
+.contactBlock {
+  padding-top: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 20px;
+}
+
+.contactBlock p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #b8d3f5;
 }
 
 .socialBlock {
@@ -46,7 +97,7 @@
   padding: 8px 12px;
   border-radius: 6px;
   background: rgba(255, 255, 255, 0.08);
-  color: #fbe3ea;
+  color: #eaf2fb;
   text-decoration: none;
   font-size: 0.85rem;
   transition: background 0.15s ease;
@@ -58,7 +109,13 @@
 
 .copyright {
   text-align: center;
-  color: #a67a89;
+  color: #7d99c4;
   font-size: 0.8rem;
   margin: 32px 0 0;
+}
+
+@media (max-width: 640px) {
+  .columns {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }

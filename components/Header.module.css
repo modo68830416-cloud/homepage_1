@@ -1,8 +1,52 @@
+.alertBar {
+  background: #002d72;
+  color: #fff;
+}
+
+.alertInner {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 8px 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.82rem;
+}
+
+.alertBadge {
+  flex: none;
+  background: #ffb81c;
+  color: #002d72;
+  font-weight: 800;
+  font-size: 0.72rem;
+  padding: 3px 8px;
+  border-radius: 4px;
+}
+
+.alertText {
+  flex: 1;
+  color: #dce9fb;
+}
+
+.alertClose {
+  flex: none;
+  background: transparent;
+  border: none;
+  color: #a9c2e6;
+  cursor: pointer;
+  font-size: 0.85rem;
+  padding: 2px 4px;
+}
+
+.alertClose:hover {
+  color: #fff;
+}
+
 .header {
   position: sticky;
   top: 0;
   z-index: 50;
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.94);
   backdrop-filter: blur(8px);
   border-bottom: 1px solid #e5e5e5;
 }
@@ -22,7 +66,7 @@
   align-items: center;
   gap: 10px;
   text-decoration: none;
-  color: #8a0a34;
+  color: #002d72;
 }
 
 .logoImg {
@@ -74,15 +118,15 @@
 }
 
 .navLink:hover {
-  background: #fbe9ee;
-  color: #8a0a34;
+  background: #eaf2fb;
+  color: #0057b8;
 }
 
 .navCta {
   margin-left: 8px;
   padding: 8px 16px;
   border-radius: 6px;
-  background: #BB0842;
+  background: #0057b8;
   color: #fff;
   text-decoration: none;
   font-size: 0.9rem;
@@ -92,7 +136,7 @@
 }
 
 .navCta:hover {
-  background: #970636;
+  background: #003f8c;
 }
 
 .menuBtn {

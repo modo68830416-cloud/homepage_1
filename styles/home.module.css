@@ -19,7 +19,7 @@
 }
 
 .heroKicker {
-  color: #BB0842;
+  color: #0057B8;
   font-weight: 700;
   letter-spacing: 0.15em;
   font-size: 0.8rem;
@@ -63,23 +63,196 @@
 }
 
 .btnPrimary {
-  background: #BB0842;
+  background: #0057B8;
   color: #fff;
 }
 
 .btnPrimary:hover {
-  background: #970636;
+  background: #003F8C;
   transform: translateY(-1px);
 }
 
 .btnSecondary {
-  background: #fbe9ee;
-  color: #8a0a34;
+  background: #eaf2fb;
+  color: #0057B8;
 }
 
 .btnSecondary:hover {
-  background: #f6d3de;
+  background: #c9def9;
   transform: translateY(-1px);
+}
+
+.quickSection {
+  padding: 0 0 48px;
+}
+
+.quickGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+}
+
+.quickCard {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 24px;
+  border-radius: 12px;
+  border: 1px solid #e5e5e5;
+  background: #fff;
+  text-decoration: none;
+  box-shadow: 0 4px 14px rgba(0, 45, 114, 0.06);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+}
+
+.quickCard:hover {
+  transform: translateY(-3px);
+  border-color: #0057b8;
+  box-shadow: 0 10px 24px rgba(0, 45, 114, 0.14);
+}
+
+.quickIcon {
+  font-size: 1.8rem;
+  margin-bottom: 4px;
+}
+
+.quickTitle {
+  margin: 0;
+  font-size: 1.1rem;
+  color: #002d72;
+}
+
+.quickDesc {
+  margin: 0;
+  color: #555555;
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+
+.quickCta {
+  margin-top: 8px;
+  color: #0057b8;
+  font-weight: 700;
+  font-size: 0.88rem;
+}
+
+.symptomCarousel {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.symptomArrow {
+  flex: none;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid #dbe6f5;
+  background: #fff;
+  color: #0057b8;
+  font-size: 1.4rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.symptomArrow:hover {
+  background: #eaf2fb;
+  border-color: #0057b8;
+}
+
+.symptomSlide {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 22px 28px;
+  border-radius: 12px;
+  background: #eaf2fb;
+  min-height: 96px;
+}
+
+.symptomIcon {
+  font-size: 2.2rem;
+  flex: none;
+}
+
+.symptomTitle {
+  margin: 0 0 4px;
+  font-weight: 700;
+  color: #002d72;
+  font-size: 1.05rem;
+}
+
+.symptomDesc {
+  margin: 0;
+  color: #3a5f96;
+  font-size: 0.9rem;
+}
+
+.symptomDots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.symptomDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: none;
+  background: #d3e0f2;
+  cursor: pointer;
+  padding: 0;
+}
+
+.symptomDotActive {
+  background: #0057b8;
+  width: 20px;
+  border-radius: 4px;
+}
+
+.careGroups {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.careGroupHead {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.careGroupIcon {
+  font-size: 1.6rem;
+}
+
+.careGroupTitle {
+  margin: 0;
+  font-weight: 700;
+  color: #002d72;
+  font-size: 1.05rem;
+}
+
+.careGroupDesc {
+  margin: 0;
+  color: #666666;
+  font-size: 0.85rem;
+}
+
+@media (max-width: 560px) {
+  .symptomCarousel {
+    gap: 8px;
+  }
+
+  .symptomSlide {
+    flex-direction: column;
+    text-align: center;
+    padding: 20px;
+  }
 }
 
 .section {
@@ -122,13 +295,13 @@
 }
 
 .categoryBtn:hover {
-  border-color: #BB0842;
+  border-color: #0057B8;
   transform: translateY(-2px);
 }
 
 .categoryBtnActive {
-  background: #BB0842;
-  border-color: #BB0842;
+  background: #0057B8;
+  border-color: #0057B8;
   color: #fff;
 }
 
@@ -141,7 +314,7 @@
   display: flex;
   align-items: flex-start;
   gap: 14px;
-  background: #fbe9ee;
+  background: #eaf2fb;
   border-radius: 10px;
   padding: 18px 20px;
 }
@@ -191,14 +364,14 @@
   align-items: center;
   justify-content: center;
   font-size: 2.4rem;
-  background: linear-gradient(135deg, #fbe9ee, #f3d7de);
+  background: linear-gradient(135deg, #eaf2fb, #d3e6fb);
 }
 
 .newsTag {
   align-self: flex-start;
   margin: 0 16px;
-  background: #fbe9ee;
-  color: #8a0a34;
+  background: #eaf2fb;
+  color: #0057B8;
   font-size: 0.75rem;
   font-weight: 700;
   padding: 4px 10px;
@@ -233,7 +406,7 @@
   align-items: center;
   justify-content: center;
   font-size: 3rem;
-  background: linear-gradient(135deg, #fbe9ee, #f3d7de);
+  background: linear-gradient(135deg, #eaf2fb, #d3e6fb);
 }
 
 .tipMain .newsTag {
@@ -271,7 +444,7 @@
   align-items: center;
   justify-content: center;
   font-size: 1.6rem;
-  background: linear-gradient(135deg, #fbe9ee, #f3d7de);
+  background: linear-gradient(135deg, #eaf2fb, #d3e6fb);
 }
 
 .tipSideTitle {
@@ -281,36 +454,55 @@
   line-height: 1.4;
 }
 
-.tipTextList {
-  list-style: none;
-  margin: 0;
-  padding: 4px 0;
+.accordion {
   border: 1px solid #e5e5e5;
   border-radius: 10px;
   overflow: hidden;
 }
 
-.tipTextList li {
+.accordionItem {
   border-bottom: 1px solid #eaeaea;
 }
 
-.tipTextList li:last-child {
+.accordionItem:last-child {
   border-bottom: none;
 }
 
-.tipTextList a {
-  display: block;
-  padding: 13px 16px;
-  color: #333333;
-  text-decoration: none;
-  font-size: 0.9rem;
-  line-height: 1.4;
+.accordionHead {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px;
+  background: #fff;
+  border: none;
+  text-align: left;
+  font-size: 0.92rem;
+  color: #1a1a1a;
+  cursor: pointer;
   transition: background 0.15s ease, color 0.15s ease;
 }
 
-.tipTextList a:hover {
-  background: #fbe9ee;
-  color: #8a0a34;
+.accordionHead:hover {
+  background: #eaf2fb;
+  color: #0057b8;
+}
+
+.accordionToggle {
+  flex: none;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #0057b8;
+}
+
+.accordionBody {
+  margin: 0;
+  padding: 0 16px 16px;
+  color: #555555;
+  font-size: 0.88rem;
+  line-height: 1.6;
+  background: #fff;
 }
 
 .doctorGrid {
@@ -335,7 +527,7 @@
   align-items: center;
   justify-content: center;
   font-size: 2rem;
-  background: linear-gradient(135deg, #fbe9ee, #f3d7de);
+  background: linear-gradient(135deg, #eaf2fb, #d3e6fb);
 }
 
 .doctorName {
@@ -347,7 +539,7 @@
 .doctorSpecialty {
   margin: 0 0 2px;
   font-size: 0.85rem;
-  color: #BB0842;
+  color: #0057B8;
   font-weight: 600;
 }
 
@@ -377,12 +569,12 @@
 }
 
 .tabBtn:hover {
-  border-color: #BB0842;
+  border-color: #0057B8;
 }
 
 .tabBtnActive {
-  background: #BB0842;
-  border-color: #BB0842;
+  background: #0057B8;
+  border-color: #0057B8;
   color: #fff;
 }
 
@@ -402,7 +594,7 @@
 }
 
 .tabItem:hover {
-  border-color: #BB0842;
+  border-color: #0057B8;
   transform: translateY(-2px);
 }
 
@@ -430,7 +622,7 @@
   padding: 56px 20px;
   margin: 8px 0 0;
   border-radius: 20px;
-  background: #4a0620;
+  background: #002D72;
   color: #fff;
 }
 
@@ -441,7 +633,7 @@
 
 .consultDesc {
   margin: 0 0 28px;
-  color: #f0c3d2;
+  color: #b8d3f5;
 }
 
 .consultActions {
@@ -468,7 +660,7 @@
   height: 48px;
   border-radius: 50%;
   border: none;
-  background: #BB0842;
+  background: #0057B8;
   color: #fff;
   font-size: 1.2rem;
   cursor: pointer;
@@ -477,7 +669,7 @@
 }
 
 .topBtn:hover {
-  background: #970636;
+  background: #003F8C;
 }
 
 @media (max-width: 560px) {
