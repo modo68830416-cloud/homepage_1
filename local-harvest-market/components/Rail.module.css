@@ -1,0 +1,58 @@
+.rail {
+  position: relative;
+}
+
+.rail:hover .nav {
+  opacity: 1;
+}
+
+.track {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  padding: 4px 2px 8px;
+}
+
+.track::-webkit-scrollbar {
+  display: none;
+}
+
+.nav {
+  position: absolute;
+  top: 40%;
+  transform: translateY(-50%);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+  font-size: 1.2rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.15s ease, transform 0.15s ease;
+  z-index: 5;
+}
+
+.nav:hover {
+  transform: translateY(-50%) scale(1.06);
+}
+
+.navLeft {
+  left: -18px;
+}
+
+.navRight {
+  right: -18px;
+}
+
+@media (max-width: 700px) {
+  .nav {
+    display: none;
+  }
+}
