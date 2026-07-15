@@ -146,7 +146,7 @@ function Home() {
 
         <section id="today-step" className={styles.missionSection}>
           <div className={styles.missionCard}>
-            <img src="/momo.svg" alt="모모" className={styles.missionMomo} />
+            <img src="/images/momo-doctor-coat.webp" alt="모모" className={styles.missionMomo} />
             <div className={styles.missionBody}>
               <span className={styles.missionKicker}>오늘의 건강 한걸음</span>
               <h2 className={styles.missionTitle}>{mission.title}</h2>

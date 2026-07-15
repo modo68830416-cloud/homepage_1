@@ -109,6 +109,8 @@
   flex: none;
   width: 96px;
   height: auto;
+  border-radius: 16px;
+  object-fit: cover;
 }
 
 .missionBody {
