@@ -1,9 +1,9 @@
-.alertBar {
-  background: #002d72;
+.tipBar {
+  background: var(--merion-green-dark);
   color: #fff;
 }
 
-.alertInner {
+.tipInner {
   max-width: 1080px;
   margin: 0 auto;
   padding: 8px 20px;
@@ -13,32 +13,32 @@
   font-size: 0.82rem;
 }
 
-.alertBadge {
+.tipBadge {
   flex: none;
-  background: #ffb81c;
-  color: #002d72;
+  background: var(--merion-warm);
+  color: #3a2200;
   font-weight: 800;
   font-size: 0.72rem;
   padding: 3px 8px;
   border-radius: 4px;
 }
 
-.alertText {
+.tipText {
   flex: 1;
-  color: #dce9fb;
+  color: #dff3e8;
 }
 
-.alertClose {
+.tipClose {
   flex: none;
   background: transparent;
   border: none;
-  color: #a9c2e6;
+  color: #a8d9c3;
   cursor: pointer;
   font-size: 0.85rem;
   padding: 2px 4px;
 }
 
-.alertClose:hover {
+.tipClose:hover {
   color: #fff;
 }
 
@@ -48,7 +48,7 @@
   z-index: 50;
   background: rgba(255, 255, 255, 0.94);
   backdrop-filter: blur(8px);
-  border-bottom: 1px solid #e5e5e5;
+  border-bottom: 1px solid var(--merion-border);
 }
 
 .inner {
@@ -66,20 +66,18 @@
   align-items: center;
   gap: 10px;
   text-decoration: none;
-  color: #002d72;
+  color: var(--merion-green-dark);
 }
 
 .logoImg {
-  width: 52px;
-  height: 52px;
-  border-radius: 14px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  transition: transform 0.2s ease;
 }
 
 .logo:hover .logoImg {
   transform: translateY(-1px) scale(1.04);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.32);
 }
 
 .logoText {
@@ -89,59 +87,82 @@
 }
 
 .logoMark {
-  font-size: 1.4rem;
+  font-size: 1.3rem;
   font-weight: 800;
   letter-spacing: -0.02em;
+  color: var(--merion-text);
 }
 
 .logoSub {
-  font-size: 0.7rem;
+  font-size: 0.68rem;
   font-weight: 600;
-  color: #888888;
+  color: var(--merion-text-sub);
   letter-spacing: 0.15em;
 }
 
 .nav {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 4px;
 }
 
 .navLink {
   padding: 8px 12px;
   border-radius: 8px;
-  color: #333333;
+  color: var(--merion-text);
   text-decoration: none;
-  font-size: 0.95rem;
+  font-size: 0.94rem;
   font-weight: 500;
   transition: background 0.15s ease, color 0.15s ease;
 }
 
 .navLink:hover {
-  background: #eaf2fb;
-  color: #0057b8;
+  background: var(--merion-mint);
+  color: var(--merion-green-dark);
 }
 
 .navCta {
   margin-left: 8px;
   padding: 8px 16px;
-  border-radius: 6px;
-  background: #0057b8;
+  border-radius: 8px;
+  background: var(--merion-green);
   color: #fff;
   text-decoration: none;
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   font-weight: 700;
   white-space: nowrap;
   transition: background 0.15s ease;
 }
 
 .navCta:hover {
-  background: #003f8c;
+  background: var(--merion-green-dark);
+}
+
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.searchBtn {
+  border: 1px solid var(--merion-border);
+  background: #fff;
+  border-radius: 10px;
+  font-size: 1rem;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.searchBtn:hover {
+  border-color: var(--merion-green);
+  background: var(--merion-mint);
 }
 
 .menuBtn {
   display: none;
-  border: 1px solid #dddddd;
+  border: 1px solid var(--merion-border);
   background: #fff;
   border-radius: 8px;
   font-size: 1.1rem;
@@ -160,7 +181,7 @@
     left: 0;
     right: 0;
     background: #fff;
-    border-bottom: 1px solid #e5e5e5;
+    border-bottom: 1px solid var(--merion-border);
     flex-direction: column;
     align-items: stretch;
     padding: 10px 16px 16px;
@@ -175,5 +196,6 @@
   .navCta {
     margin-left: 0;
     text-align: center;
+    margin-top: 4px;
   }
 }

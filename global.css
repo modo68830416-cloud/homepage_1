@@ -1,3 +1,19 @@
+:root {
+  /* MERION color system — white/neutral base with mint & deep green accents */
+  --merion-bg: #ffffff;
+  --merion-bg-soft: #f7faf8;
+  --merion-mint: #eaf7f1;
+  --merion-mint-strong: #cfeedf;
+  --merion-green: #1e8f5f;
+  --merion-green-dark: #146b46;
+  --merion-teal: #14776b;
+  --merion-warm: #ff9e4a;
+  --merion-warm-soft: #fff1e2;
+  --merion-text: #1f2a24;
+  --merion-text-sub: #5b6b63;
+  --merion-border: #e4ede8;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -10,7 +26,7 @@ textarea {
 }
 
 body {
-  font-family: 'Spoqa Han Sans Neo', 'Apple SD Gothic Neo', 'Noto Sans KR',
+  font-family: 'Pretendard', 'Apple SD Gothic Neo', 'Noto Sans KR',
     'Malgun Gothic', 'Nanum Gothic', sans-serif;
   margin: 0 auto;
   overflow-x: hidden;
@@ -23,6 +39,6 @@ body {
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
   hyphens: auto;
-  background: #ffffff;
-  color: #222222;
+  background: var(--merion-bg);
+  color: var(--merion-text);
 }

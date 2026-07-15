@@ -1,6 +1,6 @@
 .footer {
-  background: #002D72;
-  color: #eaf2fb;
+  background: var(--merion-green-dark);
+  color: #e3f3ec;
   padding: 40px 20px 20px;
   margin-top: 60px;
 }
@@ -16,7 +16,7 @@
   gap: 40px;
   justify-content: space-between;
   padding-bottom: 28px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.14);
 }
 
 .brand {
@@ -27,7 +27,7 @@
 
 .desc {
   margin: 0 0 16px;
-  color: #a9c2e6;
+  color: #b7e0cd;
   font-size: 0.9rem;
 }
 
@@ -38,9 +38,9 @@
 
 .columns {
   display: grid;
-  grid-template-columns: repeat(4, minmax(120px, 1fr));
+  grid-template-columns: repeat(3, minmax(140px, 1fr));
   gap: 24px;
-  flex: 2 1 480px;
+  flex: 2 1 420px;
 }
 
 .columnTitle {
@@ -60,7 +60,7 @@
 }
 
 .columnList a {
-  color: #a9c2e6;
+  color: #b7e0cd;
   text-decoration: none;
   font-size: 0.85rem;
   transition: color 0.15s ease;
@@ -70,8 +70,22 @@
   color: #fff;
 }
 
-.contactBlock {
+.disclaimer {
   padding-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.disclaimer p {
+  margin: 0;
+  font-size: 0.78rem;
+  line-height: 1.6;
+  color: #9cc9b5;
+}
+
+.contactBlock {
+  padding-top: 16px;
   display: flex;
   flex-wrap: wrap;
   gap: 4px 20px;
@@ -80,7 +94,7 @@
 .contactBlock p {
   margin: 0;
   font-size: 0.85rem;
-  color: #b8d3f5;
+  color: #b7e0cd;
 }
 
 .socialBlock {
@@ -97,7 +111,7 @@
   padding: 8px 12px;
   border-radius: 6px;
   background: rgba(255, 255, 255, 0.08);
-  color: #eaf2fb;
+  color: #e3f3ec;
   text-decoration: none;
   font-size: 0.85rem;
   transition: background 0.15s ease;
@@ -109,7 +123,7 @@
 
 .copyright {
   text-align: center;
-  color: #7d99c4;
+  color: #7fac97;
   font-size: 0.8rem;
   margin: 32px 0 0;
 }

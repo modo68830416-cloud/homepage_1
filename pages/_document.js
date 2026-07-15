@@ -7,7 +7,7 @@ export default function Document() {
         <link rel="icon" href="/logo.svg" type="image/svg+xml" />
         <link
           rel="stylesheet"
-          href="https://cdn.jsdelivr.net/gh/spoqa/spoqa-han-sans@latest/css/SpoqaHanSansNeo.css"
+          href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css"
         />
       </Head>
       <body>
