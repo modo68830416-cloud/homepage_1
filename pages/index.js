@@ -126,7 +126,7 @@ function Home() {
 
       <main className={styles.main}>
         <section id="home" className={styles.hero}>
-          <img src="/momo.svg" alt="모모" className={styles.heroMomo} />
+          <img src="/images/momo-banner-1.webp" alt="메리온 모모 — 건강을 쉽게, 매일 한 걸음" className={styles.heroBanner} />
           <p className={styles.heroKicker}>MERION Project · 건강 한걸음</p>
           <h1 className={styles.heroTitle}>
             오늘의 건강 한걸음이
