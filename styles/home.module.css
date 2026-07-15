@@ -161,12 +161,23 @@
 }
 
 .missionComplete {
+  display: flex;
+  align-items: center;
+  gap: 14px;
   background: #fff;
   border-radius: 12px;
   padding: 16px 18px;
   color: var(--merion-green-dark);
   font-weight: 600;
   line-height: 1.6;
+}
+
+.missionCompleteAvatar {
+  flex: none;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
 }
 
 .missionComplete p {
@@ -463,6 +474,13 @@
   font-size: 0.85rem;
 }
 
+.videoBanner {
+  width: 100%;
+  border-radius: 16px;
+  margin-bottom: 24px;
+  display: block;
+}
+
 .videoGrid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
@@ -541,12 +559,23 @@
 }
 
 .brandSection {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 36px;
   text-align: center;
   padding: 56px 20px;
   margin: 8px 0 0;
   border-radius: 24px;
   background: var(--merion-green-dark);
   color: #fff;
+}
+
+.brandPortrait {
+  flex: none;
+  width: 140px;
+  height: auto;
+  border-radius: 20px;
 }
 
 .brandTitle {
@@ -561,6 +590,13 @@
   color: #cdeee0;
   font-size: 0.95rem;
   line-height: 1.7;
+}
+
+@media (max-width: 640px) {
+  .brandSection {
+    flex-direction: column;
+    gap: 20px;
+  }
 }
 
 .topBtn {

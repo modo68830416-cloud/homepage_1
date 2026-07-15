@@ -162,6 +162,7 @@ function Home() {
 
               {missionStatus === 'done' ? (
                 <div className={styles.missionComplete}>
+                  <img src="/images/momo-avatar.webp" alt="모모" className={styles.missionCompleteAvatar} />
                   <p>
                     오늘의 건강 한걸음을 완성했어요.
                     <br />
@@ -294,6 +295,7 @@ function Home() {
         </section>
 
         <section id="momo-videos" className={styles.section}>
+          <img src="/images/momo-banner-2.webp" alt="메리온 모모 유튜브" className={styles.videoBanner} />
           <h2 className={styles.sectionTitle}>모모 건강영상</h2>
           <p className={styles.sectionDesc}>모모와 함께 보는 짧은 건강 영상, 곧 만나보실 수 있어요.</p>
 
@@ -333,15 +335,18 @@ function Home() {
         </section>
 
         <section id="about" className={styles.brandSection}>
-          <h2 className={styles.brandTitle}>
-            건강은 거창한 변화가 아니라
-            <br />
-            매일의 작은 한걸음에서 시작됩니다.
-          </h2>
-          <p className={styles.brandDesc}>
-            메리온은 건강정보, 건강 운동, 건강 관련 상품, 생활습관 관리 등 건강하게 살아가는 데 필요한 다양한 방법을
-            쉽고 친근하게 소개하는 종합 건강 라이프스타일 플랫폼입니다.
-          </p>
+          <img src="/images/momo-portrait.webp" alt="모모" className={styles.brandPortrait} />
+          <div>
+            <h2 className={styles.brandTitle}>
+              건강은 거창한 변화가 아니라
+              <br />
+              매일의 작은 한걸음에서 시작됩니다.
+            </h2>
+            <p className={styles.brandDesc}>
+              메리온은 건강정보, 건강 운동, 건강 관련 상품, 생활습관 관리 등 건강하게 살아가는 데 필요한 다양한 방법을
+              쉽고 친근하게 소개하는 종합 건강 라이프스타일 플랫폼입니다.
+            </p>
+          </div>
         </section>
       </main>
 
