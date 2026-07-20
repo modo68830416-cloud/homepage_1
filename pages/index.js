@@ -72,6 +72,8 @@ const MOMO_VIDEOS = [
   },
 ]
 
+const BLOG_URL = 'https://modo6883.blogspot.com/'
+
 const PRODUCT_GUIDES = [
   { icon: '🩸', title: '혈압계 고르는 법', desc: '가정용 혈압계, 무엇을 기준으로 골라야 할까요.' },
   { icon: '🛏️', title: '거북목 베개 선택법', desc: '목과 어깨 건강을 지키는 베개 고르는 기준.' },
@@ -83,7 +85,7 @@ function getTodayKey() {
   return `merion-step-${new Date().toISOString().slice(0, 10)}`
 }
 
-function Home() {
+function Home({ blogPosts }) {
   const [missionIndex, setMissionIndex] = useState(0)
   const [missionStatus, setMissionStatus] = useState('idle')
   const [activeCategory, setActiveCategory] = useState(null)
@@ -342,6 +344,44 @@ function Home() {
           </div>
         </section>
 
+        <section id="blog" className={styles.section}>
+          <div className={styles.productHead}>
+            <div>
+              <h2 className={styles.sectionTitle}>메리온 블로그</h2>
+              <p className={styles.sectionDesc}>모모와 함께 쓰는 건강 이야기를 블로그에서 더 자세히 만나보세요.</p>
+            </div>
+            <a href={BLOG_URL} target="_blank" rel="noopener noreferrer" className={styles.btnSecondary}>
+              블로그 전체 보기 ↗
+            </a>
+          </div>
+
+          {blogPosts.length > 0 ? (
+            <div className={styles.newsStrip}>
+              {blogPosts.map((post) => (
+                <a
+                  key={post.url}
+                  href={post.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`${styles.newsCard} ${styles.blogCard}`}
+                >
+                  <div className={styles.newsThumb}>
+                    {post.thumbnail ? (
+                      <img src={post.thumbnail} alt={post.title} className={styles.newsThumbImg} />
+                    ) : (
+                      <span className={styles.blogThumbFallback}>📝</span>
+                    )}
+                  </div>
+                  <span className={styles.newsTag}>{post.tag}</span>
+                  <h3 className={styles.newsTitle}>{post.title}</h3>
+                </a>
+              ))}
+            </div>
+          ) : (
+            <p className={styles.sectionDesc}>블로그 글을 불러오지 못했어요. 블로그에서 직접 확인해주세요.</p>
+          )}
+        </section>
+
         <section id="products" className={styles.section}>
           <div className={styles.productHead}>
             <div>
@@ -388,6 +428,36 @@ function Home() {
       )}
     </>
   )
+}
+
+export async function getStaticProps() {
+  let blogPosts = []
+
+  try {
+    const res = await fetch(`${BLOG_URL}feeds/posts/default?alt=json&max-results=6`)
+    const data = await res.json()
+    const entries = data.feed.entry || []
+
+    blogPosts = entries.map((entry) => {
+      const altLink = entry.link.find((l) => l.rel === 'alternate' && l.type === 'text/html')
+      const content = entry.content?.$t || entry.summary?.$t || ''
+      const imgMatch = content.match(/<img[^>]+src="([^"]+)"/)
+
+      return {
+        title: entry.title.$t,
+        url: altLink ? altLink.href : BLOG_URL,
+        thumbnail: imgMatch ? imgMatch[1] : null,
+        tag: entry.category?.[0]?.term || '건강정보',
+      }
+    })
+  } catch (err) {
+    blogPosts = []
+  }
+
+  return {
+    props: { blogPosts },
+    revalidate: 3600,
+  }
 }
 
 export default Home

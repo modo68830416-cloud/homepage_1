@@ -8,6 +8,7 @@ const NAV_ITEMS = [
   { href: '#lifestyle', label: '건강생활' },
   { href: '#products', label: '추천상품' },
   { href: '#momo-videos', label: '모모영상' },
+  { href: '#blog', label: '블로그' },
   { href: '#about', label: '메리온 소개' },
 ]
 

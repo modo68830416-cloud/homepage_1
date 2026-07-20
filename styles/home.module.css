@@ -413,6 +413,15 @@
   transform: scale(1.04);
 }
 
+.blogCard {
+  text-decoration: none;
+  color: inherit;
+}
+
+.blogThumbFallback {
+  font-size: 2rem;
+}
+
 .newsTag {
   align-self: flex-start;
   margin: 0 16px;

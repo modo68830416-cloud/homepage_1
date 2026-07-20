@@ -4,7 +4,7 @@ const SOCIAL_LINKS = [
   { label: '카카오톡', icon: '💬', href: '#' },
   { label: '인스타그램', icon: '📷', href: '#' },
   { label: '유튜브', icon: '▶️', href: '#' },
-  { label: '블로그', icon: '✍️', href: '#' },
+  { label: '블로그', icon: '✍️', href: 'https://modo6883.blogspot.com/' },
 ]
 
 const FOOTER_COLUMNS = [
@@ -47,7 +47,14 @@ export default function Footer() {
             <p className={styles.desc}>오늘도 건강 한걸음, 모모와 함께.</p>
             <div className={styles.socialBlock}>
               {SOCIAL_LINKS.map((s) => (
-                <a key={s.label} href={s.href} className={styles.socialBtn} aria-label={s.label}>
+                <a
+                  key={s.label}
+                  href={s.href}
+                  target={s.href.startsWith('http') ? '_blank' : undefined}
+                  rel={s.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+                  className={styles.socialBtn}
+                  aria-label={s.label}
+                >
                   <span>{s.icon}</span>
                   <span>{s.label}</span>
                 </a>
