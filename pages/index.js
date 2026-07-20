@@ -21,30 +21,30 @@ const MISSIONS = [
 ]
 
 const CATEGORIES = [
-  { icon: '🩺', label: '증상과 질환', desc: '몸이 보내는 신호, 어떤 증상인지 확인해보세요.' },
-  { icon: '🧘', label: '운동과 스트레칭', desc: '집에서 쉽게 따라하는 운동과 스트레칭.' },
-  { icon: '🥗', label: '식습관과 영양', desc: '균형 잡힌 식사로 건강을 지키는 방법.' },
-  { icon: '😴', label: '수면과 휴식', desc: '숙면과 휴식을 위한 생활 습관.' },
-  { icon: '💛', label: '마음 건강', desc: '스트레스를 다스리고 마음을 돌보는 법.' },
-  { icon: '🌿', label: '중장년 건강', desc: '나이 들수록 더 챙겨야 할 건강 정보.' },
-  { icon: '🏠', label: '생활 건강', desc: '일상 속에서 실천하는 건강 습관.' },
-  { icon: '🩹', label: '건강용품', desc: '건강용품을 고르는 기준과 사용법.' },
+  { image: '/images/10_symptoms.webp', label: '증상과 질환', desc: '몸이 보내는 신호, 어떤 증상인지 확인해보세요.' },
+  { image: '/images/02_exercise.webp', label: '운동과 스트레칭', desc: '집에서 쉽게 따라하는 운동과 스트레칭.' },
+  { image: '/images/01_nutrition.webp', label: '식습관과 영양', desc: '균형 잡힌 식사로 건강을 지키는 방법.' },
+  { image: '/images/05_sleep.webp', label: '수면과 휴식', desc: '숙면과 휴식을 위한 생활 습관.' },
+  { image: '/images/06_mental_health.webp', label: '마음 건강', desc: '스트레스를 다스리고 마음을 돌보는 법.' },
+  { image: '/images/07_middle_age.webp', label: '중장년 건강', desc: '나이 들수록 더 챙겨야 할 건강 정보.' },
+  { image: '/images/09_daily_health.webp', label: '생활 건강', desc: '일상 속에서 실천하는 건강 습관.' },
+  { image: '/images/08_health_products.webp', label: '건강용품', desc: '건강용품을 고르는 기준과 사용법.' },
 ]
 
 const SEARCH_KEYWORDS = ['두통', '혈압', '수면', '허리통증', '걷기', '스트레칭']
 
 const POPULAR_INFO = [
-  { tag: '식습관과 영양', image: '/images/news-food.jpg', title: '"매일 먹으면 좋다"는 그 식품, 진짜 효과 있을까' },
-  { tag: '생활 건강', image: '/images/news-lifestyle.jpg', title: '"몸속 염증 키운다"… 무심코 반복하는 습관들' },
-  { tag: '식습관과 영양', image: '/images/news-diet.jpg', title: '굶지 않고 건강 체중을 유지하는 식사법' },
-  { tag: '중장년 건강', image: '/images/news-issue.jpg', title: '나이 들수록 챙겨야 할 건강검진 이야기' },
+  { tag: '식습관과 영양', image: '/images/news-food.webp', title: '"매일 먹으면 좋다"는 그 식품, 진짜 효과 있을까' },
+  { tag: '생활 건강', image: '/images/news-lifestyle.webp', title: '"몸속 염증 키운다"… 무심코 반복하는 습관들' },
+  { tag: '식습관과 영양', image: '/images/news-diet.webp', title: '굶지 않고 건강 체중을 유지하는 식사법' },
+  { tag: '중장년 건강', image: '/images/news-issue.webp', title: '나이 들수록 챙겨야 할 건강검진 이야기' },
 ]
 
 const LATEST_INFO = [
-  { tag: '수면과 휴식', image: '/images/news-lifestyle.jpg', title: '잠들기 전 스마트폰보다 효과적인 저녁 루틴 5가지' },
-  { tag: '운동과 스트레칭', image: '/images/news-diet.jpg', title: '앉아있는 시간이 긴 직장인을 위한 5분 스트레칭' },
-  { tag: '마음 건강', image: '/images/news-food.jpg', title: '스트레스가 심할 때 도움이 되는 호흡법' },
-  { tag: '중장년 건강', image: '/images/news-issue.jpg', title: '계절이 바뀔 때 꼭 챙겨야 할 건강 신호' },
+  { tag: '수면과 휴식', image: '/images/news-lifestyle.webp', title: '잠들기 전 스마트폰보다 효과적인 저녁 루틴 5가지' },
+  { tag: '운동과 스트레칭', image: '/images/news-diet.webp', title: '앉아있는 시간이 긴 직장인을 위한 5분 스트레칭' },
+  { tag: '마음 건강', image: '/images/news-food.webp', title: '스트레스가 심할 때 도움이 되는 호흡법' },
+  { tag: '중장년 건강', image: '/images/news-issue.webp', title: '계절이 바뀔 때 꼭 챙겨야 할 건강 신호' },
 ]
 
 const EXERCISES = [
@@ -55,10 +55,21 @@ const EXERCISES = [
 ]
 
 const MOMO_VIDEOS = [
-  { title: '3분이면 끝, 목 스트레칭 with 모모', tag: '스트레칭' },
-  { title: '모모의 아침 물 한잔 루틴', tag: '생활습관' },
-  { title: '앉아서 하는 초간단 허리 운동', tag: '운동' },
-  { title: '오늘 밤, 모모와 함께하는 전신 이완', tag: '수면' },
+  {
+    id: 'Oin2KF-xR24',
+    title: '어깨 통증? 30초 스트레칭 4가지로 뻐근한 어깨 풀어보세요!',
+    tag: '스트레칭',
+  },
+  {
+    id: '5hTxRTTEnX0',
+    title: '두통, 그냥 참지 마세요! 병원에 꼭 가야 하는 위험 신호 7가지',
+    tag: '두통',
+  },
+  {
+    id: 'R-O6kFpjfnM',
+    title: '혈압이 180 넘으면 무조건 응급실일까요? 절대 놓치면 안 되는 위험 신호!',
+    tag: '혈압',
+  },
 ]
 
 const PRODUCT_GUIDES = [
@@ -228,7 +239,7 @@ function Home() {
                 className={`${styles.categoryBtn} ${activeCategory === c.label ? styles.categoryBtnActive : ''}`}
                 onClick={() => toggleCategory(c.label)}
               >
-                <span className={styles.categoryIcon}>{c.icon}</span>
+                <img src={c.image} alt={c.label} className={styles.categoryImg} />
                 <span>{c.label}</span>
               </button>
             ))}
@@ -236,7 +247,7 @@ function Home() {
 
           {activeInfo && (
             <div className={styles.categoryDetail}>
-              <span className={styles.categoryDetailIcon}>{activeInfo.icon}</span>
+              <img src={activeInfo.image} alt={activeInfo.label} className={styles.categoryDetailImg} />
               <div>
                 <p className={styles.categoryDetailTitle}>{activeInfo.label}</p>
                 <p className={styles.categoryDetailDesc}>{activeInfo.desc}</p>
@@ -297,18 +308,36 @@ function Home() {
         <section id="momo-videos" className={styles.section}>
           <img src="/images/momo-banner-2.webp" alt="메리온 모모 유튜브" className={styles.videoBanner} />
           <h2 className={styles.sectionTitle}>모모 건강영상</h2>
-          <p className={styles.sectionDesc}>모모와 함께 보는 짧은 건강 영상, 곧 만나보실 수 있어요.</p>
+          <p className={styles.sectionDesc}>
+            모모와 함께 보는 짧은 건강 영상,{' '}
+            <a
+              href="https://www.youtube.com/@%ED%9E%90%EB%A7%81%EB%AA%AC%EC%B9%98%EC%B9%98"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              유튜브 채널
+            </a>
+            에서 더 만나보세요.
+          </p>
 
           <div className={styles.videoGrid}>
             {MOMO_VIDEOS.map((v) => (
-              <article key={v.title} className={styles.videoCard}>
-                <div className={styles.videoThumb}>
+              <a
+                key={v.id}
+                href={`https://www.youtube.com/shorts/${v.id}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={styles.videoCard}
+              >
+                <div
+                  className={styles.videoThumb}
+                  style={{ backgroundImage: `url(https://i.ytimg.com/vi/${v.id}/hqdefault.jpg)` }}
+                >
                   <span className={styles.videoPlay}>▶</span>
-                  <span className={styles.videoBadge}>준비중</span>
                 </div>
                 <span className={styles.newsTag}>{v.tag}</span>
                 <p className={styles.videoTitle}>{v.title}</p>
-              </article>
+              </a>
             ))}
           </div>
         </section>

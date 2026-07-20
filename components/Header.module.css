@@ -70,9 +70,9 @@
 }
 
 .logoImg {
-  width: 44px;
+  width: auto;
   height: 44px;
-  border-radius: 12px;
+  object-fit: contain;
   transition: transform 0.2s ease;
 }
 

@@ -45,7 +45,7 @@ export default function Header() {
       <header className={styles.header}>
         <div className={styles.inner}>
           <a href="#home" className={styles.logo}>
-            <img src="/logo.svg" alt="메리온 로고" className={styles.logoImg} />
+            <img src="/images/30_merion_logo.webp" alt="메리온 로고" className={styles.logoImg} />
             <span className={styles.logoText}>
               <span className={styles.logoMark}>메리온</span>
               <span className={styles.logoSub}>MERION</span>

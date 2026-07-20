@@ -302,8 +302,12 @@
   color: #fff;
 }
 
-.categoryIcon {
-  font-size: 1.6rem;
+.categoryImg {
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  object-fit: cover;
+  object-position: center;
 }
 
 .categoryDetail {
@@ -316,8 +320,13 @@
   padding: 18px 20px;
 }
 
-.categoryDetailIcon {
-  font-size: 1.8rem;
+.categoryDetailImg {
+  flex: none;
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  object-fit: cover;
+  object-position: center;
 }
 
 .categoryDetailTitle {
@@ -495,6 +504,14 @@
   border-radius: 14px;
   overflow: hidden;
   padding-bottom: 14px;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.videoCard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(20, 107, 70, 0.12);
 }
 
 .videoThumb {
@@ -502,6 +519,8 @@
   width: 100%;
   aspect-ratio: 9 / 16;
   background: linear-gradient(160deg, var(--merion-mint-strong), var(--merion-mint));
+  background-size: cover;
+  background-position: center;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -517,18 +536,6 @@
   align-items: center;
   justify-content: center;
   font-size: 1.1rem;
-}
-
-.videoBadge {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background: rgba(20, 107, 70, 0.85);
-  color: #fff;
-  font-size: 0.7rem;
-  font-weight: 700;
-  padding: 3px 8px;
-  border-radius: 6px;
 }
 
 .videoTitle {
