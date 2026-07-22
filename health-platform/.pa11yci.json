@@ -1,0 +1,18 @@
+{
+  "defaults": {
+    "standard": "WCAG2AA",
+    "timeout": 30000,
+    "chromeLaunchConfig": {
+      "args": ["--no-sandbox"]
+    }
+  },
+  "urls": [
+    "http://localhost:3000/",
+    "http://localhost:3000/health",
+    "http://localhost:3000/health/articles/headache-overview",
+    "http://localhost:3000/shop",
+    "http://localhost:3000/shop/products/omega-3-1000mg",
+    "http://localhost:3000/search?q=두통",
+    "http://localhost:3000/ask"
+  ]
+}
