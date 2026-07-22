@@ -42,3 +42,8 @@ body {
   background: var(--merion-bg);
   color: var(--merion-text);
 }
+
+body.merion-cursor-active,
+body.merion-cursor-active * {
+  cursor: none;
+}

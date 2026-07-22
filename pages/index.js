@@ -1,8 +1,31 @@
 import { useCallback, useEffect, useState } from 'react'
 import Head from 'next/head'
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
+import Reveal from '../components/Reveal'
+import MagneticButton from '../components/MagneticButton'
 import styles from '../styles/home.module.css'
+
+const HERO_TITLE_LINES = [
+  ['오늘의', '건강', '한걸음이'],
+  ['내일의', '건강을', '만듭니다.'],
+]
+
+const heroWordContainer = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.08, delayChildren: 0.9 } },
+}
+
+const heroWord = {
+  hidden: { opacity: 0, y: 32, filter: 'blur(10px)' },
+  show: {
+    opacity: 1,
+    y: 0,
+    filter: 'blur(0px)',
+    transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] },
+  },
+}
 
 const MISSIONS = [
   { title: '10분 걷기', desc: '가까운 거리를 걸어보세요. 부담 없이 시작할 수 있는 걸음이에요.', duration: '10분', difficulty: '쉬움', prep: '없음' },
@@ -88,10 +111,11 @@ function getTodayKey() {
 function Home({ blogPosts }) {
   const [missionIndex, setMissionIndex] = useState(0)
   const [missionStatus, setMissionStatus] = useState('idle')
-  const [activeCategory, setActiveCategory] = useState(null)
+  const [activeCategory, setActiveCategory] = useState(CATEGORIES[0].label)
   const [infoTab, setInfoTab] = useState('popular')
   const [searchValue, setSearchValue] = useState('')
   const [showTop, setShowTop] = useState(false)
+  const reduceMotion = useReducedMotion()
 
   useEffect(() => {
     const now = new Date()
@@ -114,7 +138,7 @@ function Home({ blogPosts }) {
   }, [])
 
   const toggleCategory = useCallback((label) => {
-    setActiveCategory((current) => (current === label ? null : label))
+    setActiveCategory(label)
   }, [])
 
   const startMission = useCallback(() => setMissionStatus('doing'), [])
@@ -139,31 +163,79 @@ function Home({ blogPosts }) {
 
       <main className={styles.main}>
         <section id="home" className={styles.hero}>
-          <img src="/images/momo-banner-1.webp" alt="메리온 모모 — 건강을 쉽게, 매일 한 걸음" className={styles.heroBanner} />
-          <p className={styles.heroKicker}>MERION Project · 건강 한걸음</p>
-          <h1 className={styles.heroTitle}>
-            오늘의 건강 한걸음이
-            <br />
-            내일의 건강을 만듭니다.
-          </h1>
-          <p className={styles.heroDesc}>오늘도 건강 한걸음, 모모와 함께.</p>
-          <div className={styles.heroActions}>
-            <a href="#today-step" className={styles.btnPrimary}>
-              오늘의 한걸음 시작하기
-            </a>
-            <a href="#health-info" className={styles.btnSecondary}>
-              건강정보 둘러보기
-            </a>
+          <div className={styles.heroBannerWrap}>
+            <span className={styles.heroGlow} aria-hidden="true" />
+            <motion.div
+              animate={reduceMotion ? undefined : { y: [0, -14, 0] }}
+              transition={reduceMotion ? undefined : { duration: 5, repeat: Infinity, ease: 'easeInOut', delay: 1.4 }}
+            >
+              <motion.img
+                src="/images/momo-banner-1.webp"
+                alt="메리온 모모 — 건강을 쉽게, 매일 한 걸음"
+                className={styles.heroBanner}
+                initial={reduceMotion ? false : { opacity: 0, scale: 1.15, filter: 'blur(18px)' }}
+                animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
+                transition={{ duration: 1.1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+              />
+            </motion.div>
           </div>
+
+          <motion.p
+            className={styles.heroKicker}
+            initial={reduceMotion ? false : { opacity: 0, y: -12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.15 }}
+          >
+            MERION Project · 건강 한걸음
+          </motion.p>
+
+          <motion.h1
+            className={styles.heroTitle}
+            variants={heroWordContainer}
+            initial={reduceMotion ? 'show' : 'hidden'}
+            animate="show"
+          >
+            {HERO_TITLE_LINES.map((line, li) => (
+              <span key={li} className={styles.heroTitleLine}>
+                {line.map((word, wi) => (
+                  <motion.span key={wi} variants={heroWord} className={styles.heroWord}>
+                    {word}
+                    {wi < line.length - 1 ? ' ' : ''}
+                  </motion.span>
+                ))}
+                {li < HERO_TITLE_LINES.length - 1 && <br />}
+              </span>
+            ))}
+          </motion.h1>
+
+          <Reveal as="p" delay={2} className={styles.heroDesc}>
+            오늘도 건강 한걸음, 모모와 함께.
+          </Reveal>
+          <Reveal as="div" delay={2.2} className={styles.heroActions}>
+            <MagneticButton as="a" href="#today-step" className={styles.btnPrimary}>
+              오늘의 한걸음 시작하기
+            </MagneticButton>
+            <MagneticButton as="a" href="#health-info" className={styles.btnSecondary}>
+              건강정보 둘러보기
+            </MagneticButton>
+          </Reveal>
         </section>
 
-        <section id="today-step" className={styles.missionSection}>
-          <div className={styles.missionCard}>
-            <img src="/images/momo-doctor-coat.webp" alt="모모" className={styles.missionMomo} />
-            <div className={styles.missionBody}>
+        <section id="today-step" className={`${styles.storySection} ${styles.toneMint}`}>
+          <div className={styles.storyInner}>
+            <Reveal
+              as="div"
+              className={styles.storyMedia}
+              initial={{ opacity: 0, x: -60 }}
+              whileInView={{ opacity: 1, x: 0 }}
+            >
+              <img src="/images/momo-doctor-coat.webp" alt="모모" className={styles.storyMediaImg} />
+            </Reveal>
+
+            <Reveal as="div" className={styles.storyBody} delay={0.1}>
               <span className={styles.missionKicker}>오늘의 건강 한걸음</span>
-              <h2 className={styles.missionTitle}>{mission.title}</h2>
-              <p className={styles.missionDesc}>{mission.desc}</p>
+              <h2 className={styles.storyTitle}>{mission.title}</h2>
+              <p className={styles.storyDesc}>{mission.desc}</p>
 
               <div className={styles.missionMeta}>
                 <span>⏱ 소요시간 {mission.duration}</span>
@@ -185,15 +257,15 @@ function Home({ blogPosts }) {
                   </p>
                 </div>
               ) : missionStatus === 'doing' ? (
-                <button type="button" className={styles.btnPrimary} onClick={completeMission}>
+                <MagneticButton as="button" type="button" className={styles.btnPrimary} onClick={completeMission}>
                   오늘의 건강 한걸음 완료하기
-                </button>
+                </MagneticButton>
               ) : (
-                <button type="button" className={styles.btnPrimary} onClick={startMission}>
+                <MagneticButton as="button" type="button" className={styles.btnPrimary} onClick={startMission}>
                   건강 한걸음 시작하기
-                </button>
+                </MagneticButton>
               )}
-            </div>
+            </Reveal>
           </div>
         </section>
 
@@ -234,29 +306,48 @@ function Home({ blogPosts }) {
           <p className={styles.sectionDesc}>관심 있는 건강 주제를 선택하면 간단한 설명을 바로 확인할 수 있어요.</p>
 
           <div className={styles.categoryGrid}>
-            {CATEGORIES.map((c) => (
-              <button
+            {CATEGORIES.map((c, i) => (
+              <Reveal
                 key={c.label}
+                as="button"
                 type="button"
+                delay={i * 0.05}
+                whileHover={{ y: -4, scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
                 className={`${styles.categoryBtn} ${activeCategory === c.label ? styles.categoryBtnActive : ''}`}
                 onClick={() => toggleCategory(c.label)}
               >
                 <img src={c.image} alt={c.label} className={styles.categoryImg} />
                 <span>{c.label}</span>
-              </button>
+              </Reveal>
             ))}
           </div>
 
-          {activeInfo && (
-            <div className={styles.categoryDetail}>
-              <img src={activeInfo.image} alt={activeInfo.label} className={styles.categoryDetailImg} />
-              <div>
-                <p className={styles.categoryDetailTitle}>{activeInfo.label}</p>
-                <p className={styles.categoryDetailDesc}>{activeInfo.desc}</p>
-              </div>
-            </div>
-          )}
         </section>
+
+        {activeInfo && (
+          <section className={`${styles.storySection} ${styles.toneLight}`}>
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeInfo.label}
+                className={styles.storyInner}
+                initial={reduceMotion ? false : { opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -16 }}
+                transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+              >
+                <div className={styles.storyMedia}>
+                  <img src={activeInfo.image} alt={activeInfo.label} className={styles.storyMediaImg} />
+                </div>
+                <div className={styles.storyBody}>
+                  <span className={styles.storyKicker}>건강 카테고리</span>
+                  <h3 className={styles.storyTitle}>{activeInfo.label}</h3>
+                  <p className={styles.storyDesc}>{activeInfo.desc}</p>
+                </div>
+              </motion.div>
+            </AnimatePresence>
+          </section>
+        )}
 
         <section id="lifestyle" className={styles.section}>
           <h2 className={styles.sectionTitle}>지금 많이 보는 건강정보</h2>
@@ -280,32 +371,51 @@ function Home({ blogPosts }) {
           </div>
 
           <div className={styles.newsStrip}>
-            {infoList.map((n) => (
-              <article key={n.title} className={styles.newsCard}>
+            {infoList.map((n, i) => (
+              <Reveal
+                key={n.title}
+                as="article"
+                delay={i * 0.08}
+                whileHover={{ y: -6 }}
+                className={styles.newsCard}
+              >
                 <div className={styles.newsThumb}>
                   <img src={n.image} alt={n.tag} className={styles.newsThumbImg} />
                 </div>
                 <span className={styles.newsTag}>{n.tag}</span>
                 <h3 className={styles.newsTitle}>{n.title}</h3>
-              </article>
+              </Reveal>
             ))}
           </div>
         </section>
 
-        <section id="exercise" className={styles.section}>
+        <section id="exercise" className={`${styles.section} ${styles.sectionIntroTight}`}>
           <h2 className={styles.sectionTitle}>오늘의 운동과 스트레칭</h2>
           <p className={styles.sectionDesc}>짧은 시간에 따라 할 수 있는 가벼운 운동을 모았어요.</p>
-
-          <div className={styles.exerciseGrid}>
-            {EXERCISES.map((e) => (
-              <article key={e.title} className={styles.exerciseCard}>
-                <span className={styles.exerciseIcon}>{e.icon}</span>
-                <p className={styles.exerciseTitle}>{e.title}</p>
-                <p className={styles.exerciseDesc}>{e.desc}</p>
-              </article>
-            ))}
-          </div>
         </section>
+
+        {EXERCISES.map((e, i) => (
+          <section
+            key={e.title}
+            className={`${styles.storySection} ${styles.compact} ${i % 2 === 0 ? styles.toneLight : styles.toneMint}`}
+          >
+            <div className={`${styles.storyInner} ${i % 2 === 1 ? styles.reverse : ''}`}>
+              <Reveal
+                as="div"
+                className={styles.storyMedia}
+                initial={{ opacity: 0, x: i % 2 === 1 ? 60 : -60 }}
+                whileInView={{ opacity: 1, x: 0 }}
+              >
+                <span className={styles.storyIconCircle}>{e.icon}</span>
+              </Reveal>
+              <Reveal as="div" className={styles.storyBody} delay={0.1}>
+                <span className={styles.storyKicker}>운동 {String(i + 1).padStart(2, '0')}</span>
+                <h3 className={styles.storyTitle}>{e.title}</h3>
+                <p className={styles.storyDesc}>{e.desc}</p>
+              </Reveal>
+            </div>
+          </section>
+        ))}
 
         <section id="momo-videos" className={styles.section}>
           <img src="/images/momo-banner-2.webp" alt="메리온 모모 유튜브" className={styles.videoBanner} />
@@ -357,12 +467,15 @@ function Home({ blogPosts }) {
 
           {blogPosts.length > 0 ? (
             <div className={styles.newsStrip}>
-              {blogPosts.map((post) => (
-                <a
+              {blogPosts.map((post, i) => (
+                <Reveal
                   key={post.url}
+                  as="a"
                   href={post.url}
                   target="_blank"
                   rel="noopener noreferrer"
+                  delay={i * 0.08}
+                  whileHover={{ y: -6 }}
                   className={`${styles.newsCard} ${styles.blogCard}`}
                 >
                   <div className={styles.newsThumb}>
@@ -374,7 +487,7 @@ function Home({ blogPosts }) {
                   </div>
                   <span className={styles.newsTag}>{post.tag}</span>
                   <h3 className={styles.newsTitle}>{post.title}</h3>
-                </a>
+                </Reveal>
               ))}
             </div>
           ) : (
@@ -382,7 +495,7 @@ function Home({ blogPosts }) {
           )}
         </section>
 
-        <section id="products" className={styles.section}>
+        <section id="products" className={`${styles.section} ${styles.sectionIntroTight}`}>
           <div className={styles.productHead}>
             <div>
               <h2 className={styles.sectionTitle}>건강 상품 선택 가이드</h2>
@@ -390,18 +503,31 @@ function Home({ blogPosts }) {
             </div>
             <span className={styles.adBadge}>광고·제휴 포함 가능</span>
           </div>
-
-          <div className={styles.productGrid}>
-            {PRODUCT_GUIDES.map((p) => (
-              <article key={p.title} className={styles.productCard}>
-                <span className={styles.exerciseIcon}>{p.icon}</span>
-                <p className={styles.exerciseTitle}>{p.title}</p>
-                <p className={styles.exerciseDesc}>{p.desc}</p>
-                <span className={styles.productCta}>선택 기준 보기 →</span>
-              </article>
-            ))}
-          </div>
         </section>
+
+        {PRODUCT_GUIDES.map((p, i) => (
+          <section
+            key={p.title}
+            className={`${styles.storySection} ${styles.compact} ${i % 2 === 0 ? styles.toneLight : styles.toneMint}`}
+          >
+            <div className={`${styles.storyInner} ${i % 2 === 1 ? styles.reverse : ''}`}>
+              <Reveal
+                as="div"
+                className={styles.storyMedia}
+                initial={{ opacity: 0, x: i % 2 === 1 ? 60 : -60 }}
+                whileInView={{ opacity: 1, x: 0 }}
+              >
+                <span className={styles.storyIconCircle}>{p.icon}</span>
+              </Reveal>
+              <Reveal as="div" className={styles.storyBody} delay={0.1}>
+                <span className={styles.storyKicker}>가이드 {String(i + 1).padStart(2, '0')}</span>
+                <h3 className={styles.storyTitle}>{p.title}</h3>
+                <p className={styles.storyDesc}>{p.desc}</p>
+                <span className={styles.productCta}>선택 기준 보기 →</span>
+              </Reveal>
+            </div>
+          </section>
+        ))}
 
         <section id="about" className={styles.brandSection}>
           <img src="/images/momo-portrait.webp" alt="모모" className={styles.brandPortrait} />

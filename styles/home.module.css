@@ -13,21 +13,54 @@
   width: 100vw;
   text-align: center;
   padding: 72px 20px 64px;
-  background: linear-gradient(180deg, var(--merion-mint) 0%, #ffffff 100%);
+  background: linear-gradient(180deg, #0d3325 0%, var(--merion-green-dark) 45%, var(--merion-teal) 100%);
+}
+
+.heroBannerWrap {
+  position: relative;
+  max-width: 880px;
+  margin: 0 auto 28px;
+}
+
+.heroGlow {
+  position: absolute;
+  inset: -12% -8%;
+  background: radial-gradient(circle at 50% 35%, rgba(255, 255, 255, 0.28), rgba(255, 255, 255, 0) 62%);
+  filter: blur(30px);
+  opacity: 0;
+  transform: scale(0.85);
+  animation: heroGlowIn 1.6s cubic-bezier(0.16, 1, 0.3, 1) 0.15s forwards;
+  pointer-events: none;
+  z-index: 0;
+}
+
+@keyframes heroGlowIn {
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .heroGlow {
+    animation: none;
+    opacity: 0.5;
+    transform: scale(1);
+  }
 }
 
 .heroBanner {
+  position: relative;
+  z-index: 1;
   width: 100%;
-  max-width: 880px;
   height: auto;
   border-radius: 24px;
-  margin: 0 auto 28px;
   display: block;
   box-shadow: 0 12px 32px rgba(20, 107, 70, 0.16);
 }
 
 .heroKicker {
-  color: var(--merion-green-dark);
+  color: #bdeed9;
   font-weight: 700;
   letter-spacing: 0.1em;
   font-size: 0.8rem;
@@ -39,11 +72,20 @@
   font-size: 2.5rem;
   line-height: 1.35;
   margin: 0 0 16px;
-  color: var(--merion-text);
+  color: #ffffff;
+}
+
+.heroTitleLine {
+  display: inline-block;
+}
+
+.heroWord {
+  display: inline-block;
+  will-change: transform, filter, opacity;
 }
 
 .heroDesc {
-  color: var(--merion-text-sub);
+  color: rgba(255, 255, 255, 0.85);
   font-size: 1.05rem;
   max-width: 480px;
   margin: 0 auto 32px;
@@ -78,7 +120,6 @@
 
 .btnPrimary:hover {
   background: var(--merion-green-dark);
-  transform: translateY(-1px);
 }
 
 .btnSecondary {
@@ -88,29 +129,109 @@
 
 .btnSecondary:hover {
   background: var(--merion-mint-strong);
-  transform: translateY(-1px);
 }
 
-.missionSection {
-  padding: 8px 0 48px;
+.storySection {
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  width: 100vw;
+  padding: 100px 0;
 }
 
-.missionCard {
+.storySection.compact {
+  padding: 72px 0;
+}
+
+.storySection.toneMint {
+  background: var(--merion-mint);
+}
+
+.storySection.toneLight {
+  background: #ffffff;
+}
+
+.storyInner {
   display: flex;
   align-items: center;
-  gap: 28px;
-  background: var(--merion-mint);
-  border: 1px solid var(--merion-mint-strong);
-  border-radius: 20px;
-  padding: 32px;
+  gap: 56px;
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 0 20px;
 }
 
-.missionMomo {
-  flex: none;
-  width: 96px;
+.storyInner.reverse {
+  flex-direction: row-reverse;
+}
+
+.storyMedia {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.storyMediaImg {
+  width: 100%;
   height: auto;
-  border-radius: 16px;
+  border-radius: 24px;
+  display: block;
   object-fit: cover;
+  box-shadow: 0 16px 40px rgba(20, 107, 70, 0.14);
+}
+
+.storyIconCircle {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  background: var(--merion-mint-strong);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 4rem;
+  flex: none;
+}
+
+.storyBody {
+  flex: 1;
+  min-width: 0;
+}
+
+.storyKicker {
+  display: inline-block;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--merion-green-dark);
+  margin: 0 0 12px;
+}
+
+.storyTitle {
+  font-size: clamp(1.8rem, 4vw, 2.75rem);
+  font-weight: 800;
+  line-height: 1.15;
+  margin: 0 0 16px;
+  color: var(--merion-text);
+}
+
+.storyDesc {
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: var(--merion-text-sub);
+  margin: 0 0 20px;
+}
+
+@media (max-width: 800px) {
+  .storyInner,
+  .storyInner.reverse {
+    flex-direction: column;
+    text-align: center;
+    gap: 32px;
+  }
 }
 
 .missionBody {
@@ -184,23 +305,20 @@
   margin: 0;
 }
 
-@media (max-width: 640px) {
-  .missionCard {
-    flex-direction: column;
-    text-align: center;
-    padding: 24px;
-  }
-}
-
 .section {
-  padding: 48px 0;
+  padding: 80px 0;
   border-top: 1px solid var(--merion-border);
 }
 
 .sectionTitle {
-  font-size: 1.5rem;
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  font-weight: 800;
   margin: 0 0 6px;
   color: var(--merion-text);
+}
+
+.sectionIntroTight {
+  padding-bottom: 8px;
 }
 
 .sectionDesc {
@@ -270,30 +388,29 @@
 }
 
 .categoryGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-  gap: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
 }
 
 .categoryBtn {
-  display: flex;
-  flex-direction: column;
+  display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 18px 10px;
-  border-radius: 12px;
+  gap: 10px;
+  padding: 8px 20px 8px 8px;
+  border-radius: 999px;
   border: 1px solid var(--merion-border);
   background: #fff;
   cursor: pointer;
-  font-size: 0.9rem;
+  font-size: 0.92rem;
   font-weight: 600;
   color: var(--merion-text);
-  transition: border-color 0.15s ease, background 0.15s ease, transform 0.15s ease;
+  transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease;
 }
 
 .categoryBtn:hover {
   border-color: var(--merion-green);
-  transform: translateY(-2px);
 }
 
 .categoryBtnActive {
@@ -303,42 +420,11 @@
 }
 
 .categoryImg {
-  width: 56px;
-  height: 56px;
-  border-radius: 14px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
   object-fit: cover;
   object-position: center;
-}
-
-.categoryDetail {
-  margin-top: 20px;
-  display: flex;
-  align-items: flex-start;
-  gap: 14px;
-  background: var(--merion-mint);
-  border-radius: 12px;
-  padding: 18px 20px;
-}
-
-.categoryDetailImg {
-  flex: none;
-  width: 48px;
-  height: 48px;
-  border-radius: 12px;
-  object-fit: cover;
-  object-position: center;
-}
-
-.categoryDetailTitle {
-  margin: 0 0 4px;
-  font-weight: 700;
-  color: var(--merion-text);
-}
-
-.categoryDetailDesc {
-  margin: 0;
-  color: var(--merion-text-sub);
-  font-size: 0.9rem;
 }
 
 .infoTabs {
@@ -387,7 +473,6 @@
 }
 
 .newsCard:hover {
-  transform: translateY(-3px);
   box-shadow: 0 10px 24px rgba(20, 107, 70, 0.12);
 }
 
@@ -441,55 +526,12 @@
   line-height: 1.4;
 }
 
-.exerciseGrid,
-.productGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 16px;
-}
-
-.exerciseCard,
-.productCard {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  border: 1px solid var(--merion-border);
-  border-radius: 14px;
-  padding: 22px;
-  background: #fff;
-  transition: transform 0.15s ease, border-color 0.15s ease;
-}
-
-.exerciseCard:hover,
-.productCard:hover {
-  transform: translateY(-3px);
-  border-color: var(--merion-green);
-}
-
-.exerciseIcon {
-  font-size: 1.8rem;
-  margin-bottom: 4px;
-}
-
-.exerciseTitle {
-  margin: 0;
-  font-weight: 700;
-  color: var(--merion-text);
-  font-size: 1rem;
-}
-
-.exerciseDesc {
-  margin: 0;
-  color: var(--merion-text-sub);
-  font-size: 0.88rem;
-  line-height: 1.5;
-}
-
 .productCta {
-  margin-top: 8px;
+  display: inline-block;
+  margin-top: 4px;
   color: var(--merion-green-dark);
   font-weight: 700;
-  font-size: 0.85rem;
+  font-size: 0.95rem;
 }
 
 .videoBanner {
@@ -596,8 +638,9 @@
 
 .brandTitle {
   margin: 0 0 16px;
-  font-size: 1.6rem;
-  line-height: 1.45;
+  font-size: clamp(1.6rem, 3.4vw, 2.4rem);
+  font-weight: 800;
+  line-height: 1.35;
 }
 
 .brandDesc {
