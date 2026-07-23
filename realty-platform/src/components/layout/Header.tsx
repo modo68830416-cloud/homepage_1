@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { UserButton, useUser } from "@clerk/nextjs";
 import { Heart, Clock, User, Search, Menu, X, Building2, Scale } from "lucide-react";
 
 const NAV_ITEMS = [
@@ -26,6 +27,7 @@ const MOBILE_QUICK_LINKS = [
 
 export function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const { isSignedIn } = useUser();
 
   return (
     <header className="sticky top-0 z-[var(--z-sticky)] border-b border-[var(--border-default)] bg-[var(--bg-page)]/90 backdrop-blur-md">
@@ -76,13 +78,19 @@ export function Header() {
           >
             <Clock size={20} />
           </Link>
-          <Link
-            href="/login"
-            className="ml-1 hidden items-center gap-1.5 rounded-full bg-[var(--color-primary-900)] px-4 py-2 text-[length:var(--font-size-body-sm)] font-semibold text-white transition hover:opacity-90 sm:inline-flex"
-          >
-            <User size={16} />
-            로그인
-          </Link>
+          {isSignedIn ? (
+            <div className="ml-1 hidden sm:inline-flex">
+              <UserButton />
+            </div>
+          ) : (
+            <Link
+              href="/login"
+              className="ml-1 hidden items-center gap-1.5 rounded-full bg-[var(--color-primary-900)] px-4 py-2 text-[length:var(--font-size-body-sm)] font-semibold text-white transition hover:opacity-90 sm:inline-flex"
+            >
+              <User size={16} />
+              로그인
+            </Link>
+          )}
 
           <button
             type="button"
@@ -125,13 +133,19 @@ export function Header() {
               </li>
             ))}
             <li>
-              <Link
-                href="/login"
-                onClick={() => setMobileOpen(false)}
-                className="mt-2 block rounded-lg bg-[var(--color-primary-900)] px-3 py-2 text-center font-semibold text-white"
-              >
-                로그인
-              </Link>
+              {isSignedIn ? (
+                <div className="mt-2 flex justify-center">
+                  <UserButton />
+                </div>
+              ) : (
+                <Link
+                  href="/login"
+                  onClick={() => setMobileOpen(false)}
+                  className="mt-2 block rounded-lg bg-[var(--color-primary-900)] px-3 py-2 text-center font-semibold text-white"
+                >
+                  로그인
+                </Link>
+              )}
             </li>
           </ul>
         </nav>

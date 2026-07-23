@@ -2,21 +2,23 @@
 
 import { useState } from "react";
 import { CheckCircle2, Send } from "lucide-react";
-import { useInquiries } from "@/lib/use-inquiries";
+import { submitInquiry } from "@/db/actions";
 
 export function InquiryForm({ propertyTitle }: { propertyTitle?: string }) {
-  const { addInquiry } = useInquiries();
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [message, setMessage] = useState("");
 
-  function handleSubmit(event: React.FormEvent) {
+  async function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
-    addInquiry({ name, phone, message, propertyTitle });
+    setSubmitting(true);
+    await submitInquiry({ name, phone, message, propertyTitle });
     setName("");
     setPhone("");
     setMessage("");
+    setSubmitting(false);
     setSubmitted(true);
   }
 
@@ -78,10 +80,11 @@ export function InquiryForm({ propertyTitle }: { propertyTitle?: string }) {
 
       <button
         type="submit"
-        className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-[var(--color-primary-900)] py-3 font-semibold text-white transition hover:opacity-90"
+        disabled={submitting}
+        className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-[var(--color-primary-900)] py-3 font-semibold text-white transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
       >
         <Send size={16} />
-        문의 보내기
+        {submitting ? "전송 중..." : "문의 보내기"}
       </button>
 
       {submitted && (

@@ -4,9 +4,9 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Scale, X } from "lucide-react";
 import { useCompare } from "@/lib/use-compare";
-import { properties } from "@/lib/properties/mock-data";
+import type { Property } from "@/types/property";
 
-export function CompareBar() {
+export function CompareBar({ properties }: { properties: Property[] }) {
   const pathname = usePathname();
   const { compareIds, remove, clear } = useCompare();
 

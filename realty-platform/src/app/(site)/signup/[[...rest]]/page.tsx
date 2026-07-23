@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { SignupForm } from "@/components/auth/SignupForm";
+import { SignUp } from "@clerk/nextjs";
 
 export const metadata: Metadata = {
   title: "회원가입",
@@ -7,5 +7,9 @@ export const metadata: Metadata = {
 };
 
 export default function SignupPage() {
-  return <SignupForm />;
+  return (
+    <div className="flex justify-center px-6 py-16">
+      <SignUp />
+    </div>
+  );
 }

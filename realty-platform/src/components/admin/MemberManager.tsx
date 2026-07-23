@@ -1,9 +1,10 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, useTransition } from "react";
 import { Search } from "lucide-react";
-import { members as initialMembers } from "@/lib/properties/mock-data";
-import type { MemberRole, MemberStatus } from "@/types/property";
+import { setMemberBanned, updateMemberRole } from "@/lib/clerk-actions";
+import type { ClerkMember } from "@/lib/clerk-members";
+import type { MemberRole } from "@/types/property";
 
 const ROLE_OPTIONS: MemberRole[] = ["USER", "AGENT", "ADMIN"];
 
@@ -13,14 +14,16 @@ const ROLE_STYLE: Record<MemberRole, string> = {
   ADMIN: "bg-[var(--color-accent-red)]/10 text-[var(--color-accent-red)]",
 };
 
-function formatDate(iso: string) {
+function formatDate(iso: string | null) {
+  if (!iso) return "로그인 이력 없음";
   return iso.slice(0, 16).replace("T", " ");
 }
 
-export function MemberManager() {
-  const [rows, setRows] = useState(initialMembers);
+export function MemberManager({ initialRows }: { initialRows: ClerkMember[] }) {
+  const [rows, setRows] = useState(initialRows);
   const [query, setQuery] = useState("");
   const [roleFilter, setRoleFilter] = useState<"all" | MemberRole>("all");
+  const [, startTransition] = useTransition();
 
   const filtered = useMemo(() => {
     const keyword = query.trim().toLowerCase();
@@ -33,16 +36,21 @@ export function MemberManager() {
 
   function updateRole(id: string, role: MemberRole) {
     setRows((current) => current.map((row) => (row.id === id ? { ...row, role } : row)));
+    startTransition(() => {
+      updateMemberRole(id, role);
+    });
   }
 
   function toggleStatus(id: string) {
-    setRows((current) =>
-      current.map((row) => {
-        if (row.id !== id) return row;
-        const status: MemberStatus = row.status === "활성" ? "비활성" : "활성";
-        return { ...row, status };
-      }),
+    const current = rows.find((row) => row.id === id);
+    if (!current) return;
+    const nextBanned = current.status === "활성";
+    setRows((prev) =>
+      prev.map((row) => (row.id === id ? { ...row, status: nextBanned ? "비활성" : "활성" } : row)),
     );
+    startTransition(() => {
+      setMemberBanned(id, nextBanned);
+    });
   }
 
   return (

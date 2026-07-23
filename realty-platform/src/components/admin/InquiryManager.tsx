@@ -1,38 +1,54 @@
 "use client";
 
-import { Fragment, useMemo, useState } from "react";
+import { Fragment, useMemo, useState, useTransition } from "react";
 import { NotebookPen, Trash2 } from "lucide-react";
 import { staffMembers } from "@/lib/properties/mock-data";
-import { useInquiries } from "@/lib/use-inquiries";
+import { deleteInquiry, updateInquiry as updateInquiryAction } from "@/db/actions";
+import type { InquiryRow } from "@/db/schema";
 import type { InquiryStatus } from "@/types/property";
 
 const STATUS_OPTIONS: InquiryStatus[] = ["접수", "진행", "완료", "취소"];
 
-const STATUS_STYLE: Record<InquiryStatus, string> = {
+const STATUS_STYLE: Record<string, string> = {
   접수: "bg-[var(--color-primary-600)]/10 text-[var(--color-primary-600)]",
   진행: "bg-[var(--color-accent-amber)]/10 text-[var(--color-accent-amber)]",
   완료: "bg-[var(--color-accent-emerald)]/10 text-[var(--color-accent-emerald)]",
   취소: "bg-[var(--bg-surface)] text-[var(--text-secondary)]",
 };
 
-function formatDate(iso: string) {
-  return iso.slice(0, 16).replace("T", " ");
+function formatDate(date: Date) {
+  return date.toISOString().slice(0, 16).replace("T", " ");
 }
 
-export function InquiryManager() {
-  const { inquiries, updateInquiry, removeInquiry } = useInquiries();
+export function InquiryManager({ initialRows }: { initialRows: InquiryRow[] }) {
+  const [inquiries, setInquiries] = useState(initialRows);
   const [statusFilter, setStatusFilter] = useState<"all" | InquiryStatus>("all");
   const [openMemoId, setOpenMemoId] = useState<string | null>(null);
+  const [, startTransition] = useTransition();
 
   const filtered = useMemo(
     () =>
       [...inquiries]
         .filter((item) => statusFilter === "all" || item.status === statusFilter)
-        .sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1)),
+        .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime()),
     [inquiries, statusFilter],
   );
 
   const countByStatus = (status: InquiryStatus) => inquiries.filter((i) => i.status === status).length;
+
+  function patch(id: string, update: Partial<Pick<InquiryRow, "status" | "assignee" | "memo">>) {
+    setInquiries((current) => current.map((item) => (item.id === id ? { ...item, ...update } : item)));
+    startTransition(() => {
+      updateInquiryAction(id, update as { status?: InquiryStatus; assignee?: string; memo?: string });
+    });
+  }
+
+  function remove(id: string) {
+    setInquiries((current) => current.filter((item) => item.id !== id));
+    startTransition(() => {
+      deleteInquiry(id);
+    });
+  }
 
   return (
     <div>
@@ -96,9 +112,7 @@ export function InquiryManager() {
                   <td className="px-4 py-3">
                     <select
                       value={item.status}
-                      onChange={(event) =>
-                        updateInquiry(item.id, { status: event.target.value as InquiryStatus })
-                      }
+                      onChange={(event) => patch(item.id, { status: event.target.value as InquiryStatus })}
                       className={`rounded-full border-0 px-2.5 py-1 text-[length:var(--font-size-body-sm)] font-semibold outline-none ${STATUS_STYLE[item.status]}`}
                     >
                       {STATUS_OPTIONS.map((status) => (
@@ -111,7 +125,7 @@ export function InquiryManager() {
                   <td className="px-4 py-3">
                     <select
                       value={item.assignee ?? ""}
-                      onChange={(event) => updateInquiry(item.id, { assignee: event.target.value })}
+                      onChange={(event) => patch(item.id, { assignee: event.target.value })}
                       className="rounded-[var(--radius-sm)] border border-[var(--border-default)] px-2 py-1.5 text-[var(--text-primary)]"
                     >
                       <option value="">미배정</option>
@@ -136,7 +150,7 @@ export function InquiryManager() {
                       </button>
                       <button
                         type="button"
-                        onClick={() => removeInquiry(item.id)}
+                        onClick={() => remove(item.id)}
                         aria-label="문의 삭제"
                         className="rounded-full p-1.5 text-[var(--color-accent-red)] transition hover:bg-[var(--color-accent-red)]/10"
                       >
@@ -153,7 +167,7 @@ export function InquiryManager() {
                       </label>
                       <textarea
                         defaultValue={item.memo ?? ""}
-                        onBlur={(event) => updateInquiry(item.id, { memo: event.target.value })}
+                        onBlur={(event) => patch(item.id, { memo: event.target.value })}
                         rows={2}
                         placeholder="상담 진행 상황을 기록하세요"
                         className="mt-1.5 w-full rounded-[var(--radius-md)] border border-[var(--border-default)] bg-[var(--bg-page)] px-3 py-2 text-[var(--text-primary)] outline-none focus:border-[var(--color-primary-600)]"

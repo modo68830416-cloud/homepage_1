@@ -1,13 +1,11 @@
-"use client";
-
 import { Eye, TrendingUp, Users } from "lucide-react";
 import { popularRegions, topSearchedKeywords, topViewedProperties, visitorTrend } from "@/lib/properties/mock-data";
-import { useInquiries } from "@/lib/use-inquiries";
+import { getAllInquiries } from "@/db/queries";
 import { VisitorTrendChart } from "@/components/admin/VisitorTrendChart";
 import { RankedBarList } from "@/components/admin/RankedBarList";
 
-export function StatisticsDashboard() {
-  const { inquiries } = useInquiries();
+export async function StatisticsDashboard() {
+  const inquiries = await getAllInquiries();
 
   const todayVisitors = visitorTrend[visitorTrend.length - 1].visitors;
   const totalVisitors = visitorTrend.reduce((sum, point) => sum + point.visitors, 0);

@@ -1,4 +1,4 @@
-import type { Banner, Inquiry, Member, NewsArticle, Property, Region, Review, StatItem } from "@/types/property";
+import type { Banner, Inquiry, NewsArticle, Property, Region, Review, StatItem } from "@/types/property";
 
 // Unsplash 무료 라이선스 사진 (출처 표기 불필요) — 매물 유형별로 재사용
 const PHOTOS = {
@@ -555,63 +555,6 @@ export const inquiries: Inquiry[] = [
     assignee: "",
     memo: "고객 요청으로 상담 취소",
     createdAt: "2026-07-15T07:20:00.000Z",
-  },
-];
-
-export const members: Member[] = [
-  {
-    id: "mem-1",
-    name: "김민준",
-    email: "minjun.kim@premium-realty.example",
-    role: "AGENT",
-    status: "활성",
-    joinedAt: "2023-03-14",
-    lastLoginAt: "2026-07-23T08:10:00.000Z",
-  },
-  {
-    id: "mem-2",
-    name: "이서연",
-    email: "seoyeon.lee@premium-realty.example",
-    role: "AGENT",
-    status: "활성",
-    joinedAt: "2023-06-02",
-    lastLoginAt: "2026-07-22T23:41:00.000Z",
-  },
-  {
-    id: "mem-3",
-    name: "관리자",
-    email: "admin@premium-realty.example",
-    role: "ADMIN",
-    status: "활성",
-    joinedAt: "2022-11-01",
-    lastLoginAt: "2026-07-23T09:02:00.000Z",
-  },
-  {
-    id: "mem-4",
-    name: "정하윤",
-    email: "hayoon.jung@example.com",
-    role: "USER",
-    status: "활성",
-    joinedAt: "2026-05-11",
-    lastLoginAt: "2026-07-20T09:15:00.000Z",
-  },
-  {
-    id: "mem-5",
-    name: "오세훈",
-    email: "sehoon.oh@example.com",
-    role: "USER",
-    status: "활성",
-    joinedAt: "2026-06-30",
-    lastLoginAt: "2026-07-21T02:38:00.000Z",
-  },
-  {
-    id: "mem-6",
-    name: "강수빈",
-    email: "subin.kang@example.com",
-    role: "USER",
-    status: "비활성",
-    joinedAt: "2025-09-20",
-    lastLoginAt: "2026-06-02T13:00:00.000Z",
   },
 ];
 

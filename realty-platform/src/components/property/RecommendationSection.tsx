@@ -1,8 +1,9 @@
-import { properties } from "@/lib/properties/mock-data";
+import { getAllProperties } from "@/db/queries";
 import { PropertyCard } from "@/components/home/PropertyCard";
 import type { Property } from "@/types/property";
 
-export function RecommendationSection({ current }: { current: Property }) {
+export async function RecommendationSection({ current }: { current: Property }) {
+  const properties = await getAllProperties();
   const sameDistrict = properties.filter(
     (item) => item.id !== current.id && item.district === current.district,
   );

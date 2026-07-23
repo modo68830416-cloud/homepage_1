@@ -1,8 +1,6 @@
-"use client";
-
 import { Users, Building2, MessageSquare, Handshake } from "lucide-react";
-import { properties } from "@/lib/properties/mock-data";
-import { useInquiries } from "@/lib/use-inquiries";
+import { clerkClient } from "@clerk/nextjs/server";
+import { getAllInquiries, getAllProperties } from "@/db/queries";
 
 const RECENT_ACTIVITY = [
   { id: "a1", text: "새 매물이 등록되었습니다 — 강남 프리미엄 타워 101동", time: "5분 전" },
@@ -12,13 +10,18 @@ const RECENT_ACTIVITY = [
   { id: "a5", text: "배너 콘텐츠가 수정되었습니다", time: "3시간 전" },
 ];
 
-export function Dashboard() {
-  const { inquiries } = useInquiries();
+export async function Dashboard() {
+  const client = await clerkClient();
+  const [properties, inquiries, memberCount] = await Promise.all([
+    getAllProperties(),
+    getAllInquiries(),
+    client.users.getCount(),
+  ]);
   const pendingCount = inquiries.filter((item) => item.status === "접수" || item.status === "진행").length;
 
   const dashboardStats = [
     { label: "오늘 방문자", value: "3,842", icon: Users, delta: "+12.4%" },
-    { label: "신규 회원", value: "128", icon: Users, delta: "+4.1%" },
+    { label: "가입 회원", value: `${memberCount}`, icon: Users, delta: "누적" },
     { label: "신규 매물", value: `${properties.length}`, icon: Building2, delta: "+2건" },
     { label: "상담 요청", value: `${inquiries.length}`, icon: MessageSquare, delta: `대기 ${pendingCount}건` },
   ];

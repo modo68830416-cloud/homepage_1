@@ -128,16 +128,6 @@ export interface Inquiry {
 export type MemberRole = "USER" | "AGENT" | "ADMIN";
 export type MemberStatus = "활성" | "비활성";
 
-export interface Member {
-  id: string;
-  name: string;
-  email: string;
-  role: MemberRole;
-  status: MemberStatus;
-  joinedAt: string;
-  lastLoginAt: string;
-}
-
 export interface Banner {
   id: string;
   title: string;

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { SlidersHorizontal } from "lucide-react";
-import { properties } from "@/lib/properties/mock-data";
+import { getAllProperties } from "@/db/queries";
 import { PropertyCard } from "@/components/home/PropertyCard";
 import { SearchFilterPanel, type SearchFilterValues } from "@/components/search/SearchFilterPanel";
 import type { DealType, ListingType, PropertyOption, PropertyType } from "@/types/property";
@@ -82,6 +82,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
   const minBuiltYearNum = minBuiltYear !== "all" ? Number(minBuiltYear) : null;
   const minBedroomNum = minBedroom !== "all" ? Number(minBedroom) : null;
 
+  const properties = await getAllProperties();
   let results = properties.filter((property) => {
     if (dealType !== "all" && property.dealType !== dealType) return false;
     if (propertyType !== "all" && property.propertyType !== propertyType) return false;

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { getAllProperties } from "@/db/queries";
 import { FavoritesView } from "@/components/property/FavoritesView";
 
 export const metadata: Metadata = {
@@ -6,6 +7,7 @@ export const metadata: Metadata = {
   description: "내가 등록한 관심매물을 모아보세요.",
 };
 
-export default function FavoritesPage() {
-  return <FavoritesView />;
+export default async function FavoritesPage() {
+  const properties = await getAllProperties();
+  return <FavoritesView properties={properties} />;
 }

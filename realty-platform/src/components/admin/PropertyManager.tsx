@@ -1,16 +1,16 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, useTransition } from "react";
 import { Eye, EyeOff, Trash2 } from "lucide-react";
-import { properties as initialProperties } from "@/lib/properties/mock-data";
+import { deleteProperty, updatePropertyStatus } from "@/db/actions";
+import type { PropertyRow } from "@/db/schema";
 
 type Status = "공개" | "비공개";
 
-export function PropertyManager() {
-  const [rows, setRows] = useState(() =>
-    initialProperties.map((property) => ({ ...property, status: "공개" as Status })),
-  );
+export function PropertyManager({ initialRows }: { initialRows: PropertyRow[] }) {
+  const [rows, setRows] = useState(initialRows);
   const [dealFilter, setDealFilter] = useState<"all" | Status>("all");
+  const [, startTransition] = useTransition();
 
   const filtered = useMemo(
     () => (dealFilter === "all" ? rows : rows.filter((row) => row.status === dealFilter)),
@@ -18,15 +18,20 @@ export function PropertyManager() {
   );
 
   function toggleStatus(id: string) {
-    setRows((current) =>
-      current.map((row) =>
-        row.id === id ? { ...row, status: row.status === "공개" ? "비공개" : "공개" } : row,
-      ),
-    );
+    const current = rows.find((row) => row.id === id);
+    if (!current) return;
+    const nextStatus: Status = current.status === "공개" ? "비공개" : "공개";
+    setRows((prev) => prev.map((row) => (row.id === id ? { ...row, status: nextStatus } : row)));
+    startTransition(() => {
+      updatePropertyStatus(id, nextStatus);
+    });
   }
 
   function remove(id: string) {
-    setRows((current) => current.filter((row) => row.id !== id));
+    setRows((prev) => prev.filter((row) => row.id !== id));
+    startTransition(() => {
+      deleteProperty(id);
+    });
   }
 
   return (

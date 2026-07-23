@@ -1,8 +1,10 @@
 import Link from "next/link";
-import { featuredProperties } from "@/lib/properties/mock-data";
+import { getAllProperties } from "@/db/queries";
 import { PropertyCard } from "@/components/home/PropertyCard";
 
-export function FeaturedSection() {
+export async function FeaturedSection() {
+  const featuredProperties = (await getAllProperties()).slice(0, 6);
+
   return (
     <section className="bg-[var(--bg-surface)] py-20 sm:py-24">
       <div className="mx-auto max-w-[1440px] px-6">

@@ -2,16 +2,13 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { TrendingUp, Search } from "lucide-react";
-import { popularRegions, properties } from "@/lib/properties/mock-data";
+import { popularRegions } from "@/lib/properties/mock-data";
+import { getAllProperties } from "@/db/queries";
 import { PropertyCard } from "@/components/home/PropertyCard";
 import { Breadcrumb } from "@/components/property/Breadcrumb";
 
 function getRegion(slug: string) {
   return popularRegions.find((region) => region.id === slug);
-}
-
-export function generateStaticParams() {
-  return popularRegions.map((region) => ({ slug: region.id }));
 }
 
 export async function generateMetadata({
@@ -37,6 +34,7 @@ export default async function RegionDetailPage({
   const region = getRegion(slug);
   if (!region) notFound();
 
+  const properties = await getAllProperties();
   const listings = properties.filter(
     (property) => property.district.includes(region.name) || property.city === region.city,
   );

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { LoginForm } from "@/components/auth/LoginForm";
+import { SignIn } from "@clerk/nextjs";
 
 export const metadata: Metadata = {
   title: "로그인",
@@ -7,5 +7,9 @@ export const metadata: Metadata = {
 };
 
 export default function LoginPage() {
-  return <LoginForm />;
+  return (
+    <div className="flex justify-center px-6 py-16">
+      <SignIn />
+    </div>
+  );
 }

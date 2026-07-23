@@ -1,12 +1,9 @@
-"use client";
-
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { useBanners } from "@/lib/use-banners";
+import { getActiveBanners } from "@/db/queries";
 
-export function PromoBanner() {
-  const { banners } = useBanners();
-  const active = banners.filter((banner) => banner.active);
+export async function PromoBanner() {
+  const active = await getActiveBanners();
 
   if (active.length === 0) return null;
 

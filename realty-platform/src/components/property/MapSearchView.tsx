@@ -4,8 +4,9 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { MapPin, ExternalLink } from "lucide-react";
-import { popularRegions, properties } from "@/lib/properties/mock-data";
+import { popularRegions } from "@/lib/properties/mock-data";
 import { PropertyCard } from "@/components/home/PropertyCard";
+import type { Property } from "@/types/property";
 
 // 실제 지도 API 연동 전까지 지역 핀 배치를 위한 목업 좌표 (% 기준)
 const PIN_POSITIONS: Record<string, { top: string; left: string }> = {
@@ -21,7 +22,7 @@ const PIN_POSITIONS: Record<string, { top: string; left: string }> = {
   gwanggyo: { top: "70%", left: "45%" },
 };
 
-export function MapSearchView() {
+export function MapSearchView({ properties }: { properties: Property[] }) {
   const [activeId, setActiveId] = useState(popularRegions[0].id);
   const activeRegion = popularRegions.find((region) => region.id === activeId) ?? popularRegions[0];
   const results = properties.filter((property) => property.district.includes(activeRegion.name) || property.city === activeRegion.city).slice(0, 6);

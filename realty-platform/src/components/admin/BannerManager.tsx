@@ -1,25 +1,54 @@
 "use client";
 
-import { useBanners } from "@/lib/use-banners";
+import { useState, useTransition } from "react";
 import { Eye, EyeOff, Plus, Trash2 } from "lucide-react";
-import type { Banner } from "@/types/property";
+import { addBanner, deleteBanner, updateBanner } from "@/db/actions";
+import type { BannerRow } from "@/db/schema";
 
-function createBanner(): Banner {
-  return {
-    id: `ban-${Date.now()}`,
-    title: "새 배너 제목",
-    subtitle: "새 배너 부제목",
-    href: "/",
-    active: false,
-    gradient: "from-slate-800 via-slate-700 to-slate-900",
-  };
-}
+const NEW_BANNER_GRADIENT = "from-slate-800 via-slate-700 to-slate-900";
 
-export function BannerManager() {
-  const { banners, updateBanner: update, toggleActive, removeBanner: remove, addBanner } = useBanners();
+export function BannerManager({ initialRows }: { initialRows: BannerRow[] }) {
+  const [banners, setBanners] = useState(initialRows);
+  const [, startTransition] = useTransition();
+
+  function patchLocal(id: string, patch: Partial<BannerRow>) {
+    setBanners((current) => current.map((item) => (item.id === id ? { ...item, ...patch } : item)));
+  }
+
+  function persist(id: string, patch: Partial<{ title: string; subtitle: string; href: string; active: boolean }>) {
+    startTransition(() => {
+      updateBanner(id, patch);
+    });
+  }
+
+  function toggleActive(banner: BannerRow) {
+    const next = !banner.active;
+    patchLocal(banner.id, { active: next });
+    persist(banner.id, { active: next });
+  }
+
+  function remove(id: string) {
+    setBanners((current) => current.filter((item) => item.id !== id));
+    startTransition(() => {
+      deleteBanner(id);
+    });
+  }
 
   function add() {
-    addBanner(createBanner());
+    startTransition(async () => {
+      const id = `ban-${Date.now()}`;
+      const banner: BannerRow = {
+        id,
+        title: "새 배너 제목",
+        subtitle: "새 배너 부제목",
+        href: "/",
+        active: false,
+        gradient: NEW_BANNER_GRADIENT,
+        createdAt: new Date(),
+      };
+      setBanners((current) => [banner, ...current]);
+      await addBanner({ title: banner.title, subtitle: banner.subtitle, href: banner.href, gradient: banner.gradient });
+    });
   }
 
   return (
@@ -54,19 +83,22 @@ export function BannerManager() {
             <div className="space-y-2">
               <input
                 value={banner.title}
-                onChange={(event) => update(banner.id, { title: event.target.value })}
+                onChange={(event) => patchLocal(banner.id, { title: event.target.value })}
+                onBlur={(event) => persist(banner.id, { title: event.target.value })}
                 aria-label="배너 제목"
                 className="w-full rounded-[var(--radius-sm)] border border-[var(--border-default)] px-3 py-1.5 font-semibold text-[var(--text-primary)] outline-none focus:border-[var(--color-primary-600)]"
               />
               <input
                 value={banner.subtitle}
-                onChange={(event) => update(banner.id, { subtitle: event.target.value })}
+                onChange={(event) => patchLocal(banner.id, { subtitle: event.target.value })}
+                onBlur={(event) => persist(banner.id, { subtitle: event.target.value })}
                 aria-label="배너 부제목"
                 className="w-full rounded-[var(--radius-sm)] border border-[var(--border-default)] px-3 py-1.5 text-[length:var(--font-size-body-sm)] text-[var(--text-secondary)] outline-none focus:border-[var(--color-primary-600)]"
               />
               <input
                 value={banner.href}
-                onChange={(event) => update(banner.id, { href: event.target.value })}
+                onChange={(event) => patchLocal(banner.id, { href: event.target.value })}
+                onBlur={(event) => persist(banner.id, { href: event.target.value })}
                 aria-label="배너 링크"
                 className="w-full rounded-[var(--radius-sm)] border border-[var(--border-default)] px-3 py-1.5 text-[length:var(--font-size-body-sm)] text-[var(--color-primary-600)] outline-none focus:border-[var(--color-primary-600)]"
               />
@@ -75,7 +107,7 @@ export function BannerManager() {
             <div className="flex flex-row gap-1.5 sm:flex-col sm:items-end">
               <button
                 type="button"
-                onClick={() => toggleActive(banner.id)}
+                onClick={() => toggleActive(banner)}
                 className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[length:var(--font-size-body-sm)] font-semibold transition ${
                   banner.active
                     ? "bg-[var(--color-accent-emerald)]/10 text-[var(--color-accent-emerald)]"

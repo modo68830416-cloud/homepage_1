@@ -1,11 +1,12 @@
 import type { MetadataRoute } from "next";
-import { newsArticles, popularRegions, properties } from "@/lib/properties/mock-data";
+import { newsArticles, popularRegions } from "@/lib/properties/mock-data";
+import { getAllProperties } from "@/db/queries";
 
 const BASE_URL = process.env.VERCEL_PROJECT_PRODUCTION_URL
   ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
   : "http://localhost:3000";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticRoutes = [
     "",
     "/search",
@@ -23,6 +24,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     lastModified: new Date(),
   }));
 
+  const properties = await getAllProperties();
   const propertyRoutes = properties.map((property) => ({
     url: `${BASE_URL}/property/${property.id}`,
     lastModified: new Date(),

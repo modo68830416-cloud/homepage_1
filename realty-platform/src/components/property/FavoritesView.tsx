@@ -2,11 +2,11 @@
 
 import Link from "next/link";
 import { Heart } from "lucide-react";
-import { properties } from "@/lib/properties/mock-data";
 import { PropertyCard } from "@/components/home/PropertyCard";
 import { useFavorites } from "@/lib/use-local-list";
+import type { Property } from "@/types/property";
 
-export function FavoritesView() {
+export function FavoritesView({ properties }: { properties: Property[] }) {
   const { favoriteIds } = useFavorites();
   const favorites = favoriteIds
     .map((id) => properties.find((property) => property.id === id))

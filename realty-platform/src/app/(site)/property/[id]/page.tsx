@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { properties } from "@/lib/properties/mock-data";
+import { getPropertyById } from "@/db/queries";
 import { Breadcrumb } from "@/components/property/Breadcrumb";
 import { PropertyGallery } from "@/components/property/PropertyGallery";
 import { PropertySummary } from "@/components/property/PropertySummary";
@@ -17,21 +17,13 @@ import { RecommendationSection } from "@/components/property/RecommendationSecti
 import { MobileStickyBar } from "@/components/property/MobileStickyBar";
 import { RecordView } from "@/components/property/RecordView";
 
-function getProperty(id: string) {
-  return properties.find((item) => item.id === id);
-}
-
-export function generateStaticParams() {
-  return properties.map((property) => ({ id: property.id }));
-}
-
 export async function generateMetadata({
   params,
 }: {
   params: Promise<{ id: string }>;
 }): Promise<Metadata> {
   const { id } = await params;
-  const property = getProperty(id);
+  const property = await getPropertyById(id);
   if (!property) return { title: "매물을 찾을 수 없습니다" };
 
   const description = `${property.city} ${property.district} · ${property.dealType} ${property.price} · ${property.areaM2}㎡`;
@@ -52,7 +44,7 @@ export default async function PropertyDetailPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const property = getProperty(id);
+  const property = await getPropertyById(id);
 
   if (!property) notFound();
 

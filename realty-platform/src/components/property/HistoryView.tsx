@@ -2,11 +2,11 @@
 
 import Link from "next/link";
 import { Clock, Trash2 } from "lucide-react";
-import { properties } from "@/lib/properties/mock-data";
 import { PropertyCard } from "@/components/home/PropertyCard";
 import { useRecentlyViewed } from "@/lib/use-local-list";
+import type { Property } from "@/types/property";
 
-export function HistoryView() {
+export function HistoryView({ properties }: { properties: Property[] }) {
   const { historyIds, clear } = useRecentlyViewed();
   const history = historyIds
     .map((id) => properties.find((property) => property.id === id))

@@ -3,10 +3,10 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Scale, X } from "lucide-react";
-import { properties } from "@/lib/properties/mock-data";
 import { useCompare } from "@/lib/use-compare";
+import type { Property } from "@/types/property";
 
-const ROWS: { label: string; value: (p: (typeof properties)[number]) => string }[] = [
+const ROWS: { label: string; value: (p: Property) => string }[] = [
   { label: "거래유형", value: (p) => `${p.dealType}${p.listingType !== "일반" ? ` · ${p.listingType}` : ""}` },
   { label: "매물종류", value: (p) => p.propertyType },
   { label: "지역", value: (p) => `${p.city} ${p.district}` },
@@ -19,7 +19,7 @@ const ROWS: { label: string; value: (p: (typeof properties)[number]) => string }
   { label: "옵션", value: (p) => (p.options.length > 0 ? p.options.join(", ") : "-") },
 ];
 
-export function CompareView() {
+export function CompareView({ properties }: { properties: Property[] }) {
   const { compareIds, remove, clear } = useCompare();
   const items = compareIds
     .map((id) => properties.find((property) => property.id === id))

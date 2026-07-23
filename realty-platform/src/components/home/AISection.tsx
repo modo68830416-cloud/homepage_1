@@ -1,5 +1,5 @@
 import { Sparkles } from "lucide-react";
-import { featuredProperties } from "@/lib/properties/mock-data";
+import { getAllProperties } from "@/db/queries";
 import { PropertyCard } from "@/components/home/PropertyCard";
 
 const REASONS = [
@@ -8,8 +8,8 @@ const REASONS = [
   "최근 조회한 평형대와 일치해요",
 ];
 
-export function AISection() {
-  const recommended = featuredProperties.slice(0, 3);
+export async function AISection() {
+  const recommended = (await getAllProperties()).slice(0, 3);
 
   return (
     <section className="mx-auto max-w-[1440px] px-6 py-20 sm:py-24">
