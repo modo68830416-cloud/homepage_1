@@ -32,7 +32,7 @@ export function RegionSection() {
             transition={{ duration: 0.2, ease: [0, 0, 0.2, 1] }}
           >
             <Link
-              href={`/region?slug=${region.id}`}
+              href={`/region/${region.id}`}
               className={`relative flex h-40 flex-col justify-between overflow-hidden rounded-[var(--radius-lg)] bg-gradient-to-br p-4 text-white shadow-[var(--shadow-md)] ${region.gradient}`}
             >
               <span className="text-[length:var(--font-size-body-sm)] font-medium text-white/70">

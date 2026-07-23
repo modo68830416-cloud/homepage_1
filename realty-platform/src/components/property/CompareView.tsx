@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { Scale, X } from "lucide-react";
 import { properties } from "@/lib/properties/mock-data";
 import { useCompare } from "@/lib/use-compare";
@@ -68,9 +69,8 @@ export function CompareView() {
                 <th className="w-32 px-2 py-2 align-bottom text-[var(--text-secondary)]" />
                 {items.map((property) => (
                   <th key={property.id} className="min-w-[220px] px-3 py-2 align-bottom">
-                    <div className="relative overflow-hidden rounded-[var(--radius-md)]">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={property.images[0]} alt={property.title} className="h-32 w-full object-cover" />
+                    <div className="relative h-32 w-full overflow-hidden rounded-[var(--radius-md)]">
+                      <Image src={property.images[0]} alt={property.title} fill sizes="220px" className="object-cover" />
                       <button
                         type="button"
                         onClick={() => remove(property.id)}

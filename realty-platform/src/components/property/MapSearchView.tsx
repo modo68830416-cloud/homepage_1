@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { MapPin, ExternalLink } from "lucide-react";
 import { popularRegions, properties } from "@/lib/properties/mock-data";
 import { PropertyCard } from "@/components/home/PropertyCard";
@@ -111,12 +112,9 @@ export function MapSearchView() {
                   href={`/property/${property.id}`}
                   className="flex items-center gap-3 rounded-[var(--radius-md)] border border-[var(--border-default)] p-3 transition hover:bg-[var(--bg-surface)]"
                 >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={property.images[0]}
-                    alt=""
-                    className="h-14 w-16 shrink-0 rounded-[var(--radius-sm)] object-cover"
-                  />
+                  <div className="relative h-14 w-16 shrink-0 overflow-hidden rounded-[var(--radius-sm)]">
+                    <Image src={property.images[0]} alt="" fill sizes="64px" className="object-cover" />
+                  </div>
                   <div className="min-w-0">
                     <p className="truncate font-semibold text-[var(--text-primary)]">{property.title}</p>
                     <p className="text-[length:var(--font-size-body-sm)] text-[var(--text-secondary)]">

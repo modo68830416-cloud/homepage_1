@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { ChevronLeft, ChevronRight, Expand, X } from "lucide-react";
 
 export function PropertyGallery({
@@ -36,11 +37,13 @@ export function PropertyGallery({
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
       >
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
+        <Image
           src={images[active]}
           alt={`${title} 대표 이미지 ${active + 1}/${images.length}`}
-          className="h-full w-full object-cover"
+          fill
+          priority
+          sizes="(min-width: 1024px) 60vw, 100vw"
+          className="object-cover"
         />
         <button
           type="button"
@@ -77,12 +80,11 @@ export function PropertyGallery({
             onClick={() => setActive(index)}
             aria-label={`${index + 1}번째 썸네일`}
             aria-current={index === active}
-            className={`h-16 w-24 shrink-0 overflow-hidden rounded-[var(--radius-sm)] transition ${
+            className={`relative h-16 w-24 shrink-0 overflow-hidden rounded-[var(--radius-sm)] transition ${
               index === active ? "ring-2 ring-[var(--color-primary-600)] ring-offset-2" : "opacity-70 hover:opacity-100"
             }`}
           >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={image} alt="" className="h-full w-full object-cover" />
+            <Image src={image} alt="" fill sizes="96px" className="object-cover" />
           </button>
         ))}
       </div>
@@ -110,12 +112,15 @@ export function PropertyGallery({
           >
             <ChevronLeft size={24} />
           </button>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={images[active]}
-            alt={`${title} 이미지 ${active + 1}/${images.length}`}
-            className="h-[70vh] w-full max-w-4xl rounded-[var(--radius-lg)] object-contain"
-          />
+          <div className="relative h-[70vh] w-full max-w-4xl">
+            <Image
+              src={images[active]}
+              alt={`${title} 이미지 ${active + 1}/${images.length}`}
+              fill
+              sizes="100vw"
+              className="rounded-[var(--radius-lg)] object-contain"
+            />
+          </div>
           <button
             type="button"
             onClick={() => go(1)}

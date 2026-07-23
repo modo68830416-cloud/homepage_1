@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { Heart, MapPin } from "lucide-react";
 import { Badge } from "@/components/ui/Badge";
 import { CompareButton } from "@/components/property/CompareButton";
@@ -16,11 +17,12 @@ export function PropertyCard({ property }: { property: Property }) {
       <div className="relative">
         <Link href={`/property/${property.id}`} tabIndex={-1}>
           <div className="relative flex h-48 items-end overflow-hidden p-4">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
+            <Image
               src={property.images[0]}
               alt={property.title}
-              className="absolute inset-0 h-full w-full object-cover transition duration-300 group-hover:scale-105"
+              fill
+              sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+              className="object-cover transition duration-300 group-hover:scale-105"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/5 to-transparent" />
             <div className="relative flex gap-1.5">
