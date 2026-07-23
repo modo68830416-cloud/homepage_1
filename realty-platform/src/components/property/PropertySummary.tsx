@@ -22,7 +22,7 @@ export function PropertySummary({ property }: { property: Property }) {
           <Badge key={badge} type={badge} />
         ))}
       </div>
-      <h1 className="mt-2 text-[length:var(--font-size-heading-1)] font-bold text-[var(--text-primary)]">
+      <h1 className="mt-2 font-serif text-[length:var(--font-size-heading-1)] font-bold text-[var(--text-primary)]">
         {property.title}
       </h1>
 

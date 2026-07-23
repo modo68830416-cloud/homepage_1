@@ -15,7 +15,7 @@ export function AISection() {
     <section className="mx-auto max-w-[1440px] px-6 py-20 sm:py-24">
       <div className="mb-10 flex items-center gap-2">
         <Sparkles className="text-[var(--color-accent-amber)]" size={22} />
-        <h2 className="text-[length:var(--font-size-heading-1)] font-bold text-[var(--text-primary)]">
+        <h2 className="font-serif text-[length:var(--font-size-heading-1)] font-bold text-[var(--text-primary)]">
           AI가 찾아드린 맞춤 추천
         </h2>
       </div>

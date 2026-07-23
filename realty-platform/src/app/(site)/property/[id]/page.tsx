@@ -11,6 +11,7 @@ import { MapSection } from "@/components/property/MapSection";
 import { NearbySection } from "@/components/property/NearbySection";
 import { InquiryCard } from "@/components/property/InquiryCard";
 import { FavoriteButton } from "@/components/property/FavoriteButton";
+import { CompareButton } from "@/components/property/CompareButton";
 import { ShareButtons } from "@/components/property/ShareButtons";
 import { RecommendationSection } from "@/components/property/RecommendationSection";
 import { MobileStickyBar } from "@/components/property/MobileStickyBar";
@@ -104,6 +105,7 @@ export default async function PropertyDetailPage({
 
           <div className="flex flex-wrap gap-2">
             <FavoriteButton propertyId={property.id} />
+            <CompareButton propertyId={property.id} variant="full" />
             <ShareButtons title={property.title} />
           </div>
 

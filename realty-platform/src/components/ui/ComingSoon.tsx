@@ -17,7 +17,7 @@ export function ComingSoon({
       <span className="rounded-full bg-[var(--bg-surface)] px-4 py-1.5 text-[length:var(--font-size-body-sm)] font-medium text-[var(--text-secondary)]">
         준비 중
       </span>
-      <h1 className="mt-4 text-[length:var(--font-size-heading-1)] font-bold text-[var(--text-primary)]">
+      <h1 className="mt-4 font-serif text-[length:var(--font-size-heading-1)] font-bold text-[var(--text-primary)]">
         {title}
       </h1>
       {description && (

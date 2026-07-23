@@ -18,7 +18,7 @@ export function CTASection() {
           "radial-gradient(120% 120% at 50% 0%, var(--color-primary-600), var(--color-primary-900) 70%)",
       }}
     >
-      <h2 className="text-[length:var(--font-size-heading-1)] font-bold text-white">
+      <h2 className="font-serif text-[length:var(--font-size-heading-1)] font-bold text-white">
         지금 바로 전문 상담을 받아보세요
       </h2>
       <p className="mt-3 text-white/75">

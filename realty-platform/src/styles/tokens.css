@@ -137,6 +137,7 @@
   --font-size-body-lg: var(--font-body-lg);
   --font-size-body-sm: var(--font-body-sm);
   --font-sans: "Pretendard Variable", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-serif: var(--font-serif-kr), "Noto Serif KR", serif;
 
   --radius-sm: var(--radius-sm);
   --radius-md: var(--radius-md);

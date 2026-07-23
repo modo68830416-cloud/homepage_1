@@ -52,7 +52,7 @@ export function Hero() {
 
         <h1
           data-hero-title
-          className="mt-6 text-[length:var(--font-size-display-1)] font-extrabold leading-[1.08] tracking-tight text-white"
+          className="mt-6 font-serif text-[length:var(--font-size-display-1)] font-bold leading-[1.08] tracking-tight text-white"
         >
           믿을 수 있는 매물,
           <br />

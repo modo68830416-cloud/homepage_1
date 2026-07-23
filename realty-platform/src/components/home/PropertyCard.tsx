@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { Heart, MapPin } from "lucide-react";
 import { Badge } from "@/components/ui/Badge";
+import { CompareButton } from "@/components/property/CompareButton";
 import { useFavorites } from "@/lib/use-local-list";
 import type { Property } from "@/types/property";
 
@@ -50,6 +51,7 @@ export function PropertyCard({ property }: { property: Property }) {
         >
           <Heart size={16} fill={favorited ? "currentColor" : "none"} />
         </button>
+        <CompareButton propertyId={property.id} />
       </div>
 
       <Link href={`/property/${property.id}`} className="block p-4">

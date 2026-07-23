@@ -9,7 +9,7 @@ export function RegionSection() {
     <section className="mx-auto max-w-[1440px] px-6 py-20 sm:py-24">
       <div className="mb-10 flex items-end justify-between">
         <div>
-          <h2 className="text-[length:var(--font-size-heading-1)] font-bold text-[var(--text-primary)]">
+          <h2 className="font-serif text-[length:var(--font-size-heading-1)] font-bold text-[var(--text-primary)]">
             지금 많이 찾는 인기 지역
           </h2>
           <p className="mt-2 text-[var(--text-secondary)]">

@@ -1,6 +1,14 @@
 import type { Metadata } from "next";
+import { Noto_Serif_KR } from "next/font/google";
 import "pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css";
 import "./globals.css";
+
+const notoSerifKr = Noto_Serif_KR({
+  weight: ["500", "700"],
+  variable: "--font-serif-kr",
+  display: "swap",
+  preload: false,
+});
 
 export const metadata: Metadata = {
   title: {
@@ -24,7 +32,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ko" className="h-full antialiased">
+    <html lang="ko" className={`h-full antialiased ${notoSerifKr.variable}`}>
       <body className="flex min-h-full flex-col">{children}</body>
     </html>
   );

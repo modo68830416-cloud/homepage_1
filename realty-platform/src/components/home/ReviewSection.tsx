@@ -19,7 +19,7 @@ export function ReviewSection() {
 
   return (
     <section className="mx-auto max-w-[1440px] px-6 py-20 sm:py-24">
-      <h2 className="text-center text-[length:var(--font-size-heading-1)] font-bold text-[var(--text-primary)]">
+      <h2 className="text-center font-serif text-[length:var(--font-size-heading-1)] font-bold text-[var(--text-primary)]">
         고객이 직접 남긴 후기
       </h2>
 

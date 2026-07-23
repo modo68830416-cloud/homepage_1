@@ -39,7 +39,7 @@ export default async function ContactPage({ searchParams }: ContactPageProps) {
   return (
     <div className="mx-auto max-w-[1000px] px-6 py-16">
       <div className="text-center">
-        <h1 className="text-[length:var(--font-size-heading-1)] font-bold text-[var(--text-primary)]">
+        <h1 className="font-serif text-[length:var(--font-size-heading-1)] font-bold text-[var(--text-primary)]">
           고객센터
         </h1>
         <p className="mt-3 text-[var(--text-secondary)]">

@@ -16,7 +16,7 @@ export function HistoryView() {
     <div className="mx-auto max-w-[1440px] px-6 py-10">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h1 className="text-[length:var(--font-size-heading-1)] font-bold text-[var(--text-primary)]">
+          <h1 className="font-serif text-[length:var(--font-size-heading-1)] font-bold text-[var(--text-primary)]">
             최근본매물
           </h1>
           <p className="mt-2 text-[var(--text-secondary)]">

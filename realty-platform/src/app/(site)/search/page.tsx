@@ -127,7 +127,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
 
   return (
     <div className="mx-auto max-w-[1440px] px-6 py-10">
-      <h1 className="text-[length:var(--font-size-heading-1)] font-bold text-[var(--text-primary)]">
+      <h1 className="font-serif text-[length:var(--font-size-heading-1)] font-bold text-[var(--text-primary)]">
         매물검색
         {listingType !== "all" && (
           <span className="ml-2 text-[var(--color-primary-600)]">

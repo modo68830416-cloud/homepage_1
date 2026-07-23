@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { Heart, Clock, User, Search, Menu, X, Building2 } from "lucide-react";
+import { Heart, Clock, User, Search, Menu, X, Building2, Scale } from "lucide-react";
 
 const NAV_ITEMS = [
   { label: "매물검색", href: "/search" },
@@ -53,6 +53,13 @@ export function Header() {
             className="hidden rounded-full p-2 text-[var(--text-secondary)] transition hover:bg-[var(--bg-surface)] sm:inline-flex"
           >
             <Heart size={20} />
+          </Link>
+          <Link
+            href="/compare"
+            aria-label="매물 비교하기"
+            className="hidden rounded-full p-2 text-[var(--text-secondary)] transition hover:bg-[var(--bg-surface)] sm:inline-flex"
+          >
+            <Scale size={20} />
           </Link>
           <Link
             href="/my/history"

@@ -33,7 +33,7 @@ export default function AboutPage() {
           <Building2 size={16} />
           회사소개
         </span>
-        <h1 className="mt-4 text-[length:var(--font-size-heading-1)] font-bold text-[var(--text-primary)]">
+        <h1 className="mt-4 font-serif text-[length:var(--font-size-heading-1)] font-bold text-[var(--text-primary)]">
           믿을 수 있는 부동산 검색,
           <br />
           프리미엄부동산이 만듭니다

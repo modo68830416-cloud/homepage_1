@@ -8,7 +8,7 @@ export function FeaturedSection() {
       <div className="mx-auto max-w-[1440px] px-6">
         <div className="mb-10 flex items-end justify-between">
           <div>
-            <h2 className="text-[length:var(--font-size-heading-1)] font-bold text-[var(--text-primary)]">
+            <h2 className="font-serif text-[length:var(--font-size-heading-1)] font-bold text-[var(--text-primary)]">
               지금 추천하는 프리미엄 매물
             </h2>
             <p className="mt-2 text-[var(--text-secondary)]">
