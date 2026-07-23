@@ -121,7 +121,7 @@ export default async function PropertyDetailPage({
         <aside className="hidden lg:block">
           <div className="sticky top-24 space-y-4">
             <PriceCard property={property} />
-            <InquiryCard />
+            <InquiryCard propertyTitle={property.title} />
           </div>
         </aside>
       </div>

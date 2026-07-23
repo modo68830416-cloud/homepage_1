@@ -1,7 +1,11 @@
 import Link from "next/link";
 import { Phone, MessageCircle, CalendarCheck, HelpCircle, UserRound } from "lucide-react";
 
-export function InquiryCard() {
+export function InquiryCard({ propertyTitle }: { propertyTitle?: string }) {
+  const contactHref = propertyTitle
+    ? `/contact?property=${encodeURIComponent(propertyTitle)}`
+    : "/contact";
+
   return (
     <div className="rounded-[var(--radius-lg)] border border-[var(--border-default)] bg-[var(--bg-page)] p-6 shadow-[var(--shadow-sm)]">
       <div className="flex items-center gap-3">
@@ -25,21 +29,21 @@ export function InquiryCard() {
           전화하기
         </a>
         <Link
-          href="/contact"
+          href={contactHref}
           className="inline-flex items-center justify-center gap-1.5 rounded-full bg-[#fee500] px-4 py-2.5 text-[length:var(--font-size-body-sm)] font-semibold text-[#191919] transition hover:opacity-90"
         >
           <MessageCircle size={16} />
           카카오톡
         </Link>
         <Link
-          href="/contact"
+          href={contactHref}
           className="inline-flex items-center justify-center gap-1.5 rounded-full border border-[var(--border-default)] px-4 py-2.5 text-[length:var(--font-size-body-sm)] font-semibold text-[var(--text-primary)] transition hover:bg-[var(--bg-surface)]"
         >
           <CalendarCheck size={16} />
           상담예약
         </Link>
         <Link
-          href="/contact"
+          href={contactHref}
           className="inline-flex items-center justify-center gap-1.5 rounded-full border border-[var(--border-default)] px-4 py-2.5 text-[length:var(--font-size-body-sm)] font-semibold text-[var(--text-primary)] transition hover:bg-[var(--bg-surface)]"
         >
           <HelpCircle size={16} />

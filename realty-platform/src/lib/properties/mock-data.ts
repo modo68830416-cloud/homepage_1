@@ -1,4 +1,4 @@
-import type { NewsArticle, Property, Region, Review, StatItem } from "@/types/property";
+import type { Inquiry, NewsArticle, Property, Region, Review, StatItem } from "@/types/property";
 
 export const properties: Property[] = [
   {
@@ -499,6 +499,65 @@ export const reviews: Review[] = [
     role: "임대인",
     content: "매물 등록부터 문의 관리까지 프로세스가 깔끔합니다. 담당 중개사님과 소통도 원활했어요.",
     rating: 5,
+  },
+];
+
+export const staffMembers = ["김민준", "이서연", "박도윤", "최지호"];
+
+export const inquiries: Inquiry[] = [
+  {
+    id: "inq-1001",
+    name: "정하윤",
+    phone: "010-1234-5678",
+    message: "강남 프리미엄 타워 101동 방문 상담을 신청하고 싶습니다. 이번 주 토요일 오후 가능할까요?",
+    propertyTitle: "강남 프리미엄 타워 101동",
+    status: "진행",
+    assignee: "김민준",
+    memo: "토요일 14시 방문 예약 확정, 주차 안내 필요",
+    createdAt: "2026-07-20T09:12:00.000Z",
+  },
+  {
+    id: "inq-1002",
+    name: "오세훈",
+    phone: "010-2345-6789",
+    message: "해운대 마린뷰 레지던스 오션뷰 세대 잔여 여부 문의드립니다.",
+    propertyTitle: "해운대 마린뷰 레지던스",
+    status: "접수",
+    assignee: "",
+    memo: "",
+    createdAt: "2026-07-21T02:40:00.000Z",
+  },
+  {
+    id: "inq-1003",
+    name: "강수빈",
+    phone: "010-3456-7890",
+    message: "판교 테크노밸리 사무실 임대 조건도 가능한지 궁금합니다.",
+    propertyTitle: "판교 테크노밸리 사무실",
+    status: "완료",
+    assignee: "이서연",
+    memo: "임대 불가, 매매만 진행 안내 완료",
+    createdAt: "2026-07-18T05:05:00.000Z",
+  },
+  {
+    id: "inq-1004",
+    name: "문지훈",
+    phone: "010-4567-8901",
+    message: "분당 전원주택 경매 절차와 명도 관련해서 상담받고 싶어요.",
+    propertyTitle: "분당 전원주택 (경매)",
+    status: "접수",
+    assignee: "박도윤",
+    memo: "",
+    createdAt: "2026-07-22T11:30:00.000Z",
+  },
+  {
+    id: "inq-1005",
+    name: "한소율",
+    phone: "010-5678-9012",
+    message: "타 지역 이사 예정인데, 전반적으로 서울 전세 매물 추천받을 수 있을까요?",
+    status: "취소",
+    assignee: "",
+    memo: "고객 요청으로 상담 취소",
+    createdAt: "2026-07-15T07:20:00.000Z",
   },
 ];
 

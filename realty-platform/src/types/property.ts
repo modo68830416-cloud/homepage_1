@@ -107,3 +107,17 @@ export interface StatItem {
   value: number;
   suffix?: string;
 }
+
+export type InquiryStatus = "접수" | "진행" | "완료" | "취소";
+
+export interface Inquiry {
+  id: string;
+  name: string;
+  phone: string;
+  message: string;
+  propertyTitle?: string;
+  status: InquiryStatus;
+  assignee?: string;
+  memo?: string;
+  createdAt: string;
+}

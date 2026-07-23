@@ -1,12 +1,8 @@
+"use client";
+
 import { Users, Building2, MessageSquare, Handshake } from "lucide-react";
 import { properties } from "@/lib/properties/mock-data";
-
-const DASHBOARD_STATS = [
-  { label: "오늘 방문자", value: "3,842", icon: Users, delta: "+12.4%" },
-  { label: "신규 회원", value: "128", icon: Users, delta: "+4.1%" },
-  { label: "신규 매물", value: `${properties.length}`, icon: Building2, delta: "+2건" },
-  { label: "상담 요청", value: "56", icon: MessageSquare, delta: "+8건" },
-];
+import { useInquiries } from "@/lib/use-inquiries";
 
 const RECENT_ACTIVITY = [
   { id: "a1", text: "새 매물이 등록되었습니다 — 강남 프리미엄 타워 101동", time: "5분 전" },
@@ -17,6 +13,16 @@ const RECENT_ACTIVITY = [
 ];
 
 export function Dashboard() {
+  const { inquiries } = useInquiries();
+  const pendingCount = inquiries.filter((item) => item.status === "접수" || item.status === "진행").length;
+
+  const dashboardStats = [
+    { label: "오늘 방문자", value: "3,842", icon: Users, delta: "+12.4%" },
+    { label: "신규 회원", value: "128", icon: Users, delta: "+4.1%" },
+    { label: "신규 매물", value: `${properties.length}`, icon: Building2, delta: "+2건" },
+    { label: "상담 요청", value: `${inquiries.length}`, icon: MessageSquare, delta: `대기 ${pendingCount}건` },
+  ];
+
   return (
     <div>
       <h1 className="text-[length:var(--font-size-heading-1)] font-bold text-[var(--text-primary)]">
@@ -25,7 +31,7 @@ export function Dashboard() {
       <p className="mt-1.5 text-[var(--text-secondary)]">플랫폼 현황을 한눈에 확인하세요.</p>
 
       <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {DASHBOARD_STATS.map(({ label, value, icon: Icon, delta }) => (
+        {dashboardStats.map(({ label, value, icon: Icon, delta }) => (
           <div
             key={label}
             className="rounded-[var(--radius-lg)] border border-[var(--border-default)] bg-[var(--bg-page)] p-5 shadow-[var(--shadow-sm)]"

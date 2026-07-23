@@ -29,7 +29,13 @@ const FAQS = [
   },
 ];
 
-export default function ContactPage() {
+interface ContactPageProps {
+  searchParams: Promise<{ property?: string }>;
+}
+
+export default async function ContactPage({ searchParams }: ContactPageProps) {
+  const { property } = await searchParams;
+
   return (
     <div className="mx-auto max-w-[1000px] px-6 py-16">
       <div className="text-center">
@@ -93,7 +99,7 @@ export default function ContactPage() {
             1:1 문의하기
           </h2>
           <div className="mt-4">
-            <InquiryForm />
+            <InquiryForm propertyTitle={property} />
           </div>
         </div>
       </div>
