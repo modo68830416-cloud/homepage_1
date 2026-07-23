@@ -74,7 +74,7 @@ export default async function ContactPage({ searchParams }: ContactPageProps) {
 
       <div className="mt-14 grid grid-cols-1 gap-10 lg:grid-cols-[1fr_1fr]">
         <div>
-          <h2 className="text-[length:var(--font-size-heading-2)] font-bold text-[var(--text-primary)]">
+          <h2 className="font-serif text-[length:var(--font-size-heading-2)] font-bold text-[var(--text-primary)]">
             자주 묻는 질문
           </h2>
           <div className="mt-4 space-y-3">
@@ -95,7 +95,7 @@ export default async function ContactPage({ searchParams }: ContactPageProps) {
         </div>
 
         <div>
-          <h2 className="text-[length:var(--font-size-heading-2)] font-bold text-[var(--text-primary)]">
+          <h2 className="font-serif text-[length:var(--font-size-heading-2)] font-bold text-[var(--text-primary)]">
             1:1 문의하기
           </h2>
           <div className="mt-4">

@@ -14,7 +14,7 @@ const CATEGORY_ICON: Record<NearbyCategory, typeof TrainFront> = {
 export function NearbySection({ nearby }: { nearby: NearbyPlace[] }) {
   return (
     <div>
-      <h2 className="text-[length:var(--font-size-heading-2)] font-bold text-[var(--text-primary)]">
+      <h2 className="font-serif text-[length:var(--font-size-heading-2)] font-bold text-[var(--text-primary)]">
         주변 시설
       </h2>
       <ul className="mt-4 space-y-2">

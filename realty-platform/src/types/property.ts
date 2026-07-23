@@ -99,6 +99,7 @@ export interface NewsArticle {
   id: string;
   title: string;
   excerpt: string;
+  content: string[];
   category: string;
   publishedAt: string;
 }

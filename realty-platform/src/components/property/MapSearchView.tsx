@@ -136,7 +136,7 @@ export function MapSearchView() {
 
       {results.length > 0 && (
         <div className="mt-10">
-          <h2 className="text-[length:var(--font-size-heading-2)] font-bold text-[var(--text-primary)]">
+          <h2 className="font-serif text-[length:var(--font-size-heading-2)] font-bold text-[var(--text-primary)]">
             {activeRegion.name} 추천 매물
           </h2>
           <div className="mt-4 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">

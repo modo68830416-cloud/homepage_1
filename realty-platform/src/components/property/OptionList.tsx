@@ -24,7 +24,7 @@ const ALL_OPTIONS: { key: PropertyOption; icon: typeof Car }[] = [
 export function OptionList({ options }: { options: PropertyOption[] }) {
   return (
     <div>
-      <h2 className="text-[length:var(--font-size-heading-2)] font-bold text-[var(--text-primary)]">
+      <h2 className="font-serif text-[length:var(--font-size-heading-2)] font-bold text-[var(--text-primary)]">
         옵션 정보
       </h2>
       <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-4">

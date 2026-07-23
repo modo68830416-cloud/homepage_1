@@ -5,7 +5,7 @@ export function MapSection({ address }: { address: string }) {
 
   return (
     <div>
-      <h2 className="text-[length:var(--font-size-heading-2)] font-bold text-[var(--text-primary)]">
+      <h2 className="font-serif text-[length:var(--font-size-heading-2)] font-bold text-[var(--text-primary)]">
         위치
       </h2>
 

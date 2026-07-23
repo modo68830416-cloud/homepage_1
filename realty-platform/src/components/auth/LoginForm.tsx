@@ -9,7 +9,7 @@ export function LoginForm() {
 
   return (
     <div className="mx-auto max-w-sm px-6 py-16">
-      <h1 className="text-center text-[length:var(--font-size-heading-1)] font-bold text-[var(--text-primary)]">
+      <h1 className="text-center font-serif text-[length:var(--font-size-heading-1)] font-bold text-[var(--text-primary)]">
         로그인
       </h1>
 

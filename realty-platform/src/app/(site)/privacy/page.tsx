@@ -35,7 +35,7 @@ const SECTIONS = [
 export default function PrivacyPage() {
   return (
     <div className="mx-auto max-w-[760px] px-6 py-16">
-      <h1 className="text-[length:var(--font-size-heading-1)] font-bold text-[var(--text-primary)]">
+      <h1 className="font-serif text-[length:var(--font-size-heading-1)] font-bold text-[var(--text-primary)]">
         개인정보처리방침
       </h1>
       <p className="mt-3 text-[length:var(--font-size-body-sm)] text-[var(--text-secondary)]">

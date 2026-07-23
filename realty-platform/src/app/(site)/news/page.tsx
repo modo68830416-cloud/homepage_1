@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { Newspaper } from "lucide-react";
 import { newsArticles } from "@/lib/properties/mock-data";
 
@@ -22,9 +23,10 @@ export default function NewsPage() {
 
       <div className="mt-8 space-y-4">
         {newsArticles.map((article) => (
-          <article
+          <Link
             key={article.id}
-            className="rounded-[var(--radius-lg)] border border-[var(--border-default)] bg-[var(--bg-page)] p-6 shadow-[var(--shadow-sm)]"
+            href={`/news/${article.id}`}
+            className="block rounded-[var(--radius-lg)] border border-[var(--border-default)] bg-[var(--bg-page)] p-6 shadow-[var(--shadow-sm)] transition hover:bg-[var(--bg-surface)]"
           >
             <div className="flex items-center gap-2 text-[length:var(--font-size-body-sm)] text-[var(--text-secondary)]">
               <Newspaper size={14} />
@@ -32,9 +34,9 @@ export default function NewsPage() {
               <span aria-hidden>·</span>
               <time dateTime={article.publishedAt}>{article.publishedAt}</time>
             </div>
-            <h2 className="mt-2 font-bold text-[var(--text-primary)]">{article.title}</h2>
+            <h2 className="mt-2 font-serif font-bold text-[var(--text-primary)]">{article.title}</h2>
             <p className="mt-2 text-[var(--text-secondary)]">{article.excerpt}</p>
-          </article>
+          </Link>
         ))}
       </div>
     </div>

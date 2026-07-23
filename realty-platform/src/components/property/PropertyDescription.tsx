@@ -9,7 +9,7 @@ export function PropertyDescription({
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-[length:var(--font-size-heading-2)] font-bold text-[var(--text-primary)]">
+        <h2 className="font-serif text-[length:var(--font-size-heading-2)] font-bold text-[var(--text-primary)]">
           매물 특징
         </h2>
         <ul className="mt-3 space-y-2 text-[var(--text-primary)]">

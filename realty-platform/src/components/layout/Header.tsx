@@ -16,6 +16,14 @@ const NAV_ITEMS = [
   { label: "회사소개", href: "/about" },
 ];
 
+// 데스크톱에서는 헤더 아이콘 행(sm:inline-flex)으로 노출되지만, 좁은 모바일 화면에서는
+// 이 링크들에 닿을 방법이 없었으므로 모바일 메뉴 전용으로 별도 노출한다.
+const MOBILE_QUICK_LINKS = [
+  { label: "관심매물", href: "/my/favorites", icon: Heart },
+  { label: "매물 비교하기", href: "/compare", icon: Scale },
+  { label: "최근본매물", href: "/my/history", icon: Clock },
+];
+
 export function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -90,6 +98,20 @@ export function Header() {
 
       {mobileOpen && (
         <nav className="border-t border-[var(--border-default)] px-4 py-3 lg:hidden">
+          <ul className="mb-2 grid grid-cols-3 gap-1 border-b border-[var(--border-default)] pb-2 sm:hidden">
+            {MOBILE_QUICK_LINKS.map((item) => (
+              <li key={item.label}>
+                <Link
+                  href={item.href}
+                  onClick={() => setMobileOpen(false)}
+                  className="flex flex-col items-center gap-1 rounded-lg px-2 py-2 text-[length:var(--font-size-body-sm)] font-medium text-[var(--text-primary)] hover:bg-[var(--bg-surface)]"
+                >
+                  <item.icon size={18} />
+                  {item.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
           <ul className="flex flex-col gap-1">
             {NAV_ITEMS.map((item) => (
               <li key={item.label}>
