@@ -2,8 +2,8 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { Search } from "lucide-react";
-import type { DealType, ListingType, PropertyType } from "@/types/property";
+import { Search, SlidersHorizontal } from "lucide-react";
+import type { DealType, ListingType, PropertyOption, PropertyType } from "@/types/property";
 
 const DEAL_TYPES: DealType[] = ["매매", "전세", "월세"];
 const PROPERTY_TYPES: PropertyType[] = ["아파트", "주택", "오피스텔", "상가", "사무실", "토지"];
@@ -13,6 +13,20 @@ const SORT_OPTIONS = [
   { value: "price-asc", label: "가격 낮은순" },
   { value: "price-desc", label: "가격 높은순" },
 ] as const;
+const BUILT_YEAR_OPTIONS = [
+  { value: "all", label: "전체 연식" },
+  { value: "2020", label: "2020년 이후" },
+  { value: "2015", label: "2015년 이후" },
+  { value: "2010", label: "2010년 이후" },
+] as const;
+const BEDROOM_OPTIONS = [
+  { value: "all", label: "방 개수 전체" },
+  { value: "1", label: "1개 이상" },
+  { value: "2", label: "2개 이상" },
+  { value: "3", label: "3개 이상" },
+  { value: "4", label: "4개 이상" },
+] as const;
+const FACILITY_OPTIONS: PropertyOption[] = ["주차", "엘리베이터", "반려동물", "에어컨", "붙박이장", "발코니", "CCTV", "보안"];
 
 // listingType 값 ↔ 헤더 글로벌 메뉴가 쓰는 ?type= 쿼리 값 매핑 (분양/급매/경매)
 const LISTING_TYPE_TO_PARAM: Record<Exclude<ListingType, "일반">, string> = {
@@ -29,11 +43,24 @@ export interface SearchFilterValues {
   q: string;
   sort: string;
   listingType: ListingType | "all";
+  minPrice: string;
+  maxPrice: string;
+  minArea: string;
+  maxArea: string;
+  minBuiltYear: string;
+  minBedroom: string;
+  options: PropertyOption[];
 }
 
 export function SearchFilterPanel({ initial }: { initial: SearchFilterValues }) {
   const router = useRouter();
   const [values, setValues] = useState(initial);
+  const [showAdvanced, setShowAdvanced] = useState(
+    Boolean(
+      initial.minPrice || initial.maxPrice || initial.minArea || initial.maxArea ||
+      initial.minBuiltYear !== "all" || initial.minBedroom !== "all" || initial.options.length > 0,
+    ),
+  );
 
   function update<K extends keyof SearchFilterValues>(key: K, value: SearchFilterValues[K]) {
     const next = { ...values, [key]: value };
@@ -48,8 +75,22 @@ export function SearchFilterPanel({ initial }: { initial: SearchFilterValues }) 
     if (next.listingType !== "all" && next.listingType !== "일반") {
       params.set("type", LISTING_TYPE_TO_PARAM[next.listingType]);
     }
+    if (next.minPrice.trim()) params.set("minPrice", next.minPrice.trim());
+    if (next.maxPrice.trim()) params.set("maxPrice", next.maxPrice.trim());
+    if (next.minArea.trim()) params.set("minArea", next.minArea.trim());
+    if (next.maxArea.trim()) params.set("maxArea", next.maxArea.trim());
+    if (next.minBuiltYear !== "all") params.set("minBuiltYear", next.minBuiltYear);
+    if (next.minBedroom !== "all") params.set("minBedroom", next.minBedroom);
+    if (next.options.length > 0) params.set("options", next.options.join(","));
 
     router.push(`/search?${params.toString()}`, { scroll: false });
+  }
+
+  function toggleOption(option: PropertyOption) {
+    const next = values.options.includes(option)
+      ? values.options.filter((item) => item !== option)
+      : [...values.options, option];
+    update("options", next);
   }
 
   return (
@@ -176,6 +217,122 @@ export function SearchFilterPanel({ initial }: { initial: SearchFilterValues }) 
           ))}
         </select>
       </div>
+
+      <button
+        type="button"
+        onClick={() => setShowAdvanced((v) => !v)}
+        className="mt-4 inline-flex items-center gap-1.5 text-[length:var(--font-size-body-sm)] font-semibold text-[var(--color-primary-600)]"
+      >
+        <SlidersHorizontal size={14} />
+        상세 필터 {showAdvanced ? "숨기기" : "펼치기"}
+      </button>
+
+      {showAdvanced && (
+        <div className="mt-4 space-y-4 border-t border-[var(--border-default)] pt-4">
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+            <div>
+              <p className="mb-1.5 text-[length:var(--font-size-body-sm)] text-[var(--text-secondary)]">가격(만원)</p>
+              <div className="flex items-center gap-1.5">
+                <input
+                  type="number"
+                  min={0}
+                  value={values.minPrice}
+                  onChange={(event) => setValues((v) => ({ ...v, minPrice: event.target.value }))}
+                  onBlur={() => update("minPrice", values.minPrice)}
+                  placeholder="최소"
+                  aria-label="최소 가격(만원)"
+                  className="w-full rounded-[var(--radius-sm)] border border-[var(--border-default)] px-2 py-1.5 text-[var(--text-primary)]"
+                />
+                <span className="text-[var(--text-secondary)]">~</span>
+                <input
+                  type="number"
+                  min={0}
+                  value={values.maxPrice}
+                  onChange={(event) => setValues((v) => ({ ...v, maxPrice: event.target.value }))}
+                  onBlur={() => update("maxPrice", values.maxPrice)}
+                  placeholder="최대"
+                  aria-label="최대 가격(만원)"
+                  className="w-full rounded-[var(--radius-sm)] border border-[var(--border-default)] px-2 py-1.5 text-[var(--text-primary)]"
+                />
+              </div>
+            </div>
+
+            <div>
+              <p className="mb-1.5 text-[length:var(--font-size-body-sm)] text-[var(--text-secondary)]">면적(㎡)</p>
+              <div className="flex items-center gap-1.5">
+                <input
+                  type="number"
+                  min={0}
+                  value={values.minArea}
+                  onChange={(event) => setValues((v) => ({ ...v, minArea: event.target.value }))}
+                  onBlur={() => update("minArea", values.minArea)}
+                  placeholder="최소"
+                  aria-label="최소 면적(㎡)"
+                  className="w-full rounded-[var(--radius-sm)] border border-[var(--border-default)] px-2 py-1.5 text-[var(--text-primary)]"
+                />
+                <span className="text-[var(--text-secondary)]">~</span>
+                <input
+                  type="number"
+                  min={0}
+                  value={values.maxArea}
+                  onChange={(event) => setValues((v) => ({ ...v, maxArea: event.target.value }))}
+                  onBlur={() => update("maxArea", values.maxArea)}
+                  placeholder="최대"
+                  aria-label="최대 면적(㎡)"
+                  className="w-full rounded-[var(--radius-sm)] border border-[var(--border-default)] px-2 py-1.5 text-[var(--text-primary)]"
+                />
+              </div>
+            </div>
+
+            <select
+              value={values.minBuiltYear}
+              onChange={(event) => update("minBuiltYear", event.target.value)}
+              aria-label="준공연도"
+              className="self-end rounded-[var(--radius-sm)] border border-[var(--border-default)] px-3 py-2 text-[length:var(--font-size-body-sm)] text-[var(--text-primary)]"
+            >
+              {BUILT_YEAR_OPTIONS.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
+
+            <select
+              value={values.minBedroom}
+              onChange={(event) => update("minBedroom", event.target.value)}
+              aria-label="방 개수"
+              className="self-end rounded-[var(--radius-sm)] border border-[var(--border-default)] px-3 py-2 text-[length:var(--font-size-body-sm)] text-[var(--text-primary)]"
+            >
+              {BEDROOM_OPTIONS.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div>
+            <p className="mb-1.5 text-[length:var(--font-size-body-sm)] text-[var(--text-secondary)]">옵션</p>
+            <div className="flex flex-wrap gap-2">
+              {FACILITY_OPTIONS.map((option) => (
+                <button
+                  key={option}
+                  type="button"
+                  onClick={() => toggleOption(option)}
+                  aria-pressed={values.options.includes(option)}
+                  className={`rounded-full px-3 py-1.5 text-[length:var(--font-size-body-sm)] font-medium transition ${
+                    values.options.includes(option)
+                      ? "bg-[var(--color-primary-600)] text-white"
+                      : "bg-[var(--bg-surface)] text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
+                  }`}
+                >
+                  {option}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

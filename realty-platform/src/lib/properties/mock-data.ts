@@ -1,4 +1,18 @@
-import type { Inquiry, NewsArticle, Property, Region, Review, StatItem } from "@/types/property";
+import type { Banner, Inquiry, Member, NewsArticle, Property, Region, Review, StatItem } from "@/types/property";
+
+// Unsplash 무료 라이선스 사진 (출처 표기 불필요) — 매물 유형별로 재사용
+const PHOTOS = {
+  aptExt1: "https://images.unsplash.com/photo-1755735340764-3b077cab0c5c?auto=format&fit=crop&w=1400&q=80",
+  aptExt2: "https://images.unsplash.com/photo-1757221254460-e1139728b25c?auto=format&fit=crop&w=1400&q=80",
+  skylineNight1: "https://images.unsplash.com/photo-1634047412027-65df0879c98f?auto=format&fit=crop&w=1400&q=80",
+  skylineNight2: "https://images.unsplash.com/photo-1611287397348-7cc69174d495?auto=format&fit=crop&w=1400&q=80",
+  livingRoom: "https://images.unsplash.com/photo-1758448755856-01d3add0177b?auto=format&fit=crop&w=1400&q=80",
+  oceanBalcony: "https://images.unsplash.com/photo-1523892246230-4cf65ec80cb9?auto=format&fit=crop&w=1400&q=80",
+  officeGlass: "https://images.unsplash.com/photo-1757954694963-ea693d2cb1dc?auto=format&fit=crop&w=1400&q=80",
+  retailCorner: "https://images.unsplash.com/photo-1646869621598-14d5f4a90ac6?auto=format&fit=crop&w=1400&q=80",
+  house1: "https://images.unsplash.com/photo-1760067537293-6b30141d6a52?auto=format&fit=crop&w=1400&q=80",
+  houseNight: "https://images.unsplash.com/photo-1564347208312-4edb9f9a866f?auto=format&fit=crop&w=1400&q=80",
+} as const;
 
 export const properties: Property[] = [
   {
@@ -13,6 +27,8 @@ export const properties: Property[] = [
     district: "강남구",
     areaM2: 114,
     floor: "24/35층",
+    bedroomCount: 3,
+    bathroomCount: 2,
     badges: ["PREMIUM", "HOT"],
     gradient: "from-slate-900 via-blue-900 to-slate-800",
     address: "서울특별시 강남구 테헤란로 427",
@@ -21,12 +37,7 @@ export const properties: Property[] = [
     direction: "남향",
     builtYear: 2019,
     moveInDate: "즉시입주",
-    images: [
-      "from-slate-900 via-blue-900 to-slate-800",
-      "from-blue-950 via-slate-800 to-blue-900",
-      "from-slate-800 via-indigo-900 to-slate-900",
-      "from-blue-900 via-slate-900 to-black",
-    ],
+    images: [PHOTOS.skylineNight1, PHOTOS.skylineNight2, PHOTOS.livingRoom, PHOTOS.aptExt1],
     description: {
       features: [
         "강남역 도보 7분, 2호선·신분당선 더블 역세권",
@@ -57,6 +68,8 @@ export const properties: Property[] = [
     district: "서초구",
     areaM2: 59,
     floor: "12/20층",
+    bedroomCount: 1,
+    bathroomCount: 1,
     badges: ["NEW"],
     gradient: "from-blue-900 via-sky-800 to-slate-900",
     address: "서울특별시 서초구 서초대로 302",
@@ -65,11 +78,7 @@ export const properties: Property[] = [
     direction: "동남향",
     builtYear: 2022,
     moveInDate: "2026-03 입주 가능",
-    images: [
-      "from-blue-900 via-sky-800 to-slate-900",
-      "from-sky-900 via-blue-800 to-slate-900",
-      "from-slate-900 via-sky-900 to-blue-950",
-    ],
+    images: [PHOTOS.aptExt2, PHOTOS.livingRoom, PHOTOS.skylineNight2],
     description: {
       features: ["신축 오피스텔로 준공 3년 이내", "고층부 서리풀공원 조망"],
       pros: ["반려동물 동반 가능", "필로티 주차로 우천 시 편리"],
@@ -95,6 +104,8 @@ export const properties: Property[] = [
     district: "해운대구",
     areaM2: 101,
     floor: "31/42층",
+    bedroomCount: 3,
+    bathroomCount: 2,
     badges: ["PREMIUM"],
     gradient: "from-sky-900 via-cyan-800 to-slate-900",
     address: "부산광역시 해운대구 마린시티2로 33",
@@ -103,11 +114,7 @@ export const properties: Property[] = [
     direction: "남동향",
     builtYear: 2016,
     moveInDate: "2026-05 입주 가능",
-    images: [
-      "from-sky-900 via-cyan-800 to-slate-900",
-      "from-cyan-900 via-sky-800 to-blue-950",
-      "from-slate-900 via-cyan-900 to-sky-900",
-    ],
+    images: [PHOTOS.oceanBalcony, PHOTOS.skylineNight1, PHOTOS.livingRoom],
     description: {
       features: ["전 세대 오션뷰", "마린시티 랜드마크 단지"],
       pros: ["해변 도보 10분", "요트경기장 인접"],
@@ -135,6 +142,8 @@ export const properties: Property[] = [
     district: "성동구",
     areaM2: 42,
     floor: "5/8층",
+    bedroomCount: 1,
+    bathroomCount: 1,
     badges: ["HOT"],
     gradient: "from-slate-800 via-indigo-900 to-slate-900",
     address: "서울특별시 성동구 성수이로 77",
@@ -143,10 +152,7 @@ export const properties: Property[] = [
     direction: "서향",
     builtYear: 2021,
     moveInDate: "즉시입주",
-    images: [
-      "from-slate-800 via-indigo-900 to-slate-900",
-      "from-indigo-900 via-slate-900 to-black",
-    ],
+    images: [PHOTOS.livingRoom, PHOTOS.aptExt2],
     description: {
       features: ["복층 로프트 구조", "성수동 카페거리 도보 3분"],
       pros: ["감성 인테리어", "반려동물 가능"],
@@ -172,6 +178,8 @@ export const properties: Property[] = [
     district: "성남시 분당구",
     areaM2: 165,
     floor: "9/15층",
+    bedroomCount: 0,
+    bathroomCount: 1,
     badges: [],
     gradient: "from-blue-950 via-slate-900 to-slate-800",
     address: "경기도 성남시 분당구 판교역로 235",
@@ -180,10 +188,7 @@ export const properties: Property[] = [
     direction: "남향",
     builtYear: 2018,
     moveInDate: "협의 가능",
-    images: [
-      "from-blue-950 via-slate-900 to-slate-800",
-      "from-slate-900 via-blue-950 to-black",
-    ],
+    images: [PHOTOS.officeGlass, PHOTOS.skylineNight2],
     description: {
       features: ["판교역 도보 5분 프라임 오피스", "IT 기업 밀집 지역"],
       pros: ["대형 회의실 임대 가능", "지하 연결 주차장"],
@@ -208,6 +213,8 @@ export const properties: Property[] = [
     district: "영등포구",
     areaM2: 76,
     floor: "18/25층",
+    bedroomCount: 2,
+    bathroomCount: 1,
     badges: ["NEW", "PREMIUM"],
     gradient: "from-indigo-950 via-blue-900 to-sky-900",
     address: "서울특별시 영등포구 여의대로 66",
@@ -216,11 +223,7 @@ export const properties: Property[] = [
     direction: "북서향",
     builtYear: 2023,
     moveInDate: "2026-04 입주 가능",
-    images: [
-      "from-indigo-950 via-blue-900 to-sky-900",
-      "from-blue-950 via-indigo-900 to-slate-900",
-      "from-sky-950 via-blue-900 to-indigo-950",
-    ],
+    images: [PHOTOS.aptExt1, PHOTOS.livingRoom, PHOTOS.skylineNight1],
     description: {
       features: ["한강 조망 세대", "여의도 업무지구 도보권"],
       pros: ["신축 커뮤니티 라운지", "지하철 2개 노선 이용 가능"],
@@ -246,6 +249,8 @@ export const properties: Property[] = [
     district: "송파구",
     areaM2: 109,
     floor: "15/25층",
+    bedroomCount: 3,
+    bathroomCount: 2,
     badges: ["HOT"],
     gradient: "from-indigo-900 via-blue-900 to-slate-900",
     address: "서울특별시 송파구 올림픽로 265",
@@ -254,10 +259,7 @@ export const properties: Property[] = [
     direction: "남향",
     builtYear: 2015,
     moveInDate: "2026-06 입주 가능",
-    images: [
-      "from-indigo-900 via-blue-900 to-slate-900",
-      "from-blue-950 via-indigo-900 to-slate-800",
-    ],
+    images: [PHOTOS.aptExt2, PHOTOS.skylineNight1, PHOTOS.livingRoom],
     description: {
       features: ["한강·롯데타워 조망", "잠실 학군 인접"],
       pros: ["대단지 커뮤니티", "석촌호수 도보 10분"],
@@ -283,6 +285,8 @@ export const properties: Property[] = [
     district: "수원시 영통구",
     areaM2: 84,
     floor: "20/28층",
+    bedroomCount: 3,
+    bathroomCount: 2,
     badges: ["NEW"],
     gradient: "from-sky-900 via-blue-900 to-slate-900",
     address: "경기도 수원시 영통구 광교호수로 156",
@@ -291,10 +295,7 @@ export const properties: Property[] = [
     direction: "남서향",
     builtYear: 2021,
     moveInDate: "즉시입주",
-    images: [
-      "from-sky-900 via-blue-900 to-slate-900",
-      "from-blue-900 via-sky-800 to-slate-950",
-    ],
+    images: [PHOTOS.aptExt1, PHOTOS.livingRoom],
     description: {
       features: ["광교호수공원 조망", "신분당선 역세권"],
       pros: ["대형 상업시설 인접", "학원가 도보권"],
@@ -322,6 +323,8 @@ export const properties: Property[] = [
     district: "용산구",
     areaM2: 66,
     floor: "2/3층",
+    bedroomCount: 2,
+    bathroomCount: 1,
     badges: [],
     gradient: "from-slate-800 via-red-900 to-slate-900",
     address: "서울특별시 용산구 이태원로 145",
@@ -330,10 +333,7 @@ export const properties: Property[] = [
     direction: "남향",
     builtYear: 2010,
     moveInDate: "2026-04 입주 가능",
-    images: [
-      "from-slate-800 via-red-900 to-slate-900",
-      "from-red-950 via-slate-900 to-black",
-    ],
+    images: [PHOTOS.house1, PHOTOS.livingRoom],
     description: {
       features: ["복층 테라스 주택", "외국인 상권 인접"],
       pros: ["개성 있는 인테리어", "루프탑 테라스 보유"],
@@ -358,6 +358,8 @@ export const properties: Property[] = [
     district: "연수구",
     areaM2: 72,
     floor: "22/30층",
+    bedroomCount: 2,
+    bathroomCount: 1,
     badges: ["PREMIUM", "NEW"],
     gradient: "from-blue-950 via-sky-900 to-slate-900",
     address: "인천광역시 연수구 컨벤시아대로 165",
@@ -366,10 +368,7 @@ export const properties: Property[] = [
     direction: "동향",
     builtYear: 2020,
     moveInDate: "협의 가능",
-    images: [
-      "from-blue-950 via-sky-900 to-slate-900",
-      "from-sky-950 via-blue-900 to-slate-950",
-    ],
+    images: [PHOTOS.aptExt1, PHOTOS.skylineNight2, PHOTOS.livingRoom],
     description: {
       features: ["센트럴파크 조망", "국제업무단지 인접"],
       pros: ["외국계 기업 밀집 지역", "수변공원 산책로"],
@@ -394,6 +393,8 @@ export const properties: Property[] = [
     district: "강남구",
     areaM2: 145,
     floor: "1/8층",
+    bedroomCount: 0,
+    bathroomCount: 1,
     badges: ["PREMIUM"],
     gradient: "from-slate-900 via-amber-900 to-slate-800",
     address: "서울특별시 강남구 강남대로 396",
@@ -402,10 +403,7 @@ export const properties: Property[] = [
     direction: "정남향",
     builtYear: 2012,
     moveInDate: "즉시입주",
-    images: [
-      "from-slate-900 via-amber-900 to-slate-800",
-      "from-amber-950 via-slate-900 to-black",
-    ],
+    images: [PHOTOS.retailCorner, PHOTOS.skylineNight2],
     description: {
       features: ["강남역 1번 출구 도보 3분 코너 상가", "유동인구 최상위 입지"],
       pros: ["1층 전면 3면 노출", "장기 임차인 계약 중"],
@@ -430,6 +428,8 @@ export const properties: Property[] = [
     district: "성남시 분당구",
     areaM2: 198,
     floor: "지상 2층",
+    bedroomCount: 4,
+    bathroomCount: 3,
     badges: [],
     gradient: "from-emerald-900 via-slate-900 to-slate-800",
     address: "경기도 성남시 분당구 운중로 88",
@@ -438,10 +438,7 @@ export const properties: Property[] = [
     direction: "남향",
     builtYear: 2014,
     moveInDate: "협의 가능",
-    images: [
-      "from-emerald-900 via-slate-900 to-slate-800",
-      "from-slate-900 via-emerald-950 to-black",
-    ],
+    images: [PHOTOS.houseNight, PHOTOS.house1],
     description: {
       features: ["넓은 정원과 개인 마당", "판교 테크노밸리 차량 10분"],
       pros: ["프라이빗한 주거 환경", "반려동물 자유롭게 양육 가능"],
@@ -561,11 +558,128 @@ export const inquiries: Inquiry[] = [
   },
 ];
 
+export const members: Member[] = [
+  {
+    id: "mem-1",
+    name: "김민준",
+    email: "minjun.kim@premium-realty.example",
+    role: "AGENT",
+    status: "활성",
+    joinedAt: "2023-03-14",
+    lastLoginAt: "2026-07-23T08:10:00.000Z",
+  },
+  {
+    id: "mem-2",
+    name: "이서연",
+    email: "seoyeon.lee@premium-realty.example",
+    role: "AGENT",
+    status: "활성",
+    joinedAt: "2023-06-02",
+    lastLoginAt: "2026-07-22T23:41:00.000Z",
+  },
+  {
+    id: "mem-3",
+    name: "관리자",
+    email: "admin@premium-realty.example",
+    role: "ADMIN",
+    status: "활성",
+    joinedAt: "2022-11-01",
+    lastLoginAt: "2026-07-23T09:02:00.000Z",
+  },
+  {
+    id: "mem-4",
+    name: "정하윤",
+    email: "hayoon.jung@example.com",
+    role: "USER",
+    status: "활성",
+    joinedAt: "2026-05-11",
+    lastLoginAt: "2026-07-20T09:15:00.000Z",
+  },
+  {
+    id: "mem-5",
+    name: "오세훈",
+    email: "sehoon.oh@example.com",
+    role: "USER",
+    status: "활성",
+    joinedAt: "2026-06-30",
+    lastLoginAt: "2026-07-21T02:38:00.000Z",
+  },
+  {
+    id: "mem-6",
+    name: "강수빈",
+    email: "subin.kang@example.com",
+    role: "USER",
+    status: "비활성",
+    joinedAt: "2025-09-20",
+    lastLoginAt: "2026-06-02T13:00:00.000Z",
+  },
+];
+
+export const banners: Banner[] = [
+  {
+    id: "ban-1",
+    title: "프리미엄 신규 입주 매물 특별전",
+    subtitle: "송도·판교 신축 오피스텔 분양 매물 모음",
+    href: "/search?type=new-sale",
+    active: true,
+    gradient: "from-blue-900 via-sky-800 to-slate-900",
+  },
+  {
+    id: "ban-2",
+    title: "급매 특가 매물전",
+    subtitle: "시세보다 낮은 급매 매물을 지금 확인하세요",
+    href: "/search?type=urgent",
+    active: true,
+    gradient: "from-slate-900 via-amber-900 to-slate-800",
+  },
+  {
+    id: "ban-3",
+    title: "AI 맞춤 추천 서비스 오픈",
+    subtitle: "관심 조건만 입력하면 AI가 매물을 추천해드려요",
+    href: "/",
+    active: false,
+    gradient: "from-indigo-900 via-blue-900 to-slate-900",
+  },
+];
+
 export const stats: StatItem[] = [
   { id: "listings", label: "등록 매물", value: 48210, suffix: "+" },
   { id: "deals", label: "거래 완료", value: 12480, suffix: "+" },
   { id: "visitors", label: "월간 방문자", value: 963000, suffix: "+" },
   { id: "reviews", label: "고객 리뷰", value: 8340, suffix: "+" },
+];
+
+export const visitorTrend: { date: string; visitors: number }[] = [
+  { date: "07-10", visitors: 2840 },
+  { date: "07-11", visitors: 3120 },
+  { date: "07-12", visitors: 2960 },
+  { date: "07-13", visitors: 3380 },
+  { date: "07-14", visitors: 3510 },
+  { date: "07-15", visitors: 3200 },
+  { date: "07-16", visitors: 3050 },
+  { date: "07-17", visitors: 3430 },
+  { date: "07-18", visitors: 3690 },
+  { date: "07-19", visitors: 3880 },
+  { date: "07-20", visitors: 3540 },
+  { date: "07-21", visitors: 3390 },
+  { date: "07-22", visitors: 3720 },
+  { date: "07-23", visitors: 3842 },
+];
+
+export const topSearchedKeywords: { keyword: string; count: number }[] = [
+  { keyword: "강남 10억 이하 아파트", count: 1284 },
+  { keyword: "신축 오피스텔", count: 962 },
+  { keyword: "역세권 전세", count: 845 },
+  { keyword: "해운대 마린뷰", count: 611 },
+  { keyword: "반려동물 가능 주택", count: 438 },
+];
+
+export const topViewedProperties: { title: string; views: number }[] = [
+  { title: "강남 프리미엄 타워 101동", views: 4820 },
+  { title: "해운대 마린뷰 레지던스", views: 3910 },
+  { title: "여의도 리버프론트 오피스텔", views: 3340 },
+  { title: "잠실 리버파크 아파트", views: 2870 },
+  { title: "송도 센트럴파크 오피스텔", views: 2210 },
 ];
 
 export const newsArticles: NewsArticle[] = [

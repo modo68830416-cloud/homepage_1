@@ -1,4 +1,5 @@
 import { Hero } from "@/components/home/Hero";
+import { PromoBanner } from "@/components/home/PromoBanner";
 import { RegionSection } from "@/components/home/RegionSection";
 import { FeaturedSection } from "@/components/home/FeaturedSection";
 import { AISection } from "@/components/home/AISection";
@@ -10,6 +11,7 @@ export default function HomePage() {
   return (
     <>
       <Hero />
+      <PromoBanner />
       <RegionSection />
       <FeaturedSection />
       <AISection />

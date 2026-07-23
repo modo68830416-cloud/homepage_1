@@ -14,17 +14,24 @@ export function PropertyCard({ property }: { property: Property }) {
     <div className="group overflow-hidden rounded-[var(--radius-lg)] border border-[var(--border-default)] bg-[var(--bg-page)] shadow-[var(--shadow-sm)] transition hover:shadow-[var(--shadow-md)]">
       <div className="relative">
         <Link href={`/property/${property.id}`} tabIndex={-1}>
-          <div
-            className={`flex h-48 items-end bg-gradient-to-br p-4 ${property.gradient}`}
-          >
-            <span className="rounded-full bg-white/15 px-3 py-1 text-[length:var(--font-size-body-sm)] font-medium text-white backdrop-blur-sm">
-              {property.dealType}
-            </span>
-            {property.listingType !== "일반" && (
-              <span className="ml-1.5 rounded-full bg-[var(--color-accent-amber)] px-3 py-1 text-[length:var(--font-size-body-sm)] font-semibold text-white">
-                {property.listingType}
+          <div className="relative flex h-48 items-end overflow-hidden p-4">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={property.images[0]}
+              alt={property.title}
+              className="absolute inset-0 h-full w-full object-cover transition duration-300 group-hover:scale-105"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/5 to-transparent" />
+            <div className="relative flex gap-1.5">
+              <span className="rounded-full bg-white/15 px-3 py-1 text-[length:var(--font-size-body-sm)] font-medium text-white backdrop-blur-sm">
+                {property.dealType}
               </span>
-            )}
+              {property.listingType !== "일반" && (
+                <span className="rounded-full bg-[var(--color-accent-amber)] px-3 py-1 text-[length:var(--font-size-body-sm)] font-semibold text-white">
+                  {property.listingType}
+                </span>
+              )}
+            </div>
           </div>
         </Link>
 

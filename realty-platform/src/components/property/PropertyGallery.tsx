@@ -32,17 +32,21 @@ export function PropertyGallery({
   return (
     <div>
       <div
-        className={`relative h-[52vh] min-h-[320px] overflow-hidden rounded-[var(--radius-lg)] bg-gradient-to-br ${images[active]}`}
+        className="relative h-[52vh] min-h-[320px] overflow-hidden rounded-[var(--radius-lg)] bg-[var(--bg-surface)]"
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
-        role="img"
-        aria-label={`${title} 대표 이미지 ${active + 1}/${images.length}`}
       >
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={images[active]}
+          alt={`${title} 대표 이미지 ${active + 1}/${images.length}`}
+          className="h-full w-full object-cover"
+        />
         <button
           type="button"
           onClick={() => go(-1)}
           aria-label="이전 이미지"
-          className="absolute left-3 top-1/2 -translate-y-1/2 rounded-full bg-white/80 p-2 text-[var(--text-primary)] transition hover:bg-white"
+          className="absolute left-3 top-1/2 -translate-y-1/2 rounded-full bg-white/80 p-2 text-[var(--color-neutral-900)] transition hover:bg-white"
         >
           <ChevronLeft size={20} />
         </button>
@@ -50,7 +54,7 @@ export function PropertyGallery({
           type="button"
           onClick={() => go(1)}
           aria-label="다음 이미지"
-          className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full bg-white/80 p-2 text-[var(--text-primary)] transition hover:bg-white"
+          className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full bg-white/80 p-2 text-[var(--color-neutral-900)] transition hover:bg-white"
         >
           <ChevronRight size={20} />
         </button>
@@ -58,7 +62,7 @@ export function PropertyGallery({
           type="button"
           onClick={() => setLightbox(true)}
           aria-label="전체 화면으로 보기"
-          className="absolute bottom-3 right-3 inline-flex items-center gap-1.5 rounded-full bg-white/80 px-3 py-1.5 text-[length:var(--font-size-body-sm)] font-medium text-[var(--text-primary)] transition hover:bg-white"
+          className="absolute bottom-3 right-3 inline-flex items-center gap-1.5 rounded-full bg-white/80 px-3 py-1.5 text-[length:var(--font-size-body-sm)] font-medium text-[var(--color-neutral-900)] transition hover:bg-white"
         >
           <Expand size={16} />
           {active + 1}/{images.length}
@@ -73,10 +77,13 @@ export function PropertyGallery({
             onClick={() => setActive(index)}
             aria-label={`${index + 1}번째 썸네일`}
             aria-current={index === active}
-            className={`h-16 w-24 shrink-0 rounded-[var(--radius-sm)] bg-gradient-to-br ${image} transition ${
+            className={`h-16 w-24 shrink-0 overflow-hidden rounded-[var(--radius-sm)] transition ${
               index === active ? "ring-2 ring-[var(--color-primary-600)] ring-offset-2" : "opacity-70 hover:opacity-100"
             }`}
-          />
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={image} alt="" className="h-full w-full object-cover" />
+          </button>
         ))}
       </div>
 
@@ -103,8 +110,11 @@ export function PropertyGallery({
           >
             <ChevronLeft size={24} />
           </button>
-          <div
-            className={`h-[70vh] w-full max-w-4xl rounded-[var(--radius-lg)] bg-gradient-to-br ${images[active]}`}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={images[active]}
+            alt={`${title} 이미지 ${active + 1}/${images.length}`}
+            className="h-[70vh] w-full max-w-4xl rounded-[var(--radius-lg)] object-contain"
           />
           <button
             type="button"

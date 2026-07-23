@@ -3,7 +3,7 @@ import { SlidersHorizontal } from "lucide-react";
 import { properties } from "@/lib/properties/mock-data";
 import { PropertyCard } from "@/components/home/PropertyCard";
 import { SearchFilterPanel, type SearchFilterValues } from "@/components/search/SearchFilterPanel";
-import type { DealType, ListingType, PropertyType } from "@/types/property";
+import type { DealType, ListingType, PropertyOption, PropertyType } from "@/types/property";
 
 export const metadata: Metadata = {
   title: "매물검색",
@@ -18,11 +18,19 @@ interface SearchPageProps {
     q?: string;
     sort?: string;
     type?: string;
+    minPrice?: string;
+    maxPrice?: string;
+    minArea?: string;
+    maxArea?: string;
+    minBuiltYear?: string;
+    minBedroom?: string;
+    options?: string;
   }>;
 }
 
 const DEAL_TYPES: DealType[] = ["매매", "전세", "월세"];
 const PROPERTY_TYPES: PropertyType[] = ["아파트", "주택", "오피스텔", "상가", "사무실", "토지"];
+const ALL_OPTIONS: PropertyOption[] = ["주차", "엘리베이터", "반려동물", "에어컨", "붙박이장", "발코니", "CCTV", "보안"];
 
 // 헤더 글로벌 메뉴(분양/급매/경매)의 ?type= 쿼리를 실제 매물 listingType으로 매핑
 const LISTING_TYPE_PARAM_MAP: Record<string, ListingType> = {
@@ -38,6 +46,12 @@ const LISTING_TYPE_LABEL: Record<ListingType, string> = {
   경매: "경매 매물",
 };
 
+function parseNumber(value: string | undefined) {
+  if (!value) return null;
+  const parsed = Number(value);
+  return Number.isFinite(parsed) ? parsed : null;
+}
+
 export default async function SearchPage({ searchParams }: SearchPageProps) {
   const params = await searchParams;
 
@@ -51,12 +65,37 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
   const q = params.q ?? "";
   const sort = params.sort ?? "latest";
   const listingType = (LISTING_TYPE_PARAM_MAP[params.type ?? ""] ?? "all") as ListingType | "all";
+  const minPrice = params.minPrice ?? "";
+  const maxPrice = params.maxPrice ?? "";
+  const minArea = params.minArea ?? "";
+  const maxArea = params.maxArea ?? "";
+  const minBuiltYear = params.minBuiltYear ?? "all";
+  const minBedroom = params.minBedroom ?? "all";
+  const selectedOptions = (params.options?.split(",").filter((item): item is PropertyOption =>
+    ALL_OPTIONS.includes(item as PropertyOption),
+  ) ?? []) as PropertyOption[];
+
+  const minPriceNum = parseNumber(minPrice);
+  const maxPriceNum = parseNumber(maxPrice);
+  const minAreaNum = parseNumber(minArea);
+  const maxAreaNum = parseNumber(maxArea);
+  const minBuiltYearNum = minBuiltYear !== "all" ? Number(minBuiltYear) : null;
+  const minBedroomNum = minBedroom !== "all" ? Number(minBedroom) : null;
 
   let results = properties.filter((property) => {
     if (dealType !== "all" && property.dealType !== dealType) return false;
     if (propertyType !== "all" && property.propertyType !== propertyType) return false;
     if (city !== "all" && property.city !== city) return false;
     if (listingType !== "all" && property.listingType !== listingType) return false;
+    if (minPriceNum !== null && property.priceValue < minPriceNum) return false;
+    if (maxPriceNum !== null && property.priceValue > maxPriceNum) return false;
+    if (minAreaNum !== null && property.areaM2 < minAreaNum) return false;
+    if (maxAreaNum !== null && property.areaM2 > maxAreaNum) return false;
+    if (minBuiltYearNum !== null && property.builtYear < minBuiltYearNum) return false;
+    if (minBedroomNum !== null && property.bedroomCount < minBedroomNum) return false;
+    if (selectedOptions.length > 0 && !selectedOptions.every((option) => property.options.includes(option))) {
+      return false;
+    }
     if (q.trim()) {
       const haystack = `${property.title} ${property.city} ${property.district}`;
       if (!haystack.includes(q.trim())) return false;
@@ -70,7 +109,21 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
     results = [...results].sort((a, b) => b.priceValue - a.priceValue);
   }
 
-  const filterValues: SearchFilterValues = { dealType, propertyType, city, q, sort, listingType };
+  const filterValues: SearchFilterValues = {
+    dealType,
+    propertyType,
+    city,
+    q,
+    sort,
+    listingType,
+    minPrice,
+    maxPrice,
+    minArea,
+    maxArea,
+    minBuiltYear,
+    minBedroom,
+    options: selectedOptions,
+  };
 
   return (
     <div className="mx-auto max-w-[1440px] px-6 py-10">

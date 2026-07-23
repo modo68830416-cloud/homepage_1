@@ -7,6 +7,7 @@ const FIELDS: { label: string; value: (p: Property) => string }[] = [
   { label: "매물종류", value: (p) => p.propertyType },
   { label: "주소", value: (p) => p.address },
   { label: "면적", value: (p) => `${p.areaM2}㎡ (${Math.round(p.areaM2 / 3.3058)}평)` },
+  { label: "방/욕실", value: (p) => `방 ${p.bedroomCount}개 / 욕실 ${p.bathroomCount}개` },
   { label: "층수", value: (p) => p.floor },
   { label: "방향", value: (p) => p.direction },
   { label: "준공연도", value: (p) => `${p.builtYear}년` },

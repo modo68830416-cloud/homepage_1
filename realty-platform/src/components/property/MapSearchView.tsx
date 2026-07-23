@@ -111,7 +111,12 @@ export function MapSearchView() {
                   href={`/property/${property.id}`}
                   className="flex items-center gap-3 rounded-[var(--radius-md)] border border-[var(--border-default)] p-3 transition hover:bg-[var(--bg-surface)]"
                 >
-                  <div className={`h-14 w-16 shrink-0 rounded-[var(--radius-sm)] bg-gradient-to-br ${property.gradient}`} />
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={property.images[0]}
+                    alt=""
+                    className="h-14 w-16 shrink-0 rounded-[var(--radius-sm)] object-cover"
+                  />
                   <div className="min-w-0">
                     <p className="truncate font-semibold text-[var(--text-primary)]">{property.title}</p>
                     <p className="text-[length:var(--font-size-body-sm)] text-[var(--text-secondary)]">
