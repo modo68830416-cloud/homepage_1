@@ -1,6 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { motion } from "motion/react";
@@ -90,6 +91,20 @@ export function HomeHero() {
             검색
           </MagneticButton>
         </motion.form>
+
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.3, ease: [0, 0, 0.2, 1] }}
+          className="mt-4"
+        >
+          <Link
+            href="/ask"
+            className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/10 px-6 py-3 font-semibold text-white backdrop-blur-sm transition hover:bg-white/20"
+          >
+            AI에게 건강 질문하기
+          </Link>
+        </motion.div>
       </div>
     </section>
   );
