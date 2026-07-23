@@ -1,0 +1,152 @@
+/**
+ * Design tokens — single source of truth for the visual system.
+ * Sourced from docs/new-project-tasks/TASK-003.md. Tailwind v4 reads the
+ * `@theme` block below directly, so this file doubles as the Tailwind config.
+ */
+
+:root {
+  /* Primary */
+  --color-primary-900: #0f172a;
+  --color-primary-600: #2563eb;
+  --color-primary-400: #38bdf8;
+
+  /* Accent */
+  --color-accent-amber: #f59e0b;
+  --color-accent-emerald: #10b981;
+  --color-accent-red: #ef4444;
+
+  /* Hero — dark luxury + gold (Hero section only) */
+  --color-hero-bg-start: #0b0e14;
+  --color-hero-bg-end: #1a1f2e;
+  --color-hero-navy: #10192f;
+  --color-accent-gold: #c9a44c;
+  --color-accent-gold-soft: #e3c785;
+
+  /* Neutral */
+  --color-neutral-0: #ffffff;
+  --color-neutral-50: #f8fafc;
+  --color-neutral-200: #e2e8f0;
+  --color-neutral-500: #64748b;
+  --color-neutral-900: #0f172a;
+
+  /* Semantic aliases */
+  --bg-page: var(--color-neutral-0);
+  --bg-surface: var(--color-neutral-50);
+  --text-primary: var(--color-neutral-900);
+  --text-secondary: var(--color-neutral-500);
+  --border-default: var(--color-neutral-200);
+
+  /* Badges (TASK-003 §8) */
+  --color-badge-new: var(--color-primary-600);
+  --color-badge-hot: var(--color-accent-red);
+  --color-badge-premium: var(--color-accent-amber);
+  --color-badge-sold: var(--color-neutral-500);
+
+  /* Shadow / glass (TASK-003 §7) */
+  --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.06);
+  --shadow-md: 0 8px 24px rgba(15, 23, 42, 0.12);
+  --shadow-lg: 0 24px 64px rgba(15, 23, 42, 0.18);
+  --shadow-glass: 0 8px 32px rgba(15, 23, 42, 0.16);
+  --blur-glass: blur(16px);
+
+  /* Spacing — 8pt system (TASK-003 §5) */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-20: 5rem;
+  --space-24: 6rem;
+
+  /* Radius (TASK-003 §6) */
+  --radius-sm: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.5rem;
+  --radius-2xl: 2rem;
+  --radius-full: 9999px;
+
+  /* Typography — fluid scale from TASK-003 §3 (56/48/40/32, body 18/16/14) */
+  --font-display-1: clamp(2.5rem, 5vw + 1rem, 3.5rem);
+  --font-display-2: clamp(2rem, 4vw + 1rem, 3rem);
+  --font-heading-1: clamp(1.75rem, 2.5vw + 1rem, 2.5rem);
+  --font-heading-2: clamp(1.375rem, 1.5vw + 1rem, 2rem);
+  --font-body-lg: 1.125rem;
+  --font-body-md: 1rem;
+  --font-body-sm: 0.875rem;
+
+  /* Motion — durations 0.2/0.4/0.6/0.8 (TASK-003 §9) */
+  --motion-duration-fast: 0.2s;
+  --motion-duration-base: 0.4s;
+  --motion-duration-slow: 0.6s;
+  --motion-duration-cinematic: 0.8s;
+  --motion-ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --motion-ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Layers */
+  --z-sticky: 10;
+  --z-overlay: 30;
+  --z-modal: 50;
+  --z-toast: 70;
+}
+
+/* Brand-scoped dark theme — Hero and other cinematic sections only */
+[data-theme="dark"] {
+  --bg-page: var(--color-primary-900);
+  --text-primary: #ffffff;
+  --text-secondary: rgba(255, 255, 255, 0.72);
+  --border-default: rgba(255, 255, 255, 0.16);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --motion-duration-fast: 0.01ms;
+    --motion-duration-base: 0.01ms;
+    --motion-duration-slow: 0.01ms;
+    --motion-duration-cinematic: 0.01ms;
+  }
+}
+
+@theme inline {
+  --color-primary-900: var(--color-primary-900);
+  --color-primary-600: var(--color-primary-600);
+  --color-primary-400: var(--color-primary-400);
+  --color-accent-amber: var(--color-accent-amber);
+  --color-accent-emerald: var(--color-accent-emerald);
+  --color-accent-red: var(--color-accent-red);
+
+  --color-neutral-0: var(--color-neutral-0);
+  --color-neutral-50: var(--color-neutral-50);
+  --color-neutral-200: var(--color-neutral-200);
+  --color-neutral-500: var(--color-neutral-500);
+  --color-neutral-900: var(--color-neutral-900);
+
+  --color-badge-new: var(--color-badge-new);
+  --color-badge-hot: var(--color-badge-hot);
+  --color-badge-premium: var(--color-badge-premium);
+  --color-badge-sold: var(--color-badge-sold);
+
+  --font-size-display-1: var(--font-display-1);
+  --font-size-display-2: var(--font-display-2);
+  --font-size-heading-1: var(--font-heading-1);
+  --font-size-heading-2: var(--font-heading-2);
+  --font-size-body-lg: var(--font-body-lg);
+  --font-size-body-sm: var(--font-body-sm);
+  --font-sans: "Pretendard Variable", -apple-system, BlinkMacSystemFont, sans-serif;
+
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+  --radius-xl: var(--radius-xl);
+  --radius-2xl: var(--radius-2xl);
+
+  --breakpoint-sm: 480px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+  --breakpoint-2xl: 1536px;
+}
