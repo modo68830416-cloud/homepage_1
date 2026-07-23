@@ -7,7 +7,8 @@ import type { DealType, ListingType, PropertyOption, PropertyType } from "@/type
 
 const DEAL_TYPES: DealType[] = ["매매", "전세", "월세"];
 const PROPERTY_TYPES: PropertyType[] = ["아파트", "주택", "오피스텔", "상가", "사무실", "토지"];
-const CITIES = ["서울", "부산", "경기", "인천"];
+// 대구광역시 8개 구·군 — 서비스 주력 상권 기준 "지역" 필터
+const CITIES = ["수성구", "중구", "달서구", "동구", "북구", "남구", "서구", "달성군"];
 const SORT_OPTIONS = [
   { value: "latest", label: "최신순" },
   { value: "price-asc", label: "가격 낮은순" },

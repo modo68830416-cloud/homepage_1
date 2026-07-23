@@ -3,7 +3,7 @@ import { getAllProperties } from "@/db/queries";
 import { PropertyCard } from "@/components/home/PropertyCard";
 
 const REASONS = [
-  "최근 검색한 '강남 아파트'와 조건이 비슷해요",
+  "최근 검색한 '수성구 아파트'와 조건이 비슷해요",
   "관심 등록한 매물과 같은 지역이에요",
   "최근 조회한 평형대와 일치해요",
 ];

@@ -8,24 +8,22 @@ import { popularRegions } from "@/lib/properties/mock-data";
 import { PropertyCard } from "@/components/home/PropertyCard";
 import type { Property } from "@/types/property";
 
-// 실제 지도 API 연동 전까지 지역 핀 배치를 위한 목업 좌표 (% 기준)
+// 실제 지도 API 연동 전까지 지역 핀 배치를 위한 목업 좌표 (% 기준, 대구광역시 8개 구·군)
 const PIN_POSITIONS: Record<string, { top: string; left: string }> = {
-  gangnam: { top: "58%", left: "52%" },
-  seocho: { top: "62%", left: "47%" },
-  haeundae: { top: "86%", left: "68%" },
-  seongsu: { top: "50%", left: "55%" },
-  pangyo: { top: "64%", left: "58%" },
-  songdo: { top: "48%", left: "22%" },
-  itaewon: { top: "52%", left: "48%" },
-  jamsil: { top: "56%", left: "63%" },
-  yeouido: { top: "54%", left: "40%" },
-  gwanggyo: { top: "70%", left: "45%" },
+  jung: { top: "52%", left: "50%" },
+  suseong: { top: "62%", left: "58%" },
+  dalseo: { top: "56%", left: "34%" },
+  dong: { top: "40%", left: "62%" },
+  buk: { top: "38%", left: "47%" },
+  nam: { top: "66%", left: "47%" },
+  seo: { top: "50%", left: "37%" },
+  dalseong: { top: "80%", left: "30%" },
 };
 
 export function MapSearchView({ properties }: { properties: Property[] }) {
   const [activeId, setActiveId] = useState(popularRegions[0].id);
   const activeRegion = popularRegions.find((region) => region.id === activeId) ?? popularRegions[0];
-  const results = properties.filter((property) => property.district.includes(activeRegion.name) || property.city === activeRegion.city).slice(0, 6);
+  const results = properties.filter((property) => property.district.includes(activeRegion.name)).slice(0, 6);
 
   return (
     <div className="mx-auto max-w-[1440px] px-6 py-10">

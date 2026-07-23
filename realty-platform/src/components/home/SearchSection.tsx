@@ -74,7 +74,7 @@ export function SearchSection() {
             onFocus={() => setFocused(true)}
             onBlur={() => setTimeout(() => setFocused(false), 120)}
             type="search"
-            placeholder="예: 강남 10억 이하 아파트"
+            placeholder="예: 수성구 10억 이하 아파트"
             aria-label="통합 검색"
             className="w-full rounded-full bg-white px-5 py-3 text-[var(--color-neutral-900)] outline-none"
           />

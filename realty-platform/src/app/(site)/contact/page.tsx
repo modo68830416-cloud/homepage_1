@@ -11,7 +11,7 @@ const CONTACT_METHODS = [
   { icon: Phone, label: "전화 상담", value: "1588-0000", href: "tel:1588-0000" },
   { icon: MessageCircle, label: "카카오톡 상담", value: "@프리미엄부동산", href: "https://pf.kakao.com/_premium-realty" },
   { icon: Mail, label: "이메일", value: "help@premium-realty.example", href: "mailto:help@premium-realty.example" },
-  { icon: MapPin, label: "방문 상담", value: "서울 강남구 테헤란로 427, 8층", href: "/about" },
+  { icon: MapPin, label: "방문 상담", value: "대구 수성구 달구벌대로 2435, 8층", href: "/about" },
 ];
 
 const FAQS = [

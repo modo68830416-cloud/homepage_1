@@ -86,7 +86,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
   let results = properties.filter((property) => {
     if (dealType !== "all" && property.dealType !== dealType) return false;
     if (propertyType !== "all" && property.propertyType !== propertyType) return false;
-    if (city !== "all" && property.city !== city) return false;
+    if (city !== "all" && property.district !== city) return false;
     if (listingType !== "all" && property.listingType !== listingType) return false;
     if (minPriceNum !== null && property.priceValue < minPriceNum) return false;
     if (maxPriceNum !== null && property.priceValue > maxPriceNum) return false;

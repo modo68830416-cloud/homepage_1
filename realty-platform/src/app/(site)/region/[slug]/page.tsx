@@ -36,7 +36,7 @@ export default async function RegionDetailPage({
 
   const properties = await getAllProperties();
   const listings = properties.filter(
-    (property) => property.district.includes(region.name) || property.city === region.city,
+    (property) => property.district.includes(region.name),
   );
 
   return (

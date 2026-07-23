@@ -15,7 +15,7 @@ export function InquiryCard({ propertyTitle }: { propertyTitle?: string }) {
         <div>
           <p className="font-bold text-[var(--text-primary)]">김민준 공인중개사</p>
           <p className="text-[length:var(--font-size-body-sm)] text-[var(--text-secondary)]">
-            프리미엄부동산 강남지점
+            프리미엄부동산 대구수성지점
           </p>
         </div>
       </div>

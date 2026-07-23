@@ -3,10 +3,10 @@ import { clerkClient } from "@clerk/nextjs/server";
 import { getAllInquiries, getAllProperties } from "@/db/queries";
 
 const RECENT_ACTIVITY = [
-  { id: "a1", text: "새 매물이 등록되었습니다 — 강남 프리미엄 타워 101동", time: "5분 전" },
-  { id: "a2", text: "상담 문의가 접수되었습니다 — 해운대 마린뷰 레지던스", time: "22분 전" },
+  { id: "a1", text: "새 매물이 등록되었습니다 — 수성구 범어 센트럴 아파트", time: "5분 전" },
+  { id: "a2", text: "상담 문의가 접수되었습니다 — 동구 율하 신도시 분양 아파트", time: "22분 전" },
   { id: "a3", text: "회원 가입 — user_2481", time: "40분 전" },
-  { id: "a4", text: "매물 상태 변경 — 성수 디자이너 로프트 (공개 → 거래완료)", time: "1시간 전" },
+  { id: "a4", text: "매물 상태 변경 — 남구 대명동 대학가 원룸형 오피스텔 (공개 → 거래완료)", time: "1시간 전" },
   { id: "a5", text: "배너 콘텐츠가 수정되었습니다", time: "3시간 전" },
 ];
 
