@@ -1,5 +1,7 @@
 export type DealType = "매매" | "전세" | "월세";
 
+export type ListingType = "일반" | "분양" | "급매" | "경매";
+
 export type PropertyType =
   | "아파트"
   | "주택"
@@ -47,6 +49,7 @@ export interface Property {
   title: string;
   dealType: DealType;
   propertyType: PropertyType;
+  listingType: ListingType;
   price: string;
   /** 정렬/필터용 숫자 값 (만원 단위 — 매매가·전세가·월세 보증금) */
   priceValue: number;

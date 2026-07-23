@@ -3,7 +3,7 @@ import { SlidersHorizontal } from "lucide-react";
 import { properties } from "@/lib/properties/mock-data";
 import { PropertyCard } from "@/components/home/PropertyCard";
 import { SearchFilterPanel, type SearchFilterValues } from "@/components/search/SearchFilterPanel";
-import type { DealType, PropertyType } from "@/types/property";
+import type { DealType, ListingType, PropertyType } from "@/types/property";
 
 export const metadata: Metadata = {
   title: "매물검색",
@@ -17,11 +17,26 @@ interface SearchPageProps {
     city?: string;
     q?: string;
     sort?: string;
+    type?: string;
   }>;
 }
 
 const DEAL_TYPES: DealType[] = ["매매", "전세", "월세"];
 const PROPERTY_TYPES: PropertyType[] = ["아파트", "주택", "오피스텔", "상가", "사무실", "토지"];
+
+// 헤더 글로벌 메뉴(분양/급매/경매)의 ?type= 쿼리를 실제 매물 listingType으로 매핑
+const LISTING_TYPE_PARAM_MAP: Record<string, ListingType> = {
+  "new-sale": "분양",
+  urgent: "급매",
+  auction: "경매",
+};
+
+const LISTING_TYPE_LABEL: Record<ListingType, string> = {
+  일반: "전체 매물",
+  분양: "분양 매물",
+  급매: "급매 매물",
+  경매: "경매 매물",
+};
 
 export default async function SearchPage({ searchParams }: SearchPageProps) {
   const params = await searchParams;
@@ -35,11 +50,13 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
   const city = params.city ?? "all";
   const q = params.q ?? "";
   const sort = params.sort ?? "latest";
+  const listingType = (LISTING_TYPE_PARAM_MAP[params.type ?? ""] ?? "all") as ListingType | "all";
 
   let results = properties.filter((property) => {
     if (dealType !== "all" && property.dealType !== dealType) return false;
     if (propertyType !== "all" && property.propertyType !== propertyType) return false;
     if (city !== "all" && property.city !== city) return false;
+    if (listingType !== "all" && property.listingType !== listingType) return false;
     if (q.trim()) {
       const haystack = `${property.title} ${property.city} ${property.district}`;
       if (!haystack.includes(q.trim())) return false;
@@ -53,12 +70,17 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
     results = [...results].sort((a, b) => b.priceValue - a.priceValue);
   }
 
-  const filterValues: SearchFilterValues = { dealType, propertyType, city, q, sort };
+  const filterValues: SearchFilterValues = { dealType, propertyType, city, q, sort, listingType };
 
   return (
     <div className="mx-auto max-w-[1440px] px-6 py-10">
       <h1 className="text-[length:var(--font-size-heading-1)] font-bold text-[var(--text-primary)]">
         매물검색
+        {listingType !== "all" && (
+          <span className="ml-2 text-[var(--color-primary-600)]">
+            · {LISTING_TYPE_LABEL[listingType]}
+          </span>
+        )}
       </h1>
 
       <div className="mt-6">

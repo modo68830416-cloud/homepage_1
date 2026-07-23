@@ -4,9 +4,13 @@ import { ArrowLeft } from "lucide-react";
 export function ComingSoon({
   title,
   description,
+  backHref = "/",
+  backLabel = "홈으로 돌아가기",
 }: {
   title: string;
   description?: string;
+  backHref?: string;
+  backLabel?: string;
 }) {
   return (
     <div className="mx-auto flex min-h-[60vh] max-w-xl flex-col items-center justify-center px-6 py-24 text-center">
@@ -22,11 +26,11 @@ export function ComingSoon({
         </p>
       )}
       <Link
-        href="/"
+        href={backHref}
         className="mt-8 inline-flex items-center gap-2 rounded-full bg-[var(--color-primary-600)] px-6 py-3 font-semibold text-white transition hover:opacity-90"
       >
         <ArrowLeft size={18} />
-        홈으로 돌아가기
+        {backLabel}
       </Link>
     </div>
   );

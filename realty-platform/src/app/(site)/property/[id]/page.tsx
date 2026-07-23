@@ -14,6 +14,7 @@ import { FavoriteButton } from "@/components/property/FavoriteButton";
 import { ShareButtons } from "@/components/property/ShareButtons";
 import { RecommendationSection } from "@/components/property/RecommendationSection";
 import { MobileStickyBar } from "@/components/property/MobileStickyBar";
+import { RecordView } from "@/components/property/RecordView";
 
 function getProperty(id: string) {
   return properties.find((item) => item.id === id);
@@ -80,6 +81,7 @@ export default async function PropertyDetailPage({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
+      <RecordView propertyId={property.id} />
 
       <div className="mx-auto max-w-[1200px] px-6 pt-6">
         <Breadcrumb

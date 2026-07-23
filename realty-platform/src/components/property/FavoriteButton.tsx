@@ -1,15 +1,16 @@
 "use client";
 
-import { useState } from "react";
 import { Heart } from "lucide-react";
+import { useFavorites } from "@/lib/use-local-list";
 
 export function FavoriteButton({ propertyId }: { propertyId: string }) {
-  const [favorited, setFavorited] = useState(false);
+  const { isFavorited, toggle } = useFavorites();
+  const favorited = isFavorited(propertyId);
 
   return (
     <button
       type="button"
-      onClick={() => setFavorited((value) => !value)}
+      onClick={() => toggle(propertyId)}
       aria-pressed={favorited}
       aria-label={favorited ? `${propertyId} 관심매물 해제` : `${propertyId} 관심매물 등록`}
       className={`inline-flex items-center gap-1.5 rounded-full border px-4 py-2.5 text-[length:var(--font-size-body-sm)] font-semibold transition ${

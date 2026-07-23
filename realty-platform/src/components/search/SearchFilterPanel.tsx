@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Search } from "lucide-react";
-import type { DealType, PropertyType } from "@/types/property";
+import type { DealType, ListingType, PropertyType } from "@/types/property";
 
 const DEAL_TYPES: DealType[] = ["매매", "전세", "월세"];
 const PROPERTY_TYPES: PropertyType[] = ["아파트", "주택", "오피스텔", "상가", "사무실", "토지"];
@@ -14,12 +14,21 @@ const SORT_OPTIONS = [
   { value: "price-desc", label: "가격 높은순" },
 ] as const;
 
+// listingType 값 ↔ 헤더 글로벌 메뉴가 쓰는 ?type= 쿼리 값 매핑 (분양/급매/경매)
+const LISTING_TYPE_TO_PARAM: Record<Exclude<ListingType, "일반">, string> = {
+  분양: "new-sale",
+  급매: "urgent",
+  경매: "auction",
+};
+const LISTING_TYPES: ListingType[] = ["분양", "급매", "경매"];
+
 export interface SearchFilterValues {
   dealType: DealType | "all";
   propertyType: PropertyType | "all";
   city: string;
   q: string;
   sort: string;
+  listingType: ListingType | "all";
 }
 
 export function SearchFilterPanel({ initial }: { initial: SearchFilterValues }) {
@@ -36,6 +45,9 @@ export function SearchFilterPanel({ initial }: { initial: SearchFilterValues }) 
     if (next.city !== "all") params.set("city", next.city);
     if (next.q.trim()) params.set("q", next.q.trim());
     if (next.sort !== "latest") params.set("sort", next.sort);
+    if (next.listingType !== "all" && next.listingType !== "일반") {
+      params.set("type", LISTING_TYPE_TO_PARAM[next.listingType]);
+    }
 
     router.push(`/search?${params.toString()}`, { scroll: false });
   }
@@ -86,6 +98,34 @@ export function SearchFilterPanel({ initial }: { initial: SearchFilterValues }) 
             className={`rounded-full px-3.5 py-1.5 text-[length:var(--font-size-body-sm)] font-semibold transition ${
               values.dealType === type
                 ? "bg-[var(--color-primary-900)] text-white"
+                : "bg-[var(--bg-surface)] text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
+            }`}
+          >
+            {type}
+          </button>
+        ))}
+      </div>
+
+      <div className="mt-2 flex flex-wrap gap-2">
+        <button
+          type="button"
+          onClick={() => update("listingType", "all")}
+          className={`rounded-full px-3.5 py-1.5 text-[length:var(--font-size-body-sm)] font-semibold transition ${
+            values.listingType === "all"
+              ? "bg-[var(--color-accent-amber)] text-white"
+              : "bg-[var(--bg-surface)] text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
+          }`}
+        >
+          전체 유형
+        </button>
+        {LISTING_TYPES.map((type) => (
+          <button
+            key={type}
+            type="button"
+            onClick={() => update("listingType", type)}
+            className={`rounded-full px-3.5 py-1.5 text-[length:var(--font-size-body-sm)] font-semibold transition ${
+              values.listingType === type
+                ? "bg-[var(--color-accent-amber)] text-white"
                 : "bg-[var(--bg-surface)] text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
             }`}
           >

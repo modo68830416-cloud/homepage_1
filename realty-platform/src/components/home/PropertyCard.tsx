@@ -1,13 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
 import { Heart, MapPin } from "lucide-react";
 import { Badge } from "@/components/ui/Badge";
+import { useFavorites } from "@/lib/use-local-list";
 import type { Property } from "@/types/property";
 
 export function PropertyCard({ property }: { property: Property }) {
-  const [favorited, setFavorited] = useState(false);
+  const { isFavorited, toggle } = useFavorites();
+  const favorited = isFavorited(property.id);
 
   return (
     <div className="group overflow-hidden rounded-[var(--radius-lg)] border border-[var(--border-default)] bg-[var(--bg-page)] shadow-[var(--shadow-sm)] transition hover:shadow-[var(--shadow-md)]">
@@ -19,6 +20,11 @@ export function PropertyCard({ property }: { property: Property }) {
             <span className="rounded-full bg-white/15 px-3 py-1 text-[length:var(--font-size-body-sm)] font-medium text-white backdrop-blur-sm">
               {property.dealType}
             </span>
+            {property.listingType !== "일반" && (
+              <span className="ml-1.5 rounded-full bg-[var(--color-accent-amber)] px-3 py-1 text-[length:var(--font-size-body-sm)] font-semibold text-white">
+                {property.listingType}
+              </span>
+            )}
           </div>
         </Link>
 
@@ -30,7 +36,7 @@ export function PropertyCard({ property }: { property: Property }) {
 
         <button
           type="button"
-          onClick={() => setFavorited((value) => !value)}
+          onClick={() => toggle(property.id)}
           aria-pressed={favorited}
           aria-label="관심매물 등록"
           className="absolute right-3 top-3 rounded-full bg-white/90 p-2 text-[var(--color-accent-red)] shadow-[var(--shadow-sm)] transition hover:bg-white"

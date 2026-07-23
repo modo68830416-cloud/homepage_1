@@ -1,16 +1,11 @@
 import type { Metadata } from "next";
-import { ComingSoon } from "@/components/ui/ComingSoon";
+import { HistoryView } from "@/components/property/HistoryView";
 
 export const metadata: Metadata = {
   title: "최근본매물",
-  description: "최근본매물 페이지는 준비 중입니다.",
+  description: "최근에 확인한 매물을 모아보세요.",
 };
 
 export default function HistoryPage() {
-  return (
-    <ComingSoon
-      title="최근본매물"
-      description="최근에 확인한 매물을 모아볼 수 있는 페이지를 준비하고 있습니다."
-    />
-  );
+  return <HistoryView />;
 }

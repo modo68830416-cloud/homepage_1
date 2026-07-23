@@ -58,7 +58,7 @@ export function SearchSection() {
           value={propertyType}
           onChange={(event) => setPropertyType(event.target.value)}
           aria-label="건물유형"
-          className="rounded-full border border-white/20 bg-white/10 px-4 py-3 text-white outline-none [&>option]:text-[var(--text-primary)]"
+          className="rounded-full border border-white/20 bg-white/10 px-4 py-3 text-white outline-none [&>option]:text-[var(--color-neutral-900)]"
         >
           {PROPERTY_TYPES.map((type) => (
             <option key={type} value={type}>
@@ -76,7 +76,7 @@ export function SearchSection() {
             type="search"
             placeholder="예: 강남 10억 이하 아파트"
             aria-label="통합 검색"
-            className="w-full rounded-full bg-white px-5 py-3 text-[var(--text-primary)] outline-none"
+            className="w-full rounded-full bg-white px-5 py-3 text-[var(--color-neutral-900)] outline-none"
           />
           {focused && suggestions.length > 0 && (
             <ul className="absolute inset-x-0 top-[calc(100%+8px)] z-[var(--z-overlay)] overflow-hidden rounded-[var(--radius-lg)] bg-white shadow-[var(--shadow-lg)]">
@@ -85,7 +85,7 @@ export function SearchSection() {
                   <button
                     type="button"
                     onMouseDown={() => setKeyword(item)}
-                    className="block w-full px-5 py-2.5 text-left text-[length:var(--font-size-body-sm)] text-[var(--text-primary)] hover:bg-[var(--bg-surface)]"
+                    className="block w-full px-5 py-2.5 text-left text-[length:var(--font-size-body-sm)] text-[var(--color-neutral-900)] hover:bg-[var(--bg-surface)]"
                   >
                     {item}
                   </button>
