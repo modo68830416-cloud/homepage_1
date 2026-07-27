@@ -1,4 +1,5 @@
-import { Shirt } from "lucide-react";
+import Link from "next/link";
+import { Shirt, TrendingUp } from "lucide-react";
 import type { Product } from "@/types";
 import { Badge, trendLabelText, trendLabelTone } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
@@ -7,12 +8,17 @@ import { TiltCard } from "@/components/motion/tilt-card";
 import { Spotlight } from "@/components/motion/spotlight";
 import { formatKRW } from "@/lib/utils";
 
-export function ProductCard({ product }: { product: Product }) {
+type ProductCardProps = {
+  product: Product;
+  showTrendDetails?: boolean;
+};
+
+export function ProductCard({ product, showTrendDetails = false }: ProductCardProps) {
   return (
     <TiltCard maxTilt={5}>
       <Spotlight className="glass-panel flex h-full flex-col overflow-hidden rounded-xl transition-transform duration-300 ease-[var(--ease-premium)] hover:-translate-y-1">
         <article className="flex h-full flex-col">
-          <div className="relative aspect-[4/5] overflow-hidden">
+          <Link href={`/trends/${product.slug}`} className="relative block aspect-[4/5] overflow-hidden">
             <PlaceholderArt
               seed={product.id}
               icon={Shirt}
@@ -25,13 +31,33 @@ export function ProductCard({ product }: { product: Product }) {
               </Badge>
               {product.isDemo && <Badge tone="mock">DEMO DATA</Badge>}
             </div>
-          </div>
+            {showTrendDetails && (
+              <div className="absolute right-3 top-3 flex items-center gap-1 rounded-full bg-background/80 px-2 py-1 text-[11px] font-semibold text-accent-lime">
+                <TrendingUp className="h-3 w-3" aria-hidden="true" />
+                {product.trendScore}
+              </div>
+            )}
+          </Link>
           <div className="flex flex-1 flex-col gap-3 p-4">
             <div>
               <p className="text-xs uppercase tracking-wide text-foreground-subtle">{product.brand}</p>
-              <h3 className="mt-1 text-base font-semibold text-foreground">{product.name}</h3>
-              <p className="mt-1 text-xs text-foreground-subtle">{product.category}</p>
+              <Link href={`/trends/${product.slug}`} className="hover:text-accent-lime">
+                <h3 className="mt-1 text-base font-semibold text-foreground">{product.name}</h3>
+              </Link>
+              <p className="mt-1 text-xs text-foreground-subtle">
+                {product.category}
+                {showTrendDetails && (
+                  <span className="ml-2 text-success">
+                    +{product.growthRate}% {product.trendScore >= 90 ? "급상승" : ""}
+                  </span>
+                )}
+              </p>
             </div>
+            {showTrendDetails && (
+              <p className="line-clamp-2 text-xs leading-relaxed text-foreground-subtle">
+                {product.aiSummary}
+              </p>
+            )}
             <div className="flex items-baseline gap-2">
               {product.salePrice ? (
                 <>

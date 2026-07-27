@@ -21,11 +21,15 @@ export function TrendPreview() {
         linkLabel="View all trends"
       />
       <div className="grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-3">
-        {products.map((product, index) => (
-          <Reveal key={product.id} delay={index * 0.05}>
-            <ProductCard product={product} />
-          </Reveal>
-        ))}
+        {products
+          .slice()
+          .sort((a, b) => b.trendScore - a.trendScore)
+          .slice(0, 6)
+          .map((product, index) => (
+            <Reveal key={product.id} delay={index * 0.05}>
+              <ProductCard product={product} />
+            </Reveal>
+          ))}
       </div>
     </section>
   );

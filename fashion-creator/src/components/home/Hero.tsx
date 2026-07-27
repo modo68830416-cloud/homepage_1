@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import {
   motion,
@@ -196,7 +197,7 @@ export function Hero() {
             style={{ x: layerXSecondary, y: layerYSecondary }}
             className="absolute -left-8 top-8 w-36 sm:-left-14"
           >
-            <a href="/trends" className="block">
+            <Link href="/trends" className="block">
               <GlassPanel className="rounded-xl p-3 transition-transform hover:-translate-y-1">
                 <div className="aspect-square w-full overflow-hidden rounded-lg">
                   <PlaceholderArt seed="hero-product-1" icon={Shirt} label="Floating product card" />
@@ -204,14 +205,14 @@ export function Hero() {
                 <p className="mt-2 text-xs font-medium text-foreground">Aurora Blazer</p>
                 <p className="text-[11px] text-foreground-subtle">₩149,000</p>
               </GlassPanel>
-            </a>
+            </Link>
           </motion.div>
 
           <motion.div
             style={{ x: layerXTertiary, y: layerYTertiary }}
             className="absolute -bottom-6 -right-6 w-40 sm:-right-12"
           >
-            <a href="/studio" className="block">
+            <Link href="/studio" className="block">
               <GlassPanel className="rounded-xl p-3 transition-transform hover:-translate-y-1">
                 <div className="aspect-square w-full overflow-hidden rounded-lg">
                   <PlaceholderArt seed="hero-product-2" icon={Shirt} label="Floating product card" />
@@ -219,7 +220,7 @@ export function Hero() {
                 <p className="mt-2 text-xs font-medium text-foreground">Liquid Glass Top</p>
                 <p className="text-[11px] text-foreground-subtle">₩69,000</p>
               </GlassPanel>
-            </a>
+            </Link>
           </motion.div>
 
           <motion.div

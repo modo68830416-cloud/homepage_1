@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { looks } from "@/data/creators";
+import { products } from "@/data/products";
 
 const SITE_URL = "https://fashion-creator.vercel.app";
 
@@ -16,5 +17,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     lastModified: new Date(),
   }));
 
-  return [...staticRoutes, ...lookRoutes];
+  const productRoutes = products.map((product) => ({
+    url: `${SITE_URL}/trends/${product.slug}`,
+    lastModified: new Date(),
+  }));
+
+  return [...staticRoutes, ...lookRoutes, ...productRoutes];
 }

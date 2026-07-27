@@ -19,6 +19,10 @@ export function generateStaticParams() {
   return looks.map((look) => ({ slug: look.slug }));
 }
 
+// All LOOK slugs are known at build time — any other slug is a real 404,
+// not a slow render behind the root loading.tsx Suspense boundary.
+export const dynamicParams = false;
+
 export async function generateMetadata({ params }: LookPageProps): Promise<Metadata> {
   const { slug } = await params;
   const look = looks.find((item) => item.slug === slug);

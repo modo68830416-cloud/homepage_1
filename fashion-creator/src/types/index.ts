@@ -1,5 +1,22 @@
 export type TrendLabel = "best-seller" | "rising" | "creator-pick";
 
+export type TrendTag =
+  | "여성"
+  | "남성"
+  | "신발"
+  | "가방"
+  | "액세서리"
+  | "스트리트"
+  | "럭셔리"
+  | "스포츠";
+
+export type TrendSignals = {
+  searchScore: number;
+  contentScore: number;
+  salesScore: number;
+  growthScore: number;
+};
+
 export type Product = {
   id: string;
   slug: string;
@@ -11,6 +28,10 @@ export type Product = {
   image: string;
   trendScore: number;
   trendLabel: TrendLabel;
+  growthRate: number;
+  tags: TrendTag[];
+  aiSummary: string;
+  signals: TrendSignals;
   isDemo: boolean;
 };
 
