@@ -7,6 +7,7 @@ import { Logo } from "@/components/brand/Logo";
 import { MobileNav } from "@/components/layout/MobileNav";
 import { navLinks } from "@/components/layout/nav-links";
 import { Button } from "@/components/ui/Button";
+import { CartButton } from "@/components/commerce/cart-button";
 import { cn } from "@/lib/utils";
 
 export function Header() {
@@ -48,6 +49,7 @@ export function Header() {
         </nav>
 
         <div className="flex items-center gap-3">
+          <CartButton />
           <Button variant="ghost" className="hidden sm:inline-flex">
             로그인
           </Button>

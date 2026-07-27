@@ -1,14 +1,20 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { PlayCircle, QrCode, ShoppingBag } from "lucide-react";
-import { looks } from "@/data/creators";
+import { PlayCircle } from "lucide-react";
+import { creators, looks } from "@/data/creators";
 import { products } from "@/data/products";
 import { Badge } from "@/components/ui/Badge";
-import { DemoActionButton } from "@/components/ui/DemoActionButton";
 import { CopyLinkButton } from "@/components/ui/CopyLinkButton";
+import { CreatorCard } from "@/components/ui/CreatorCard";
 import { GlassPanel } from "@/components/ui/GlassPanel";
 import { PlaceholderArt } from "@/components/ui/PlaceholderArt";
+import { ProductCard } from "@/components/ui/ProductCard";
 import { MinimalHeader } from "@/components/layout/MinimalHeader";
+import { LookProductRow } from "@/components/commerce/look-product-row";
+import { LookPurchaseButton } from "@/components/commerce/look-purchase-button";
+import { LookSalesMetrics } from "@/components/commerce/look-sales-metrics";
+import { LookViewTracker } from "@/components/commerce/look-view-tracker";
+import { QrReveal } from "@/components/commerce/qr-reveal";
 import { formatKRW } from "@/lib/utils";
 
 type LookPageProps = {
@@ -39,12 +45,19 @@ export default async function LookPage({ params }: LookPageProps) {
   if (!look) notFound();
 
   const items = products.filter((product) => look.productIds.includes(product.id));
+  const creator = creators.find((item) => item.handle === look.creatorHandle);
+  const relatedProducts = products
+    .filter((product) => !look.productIds.includes(product.id))
+    .sort((a, b) => b.trendScore - a.trendScore)
+    .slice(0, 3);
+  const shoppableUrl = `https://fashioncreator.co.kr/look/${look.slug}`;
 
   return (
     <>
+      <LookViewTracker />
       <MinimalHeader />
       <main className="mx-auto max-w-3xl px-5 py-16 sm:px-8">
-        <GlassPanel className="overflow-hidden rounded-2xl" glow>
+        <GlassPanel className="overflow-hidden rounded-2xl" glow edgeGlow>
           <div className="relative aspect-video">
             <PlaceholderArt seed={look.slug} icon={PlayCircle} label={`${look.title} video`} className="rounded-none" />
             <div className="absolute left-4 top-4 flex gap-2">
@@ -61,18 +74,7 @@ export default async function LookPage({ params }: LookPageProps) {
 
             <ul className="flex flex-col gap-3">
               {items.map((product) => (
-                <li
-                  key={product.id}
-                  className="flex items-center justify-between border-b border-border pb-3 text-sm last:border-0 last:pb-0"
-                >
-                  <div>
-                    <p className="font-medium text-foreground">{product.name}</p>
-                    <p className="text-xs text-foreground-subtle">{product.brand}</p>
-                  </div>
-                  <span className="font-medium text-foreground">
-                    {formatKRW(product.salePrice ?? product.price)}
-                  </span>
-                </li>
+                <LookProductRow key={product.id} product={product} />
               ))}
             </ul>
 
@@ -81,24 +83,39 @@ export default async function LookPage({ params }: LookPageProps) {
                 <p className="text-xs text-foreground-subtle">Total look price</p>
                 <p className="text-xl font-semibold text-accent-lime">{formatKRW(look.totalPrice)}</p>
               </div>
-              <div className="flex h-16 w-16 items-center justify-center rounded-lg border border-border bg-background">
-                <QrCode className="h-7 w-7 text-foreground-subtle" aria-hidden="true" />
-              </div>
+              <QrReveal url={shoppableUrl} />
             </div>
 
             <div className="flex flex-col gap-2 sm:flex-row">
-              <DemoActionButton
-                variant="primary"
-                className="flex-1"
-                message="실제 결제 연동은 준비 중입니다"
-              >
-                <ShoppingBag className="h-4 w-4" aria-hidden="true" />
-                이 룩 전체 구매하기
-              </DemoActionButton>
+              <LookPurchaseButton className="flex-1" />
               <CopyLinkButton path={`/look/${look.slug}`} />
             </div>
+
+            <LookSalesMetrics views={look.views} />
           </div>
         </GlassPanel>
+
+        {creator && (
+          <div className="mt-8">
+            <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-foreground-subtle">
+              Creator
+            </p>
+            <CreatorCard creator={creator} />
+          </div>
+        )}
+
+        {relatedProducts.length > 0 && (
+          <div className="mt-8">
+            <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-foreground-subtle">
+              관련 상품
+            </p>
+            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
+              {relatedProducts.map((product) => (
+                <ProductCard key={product.id} product={product} />
+              ))}
+            </div>
+          </div>
+        )}
       </main>
     </>
   );

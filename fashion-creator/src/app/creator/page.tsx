@@ -7,6 +7,7 @@ import { GlassPanel } from "@/components/ui/GlassPanel";
 import { MetricCard } from "@/components/ui/MetricCard";
 import { MinimalHeader } from "@/components/layout/MinimalHeader";
 import { PlaceholderArt } from "@/components/ui/PlaceholderArt";
+import { CommerceAnalyticsDashboard } from "@/components/commerce/commerce-analytics-dashboard";
 import { formatCompactNumber, formatKRW } from "@/lib/utils";
 
 export const metadata: Metadata = {
@@ -59,6 +60,8 @@ export default function CreatorPage() {
             </Button>
           </GlassPanel>
         </div>
+
+        <CommerceAnalyticsDashboard />
       </main>
     </>
   );
