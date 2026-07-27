@@ -74,7 +74,7 @@ export function ModelCard({ model, selected, onSelect }: ModelCardProps) {
                   Use This Model
                 </Button>
               )}
-              <Button href="/models" variant="outline" className="flex-1 text-xs">
+              <Button href="/models/create" variant="outline" className="flex-1 text-xs">
                 Create My Avatar
               </Button>
             </div>
