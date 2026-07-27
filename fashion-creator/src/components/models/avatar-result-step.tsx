@@ -5,7 +5,7 @@ import { RotateCcw, Save, Sparkles, UserRound } from "lucide-react";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { GlassPanel } from "@/components/ui/GlassPanel";
-import { PlaceholderArt } from "@/components/ui/PlaceholderArt";
+import { AvatarPreview } from "@/components/models/avatar-preview";
 import { BodyPreview } from "@/components/models/body-preview";
 import type { AvatarBasicInfo, BodySettings } from "@/types/models";
 import { DemoAvatarService } from "@/services/demo-avatar-service";
@@ -30,6 +30,7 @@ const SLIDER_FIELDS: SliderField[] = [
 type AvatarResultStepProps = {
   basicInfo: AvatarBasicInfo;
   bodySettings: BodySettings;
+  generatedImageUrl?: string;
   onBodySettingsChange: (settings: BodySettings) => void;
   onSave: (name: string) => void;
   onRestart: () => void;
@@ -39,6 +40,7 @@ type AvatarResultStepProps = {
 export function AvatarResultStep({
   basicInfo,
   bodySettings,
+  generatedImageUrl,
   onBodySettingsChange,
   onSave,
   onRestart,
@@ -56,18 +58,19 @@ export function AvatarResultStep({
   return (
     <div className="flex flex-col gap-8">
       <div className="text-center">
-        <Badge tone="ai">AI Avatar Demo</Badge>
+        <Badge tone="ai">{generatedImageUrl ? "AI Avatar" : "AI Avatar Demo"}</Badge>
         <h2 className="mt-3 text-2xl font-bold text-foreground">아바타가 완성되었어요</h2>
         <p className="mx-auto mt-2 max-w-md text-sm text-foreground-muted">
-          이 아바타는 업로드한 정면 사진과 선택한 체형 정보를 바탕으로 만든 AI 데모 이미지입니다.
-          실제 신체 비율이나 의류 착용 결과와 차이가 있을 수 있습니다.
+          {generatedImageUrl
+            ? "이 아바타는 업로드한 정면 사진과 선택한 체형 정보를 바탕으로 AI가 생성한 이미지입니다. 실제 신체 비율이나 의류 착용 결과와 차이가 있을 수 있습니다."
+            : "이 아바타는 업로드한 정면 사진과 선택한 체형 정보를 바탕으로 만든 AI 데모 이미지입니다. 실제 신체 비율이나 의류 착용 결과와 차이가 있을 수 있습니다."}
         </p>
       </div>
 
       <div className="grid gap-8 lg:grid-cols-[280px_1fr]">
         <div className="mx-auto">
           <div className="mb-4 aspect-[3/4] w-56 overflow-hidden rounded-2xl border border-border-strong">
-            <PlaceholderArt seed={seed} icon={UserRound} label="Generated avatar preview" />
+            <AvatarPreview imageUrl={generatedImageUrl} seed={seed} icon={UserRound} label="Generated avatar preview" />
           </div>
           <BodyPreview settings={bodySettings} />
         </div>

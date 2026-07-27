@@ -12,6 +12,10 @@ export interface AvatarProvider {
   generate(input: {
     basicInfo: AvatarBasicInfo;
     bodySettings: BodySettings;
+    // Real providers only — the DEMO provider ignores this and stays
+    // seed-based. When present, a real provider edits this photo instead of
+    // generating from text alone.
+    photoFile?: File;
   }): Promise<{ previewImage: string; steps: string[] }>;
 }
 

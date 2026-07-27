@@ -3,7 +3,7 @@
 import { AnimatePresence, motion } from "motion/react";
 import { ArrowRight, UserRound } from "lucide-react";
 import { Button } from "@/components/ui/Button";
-import { PlaceholderArt } from "@/components/ui/PlaceholderArt";
+import { AvatarPreview } from "@/components/models/avatar-preview";
 import { useSelectedModel } from "@/lib/model-store";
 
 export function SelectedModelBar() {
@@ -21,7 +21,12 @@ export function SelectedModelBar() {
           style={{ paddingBottom: "max(0.5rem, env(safe-area-inset-bottom))" }}
         >
           <div className="h-10 w-10 shrink-0 overflow-hidden rounded-full border border-border-strong">
-            <PlaceholderArt seed={selectedModel.modelId} icon={UserRound} label={selectedModel.modelName} />
+            <AvatarPreview
+              imageUrl={selectedModel.previewImageUrl}
+              seed={selectedModel.modelId}
+              icon={UserRound}
+              label={selectedModel.modelName}
+            />
           </div>
           <div className="min-w-0 flex-1">
             <p className="truncate text-xs text-foreground-subtle">선택한 모델</p>

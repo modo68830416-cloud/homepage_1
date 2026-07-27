@@ -14,29 +14,51 @@ type AvatarGeneratingStepProps = {
   jobId: string;
   basicInfo: AvatarBasicInfo;
   bodySettings: BodySettings;
-  onComplete: () => void;
+  photoFile?: File | null;
+  useRealProvider?: boolean;
+  onComplete: (previewImageUrl?: string, realGenerationFailed?: boolean) => void;
   onCancel: () => void;
 };
 
 const STEP_DURATION_MS = 800;
 
+function finish(
+  jobId: string,
+  basicInfo: AvatarBasicInfo,
+  bodySettings: BodySettings,
+  photoFile: File | null | undefined,
+  useRealProvider: boolean | undefined,
+  onComplete: (previewImageUrl?: string, realGenerationFailed?: boolean) => void,
+) {
+  AiGateway.completeAvatarJob(jobId, { basicInfo, bodySettings, photoFile: photoFile ?? undefined, useRealProvider }).then(
+    (result) => onComplete(result.provider !== "demo" ? result.previewUrl ?? undefined : undefined),
+    () => onComplete(undefined, useRealProvider),
+  );
+}
+
 // The job is created by the caller (a click handler, not a render/effect)
 // before this step ever mounts — this component only ticks and displays an
 // existing AI Gateway Job Queue entry, it never creates one itself.
-export function AvatarGeneratingStep({ jobId, basicInfo, bodySettings, onComplete, onCancel }: AvatarGeneratingStepProps) {
+export function AvatarGeneratingStep({
+  jobId,
+  basicInfo,
+  bodySettings,
+  photoFile,
+  useRealProvider,
+  onComplete,
+  onCancel,
+}: AvatarGeneratingStepProps) {
   const reduced = useReducedMotionContext();
   const job = useAiJob(jobId);
 
   useEffect(() => {
     if (reduced) {
-      AiGateway.completeAvatarJob(jobId, { basicInfo, bodySettings }).then(onComplete, onComplete);
+      finish(jobId, basicInfo, bodySettings, photoFile, useRealProvider, onComplete);
       return;
     }
     if (!job) return;
     if (job.activeStepIndex >= job.steps.length) {
-      const timer = setTimeout(() => {
-        AiGateway.completeAvatarJob(jobId, { basicInfo, bodySettings }).then(onComplete, onComplete);
-      }, 400);
+      const timer = setTimeout(() => finish(jobId, basicInfo, bodySettings, photoFile, useRealProvider, onComplete), 400);
       return () => clearTimeout(timer);
     }
     const timer = setTimeout(() => AiGateway.advanceStep(jobId), STEP_DURATION_MS);
@@ -54,10 +76,12 @@ export function AvatarGeneratingStep({ jobId, basicInfo, bodySettings, onComplet
 
   return (
     <div className="flex flex-col items-center gap-6 py-10 text-center">
-      <Badge tone="ai">AI Avatar Demo</Badge>
+      <Badge tone="ai">{useRealProvider ? "AI Avatar" : "AI Avatar Demo"}</Badge>
       <h2 className="text-xl font-semibold text-foreground">아바타를 생성하고 있어요</h2>
       <p className="max-w-sm text-sm text-foreground-muted">
-        업로드한 사진과 선택한 체형 설정을 반영해 데모 아바타를 준비하고 있습니다.
+        {useRealProvider
+          ? "업로드한 사진과 선택한 체형 설정을 반영해 AI가 아바타를 생성하고 있습니다. 몇 초 정도 걸릴 수 있어요."
+          : "업로드한 사진과 선택한 체형 설정을 반영해 데모 아바타를 준비하고 있습니다."}
       </p>
 
       <GlassPanel className="w-full max-w-sm rounded-xl p-5 text-left" aria-live="polite">

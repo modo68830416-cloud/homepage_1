@@ -15,8 +15,8 @@ import type { Product } from "@/types";
 export const AiGateway = {
   queue: aiJobQueue,
 
-  startAvatarJob(): AiJob {
-    const providers = getProviders();
+  startAvatarJob(useRealProvider = false): AiJob {
+    const providers = getProviders(useRealProvider);
     return aiJobQueue.create("avatar", providers.avatar.name, [
       "사진 확인",
       "얼굴 특징 준비",
@@ -26,8 +26,11 @@ export const AiGateway = {
     ]);
   },
 
-  async completeAvatarJob(jobId: string, input: { basicInfo: AvatarBasicInfo; bodySettings: BodySettings }) {
-    const providers = getProviders();
+  async completeAvatarJob(
+    jobId: string,
+    input: { basicInfo: AvatarBasicInfo; bodySettings: BodySettings; photoFile?: File; useRealProvider?: boolean },
+  ) {
+    const providers = getProviders(input.useRealProvider);
     try {
       const { previewImage } = await providers.avatar.generate(input);
       const result = mapAvatarResult(jobId, providers.avatar.name, previewImage);

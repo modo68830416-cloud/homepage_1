@@ -19,6 +19,7 @@ export const DemoAvatarService = {
     basicInfo: AvatarBasicInfo;
     bodySettings: BodySettings;
     photoBlobPathname?: string;
+    previewImageUrl?: string;
   }): SavedAvatar {
     const avatar: SavedAvatar = {
       id: `avatar-${Date.now()}`,
@@ -33,6 +34,7 @@ export const DemoAvatarService = {
       bodySettings: input.bodySettings,
       isDemo: true,
       photoBlobPathname: input.photoBlobPathname,
+      previewImageUrl: input.previewImageUrl,
     };
     savedAvatarsRepository.upsert(avatar, "end");
     return avatar;
@@ -48,6 +50,7 @@ export const DemoAvatarService = {
       modelType: "avatar",
       modelName: avatar.name,
       previewImage: avatar.previewImage,
+      previewImageUrl: avatar.previewImageUrl,
       bodyProfileSummary: `${avatar.bodySettings.bodyType} · ${avatar.ageGroup}`,
       styleTags: [],
     };

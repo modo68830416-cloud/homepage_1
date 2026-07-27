@@ -62,6 +62,9 @@ export type SavedAvatar = {
   // private Vercel Blob object, never the photo bytes themselves. Absent
   // for Guest Mode and preset-based avatars.
   photoBlobPathname?: string;
+  // The real AI-generated avatar image (public Blob URL), when generation
+  // ran through the real AI Gateway provider instead of the DEMO seed path.
+  previewImageUrl?: string;
 };
 
 export type SelectedModelType = "preset" | "avatar";
@@ -71,6 +74,10 @@ export type SelectedModel = {
   modelType: SelectedModelType;
   modelName: string;
   previewImage: string;
+  // Set only when a real AI Gateway generation produced an actual displayable
+  // image (signed-in users only — see RealAvatarProvider). previewImage stays
+  // the seed used by PlaceholderArt for everyone else / as a fallback.
+  previewImageUrl?: string;
   bodyProfileSummary: string;
   styleTags: string[];
 };

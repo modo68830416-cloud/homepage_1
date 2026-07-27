@@ -2,13 +2,14 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Shirt } from "lucide-react";
 import { products } from "@/data/products";
-import type { TrendSignals } from "@/types";
+import type { Product, TrendSignals } from "@/types";
 import { Badge, trendLabelText, trendLabelTone } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { DemoActionButton } from "@/components/ui/DemoActionButton";
 import { GlassPanel } from "@/components/ui/GlassPanel";
-import { PlaceholderArt } from "@/components/ui/PlaceholderArt";
+import { ProductImage } from "@/components/ui/ProductImage";
 import { Reveal } from "@/components/motion/Reveal";
+import { AiGateway } from "@/ai/gateway/ai-gateway";
 import { formatKRW } from "@/lib/utils";
 
 type ProductPageProps = {
@@ -19,13 +20,21 @@ export function generateStaticParams() {
   return products.map((product) => ({ slug: product.slug }));
 }
 
-// All product slugs are known at build time — any other slug is a real 404,
-// not a slow render behind the root loading.tsx Suspense boundary.
-export const dynamicParams = false;
+// The DEMO catalog's slugs are pre-rendered at build time. Real Shopify
+// product handles aren't known ahead of time, so unlisted slugs render
+// on-demand instead of 404ing immediately — findProduct() below checks the
+// live trending list (the only place a real product's link comes from)
+// before giving up.
+async function findProduct(slug: string): Promise<Product | undefined> {
+  const demoMatch = products.find((item) => item.slug === slug);
+  if (demoMatch) return demoMatch;
+  const trending = await AiGateway.getTrending(50);
+  return trending.find((item) => item.slug === slug);
+}
 
 export async function generateMetadata({ params }: ProductPageProps): Promise<Metadata> {
   const { slug } = await params;
-  const product = products.find((item) => item.slug === slug);
+  const product = await findProduct(slug);
   if (!product) return { title: "Product" };
   return {
     title: product.name,
@@ -42,7 +51,7 @@ const SIGNAL_LABELS: { key: keyof TrendSignals; label: string }[] = [
 
 export default async function ProductDetailPage({ params }: ProductPageProps) {
   const { slug } = await params;
-  const product = products.find((item) => item.slug === slug);
+  const product = await findProduct(slug);
   if (!product) notFound();
 
   return (
@@ -50,7 +59,7 @@ export default async function ProductDetailPage({ params }: ProductPageProps) {
       <Reveal>
         <GlassPanel className="grid gap-0 overflow-hidden rounded-2xl lg:grid-cols-[1fr_1fr]" glow>
           <div className="relative aspect-[4/5]">
-            <PlaceholderArt seed={product.id} icon={Shirt} label={product.name} className="rounded-none" />
+            <ProductImage imageUrl={product.imageUrl} seed={product.id} icon={Shirt} label={product.name} className="rounded-none" />
             <div className="absolute left-4 top-4 flex flex-wrap gap-1.5">
               <Badge tone={trendLabelTone[product.trendLabel]}>{trendLabelText[product.trendLabel]}</Badge>
               {product.isDemo && <Badge tone="mock">DEMO DATA</Badge>}

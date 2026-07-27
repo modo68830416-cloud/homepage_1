@@ -4,7 +4,7 @@ import { Trash2, UserRound } from "lucide-react";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { GlassPanel } from "@/components/ui/GlassPanel";
-import { PlaceholderArt } from "@/components/ui/PlaceholderArt";
+import { AvatarPreview } from "@/components/models/avatar-preview";
 import { useSavedAvatars, useSelectedModel } from "@/lib/model-store";
 import { useToast } from "@/components/feedback/toast";
 
@@ -30,12 +30,12 @@ export function SavedModels() {
       {savedAvatars.map((avatar) => (
         <GlassPanel key={avatar.id} className="flex items-center gap-4 rounded-xl p-4">
           <div className="h-16 w-16 shrink-0 overflow-hidden rounded-full border border-border-strong">
-            <PlaceholderArt seed={avatar.id} icon={UserRound} label={avatar.name} />
+            <AvatarPreview imageUrl={avatar.previewImageUrl} seed={avatar.id} icon={UserRound} label={avatar.name} />
           </div>
           <div className="min-w-0 flex-1">
             <div className="flex items-center gap-1.5">
               <p className="truncate text-sm font-semibold text-foreground">{avatar.name}</p>
-              <Badge tone="mock">DEMO</Badge>
+              {!avatar.previewImageUrl && <Badge tone="mock">DEMO</Badge>}
             </div>
             <p className="truncate text-xs text-foreground-subtle">
               {avatar.bodySettings.bodyType} · {avatar.ageGroup}
@@ -51,6 +51,7 @@ export function SavedModels() {
                   modelType: "avatar",
                   modelName: avatar.name,
                   previewImage: avatar.previewImage,
+                  previewImageUrl: avatar.previewImageUrl,
                   bodyProfileSummary: `${avatar.bodySettings.bodyType} · ${avatar.ageGroup}`,
                   styleTags: [],
                 });

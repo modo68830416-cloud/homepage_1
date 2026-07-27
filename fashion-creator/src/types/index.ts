@@ -26,6 +26,11 @@ export type Product = {
   price: number;
   salePrice?: number;
   image: string;
+  // Real product photo (Shopify), when this product came from a real store
+  // instead of the DEMO fixture — see src/services/shopify. `image` stays
+  // the PlaceholderArt seed either way, so existing call sites that never
+  // learned about real photos keep rendering exactly as before.
+  imageUrl?: string;
   trendScore: number;
   trendLabel: TrendLabel;
   growthRate: number;

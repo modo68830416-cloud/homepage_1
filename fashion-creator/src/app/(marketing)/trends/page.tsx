@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { products } from "@/data/products";
+import { products as demoProducts } from "@/data/products";
 import { creators } from "@/data/creators";
 import { PageIntro } from "@/components/home/PageIntro";
 import { RadarSummary } from "@/components/trends/RadarSummary";
@@ -7,13 +7,18 @@ import { TrendRadarGrid } from "@/components/home/TrendRadarGrid";
 import { AIPicks } from "@/components/trends/AIPicks";
 import { CategoryRanking } from "@/components/trends/CategoryRanking";
 import { CreatorPicks } from "@/components/trends/CreatorPicks";
+import { AiGateway } from "@/ai/gateway/ai-gateway";
 
 export const metadata: Metadata = {
   title: "Trend Radar",
   description: "AI가 분석한 실시간 패션 트렌드 점수로 지금 뜨는 아이템을 확인하세요.",
 };
 
-export default function TrendsPage() {
+export default async function TrendsPage() {
+  // Real Shopify best-sellers when a store is connected and has products;
+  // falls back to the DEMO catalog otherwise (see ShopifyTrendProvider).
+  const products = await AiGateway.getTrending(demoProducts.length);
+
   return (
     <>
       <PageIntro

@@ -7,7 +7,7 @@ import type { SelectedModel } from "@/types/models";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { GlassPanel } from "@/components/ui/GlassPanel";
-import { PlaceholderArt } from "@/components/ui/PlaceholderArt";
+import { AvatarPreview } from "@/components/models/avatar-preview";
 import { cn } from "@/lib/utils";
 
 type ModelPreviewPanelProps = {
@@ -36,7 +36,8 @@ export function ModelPreviewPanel({ selectedModel, wornProducts }: ModelPreviewP
       <div className="relative flex-1 overflow-hidden">
         {selectedModel ? (
           <div className={cn("h-full w-full transition-transform duration-500", zoomed && "scale-125")}>
-            <PlaceholderArt
+            <AvatarPreview
+              imageUrl={selectedModel.previewImageUrl}
               seed={selectedModel.modelId}
               icon={UserRound}
               label={`${selectedModel.modelName} styling preview`}
@@ -58,7 +59,7 @@ export function ModelPreviewPanel({ selectedModel, wornProducts }: ModelPreviewP
         {selectedModel && (
           <div className="absolute left-3 top-3 flex gap-2">
             <Badge tone="ai">AI STYLING</Badge>
-            <Badge tone="mock">DEMO</Badge>
+            {!selectedModel.previewImageUrl && <Badge tone="mock">DEMO</Badge>}
           </div>
         )}
 

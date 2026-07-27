@@ -3,7 +3,7 @@ import { Shirt, TrendingUp } from "lucide-react";
 import type { Product } from "@/types";
 import { Badge, trendLabelText, trendLabelTone } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
-import { PlaceholderArt } from "@/components/ui/PlaceholderArt";
+import { ProductImage } from "@/components/ui/ProductImage";
 import { FavoriteButton } from "@/components/commerce/favorite-button";
 import { TiltCard } from "@/components/motion/tilt-card";
 import { Spotlight } from "@/components/motion/spotlight";
@@ -21,7 +21,8 @@ export function ProductCard({ product, showTrendDetails = false }: ProductCardPr
         <article className="flex h-full flex-col">
           <div className="relative aspect-[4/5] overflow-hidden">
             <Link href={`/trends/${product.slug}`} className="absolute inset-0 block">
-              <PlaceholderArt
+              <ProductImage
+                imageUrl={product.imageUrl}
                 seed={product.id}
                 icon={Shirt}
                 label={product.name}

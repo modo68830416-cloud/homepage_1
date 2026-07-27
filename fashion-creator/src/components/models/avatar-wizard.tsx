@@ -39,6 +39,8 @@ export function AvatarWizard() {
   const [bodySettings, setBodySettings] = useState<BodySettings>(DEFAULT_BODY_SETTINGS);
   const [description, setDescription] = useState("");
   const [avatarJobId, setAvatarJobId] = useState<string | null>(null);
+  const [generatedImageUrl, setGeneratedImageUrl] = useState<string | undefined>(undefined);
+  const useRealProvider = Boolean(isSignedIn);
 
   const { showToast } = useToast();
 
@@ -70,8 +72,9 @@ export function AvatarWizard() {
   }
 
   function handleStartGenerating() {
-    const job = AiGateway.startAvatarJob();
+    const job = AiGateway.startAvatarJob(useRealProvider);
     setAvatarJobId(job.id);
+    setGeneratedImageUrl(undefined);
     goToStep("generating");
   }
 
@@ -104,6 +107,7 @@ export function AvatarWizard() {
       basicInfo,
       bodySettings,
       photoBlobPathname,
+      previewImageUrl: generatedImageUrl,
     });
     DemoAvatarService.selectAvatarAsModel(avatar);
     showToast(`${name} 아바타를 저장했습니다`);
@@ -155,7 +159,15 @@ export function AvatarWizard() {
             jobId={avatarJobId}
             basicInfo={basicInfo}
             bodySettings={bodySettings}
-            onComplete={() => goToStep("result")}
+            photoFile={useRealProvider ? photoFile : undefined}
+            useRealProvider={useRealProvider}
+            onComplete={(imageUrl, realGenerationFailed) => {
+              setGeneratedImageUrl(imageUrl);
+              if (realGenerationFailed) {
+                showToast("실제 AI 생성에 실패해 데모 아바타로 대신 보여드려요", "info");
+              }
+              goToStep("result");
+            }}
             onCancel={() => goToStep("body")}
           />
         )}
@@ -164,6 +176,7 @@ export function AvatarWizard() {
           <AvatarResultStep
             basicInfo={basicInfo}
             bodySettings={bodySettings}
+            generatedImageUrl={generatedImageUrl}
             onBodySettingsChange={setBodySettings}
             onSave={handleSave}
             onRestart={handleRestart}
