@@ -10,7 +10,13 @@ import { SectionHeading } from "@/components/home/SectionHeading";
 
 export function MarketplacePreview() {
   return (
-    <section className="mx-auto max-w-7xl px-5 py-20 sm:px-8">
+    <section
+      className="relative mx-auto max-w-7xl px-5 py-20 sm:px-8"
+      style={{
+        backgroundImage:
+          "radial-gradient(800px circle at 90% 0%, rgba(169,139,255,0.07), transparent 60%), radial-gradient(600px circle at 0% 100%, rgba(255,214,111,0.05), transparent 60%)",
+      }}
+    >
       <SectionHeading
         eyebrow="Marketplace"
         title="크리에이터와 브랜드가 만나는 곳"

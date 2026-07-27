@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Clapperboard, Shirt, SlidersHorizontal, UserRound } from "lucide-react";
 import { Badge } from "@/components/ui/Badge";
-import { Button } from "@/components/ui/Button";
+import { DemoActionButton } from "@/components/ui/DemoActionButton";
 import { GlassPanel } from "@/components/ui/GlassPanel";
 import { PlaceholderArt } from "@/components/ui/PlaceholderArt";
 import { PageIntro } from "@/components/home/PageIntro";
@@ -53,9 +53,13 @@ export default function StudioPage() {
                   </li>
                 ))}
               </ul>
-              <Button variant="primary" className="mt-auto w-full" disabled>
-                콘텐츠 생성 (준비 중)
-              </Button>
+              <DemoActionButton
+                variant="primary"
+                className="mt-auto w-full"
+                message="실제 AI 콘텐츠 생성 기능은 준비 중입니다"
+              >
+                콘텐츠 생성
+              </DemoActionButton>
             </div>
           </GlassPanel>
         </Reveal>

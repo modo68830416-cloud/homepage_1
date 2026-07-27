@@ -81,6 +81,68 @@ body {
   }
 }
 
+.edge-glow {
+  position: relative;
+}
+
+.edge-glow::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--accent-lime) 30%,
+    var(--accent-pink) 70%,
+    transparent
+  );
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.grid-overlay {
+  background-image:
+    linear-gradient(var(--border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse 60% 60% at center, black 30%, transparent 75%);
+  -webkit-mask-image: radial-gradient(ellipse 60% 60% at center, black 30%, transparent 75%);
+}
+
+.skeleton-shimmer {
+  position: relative;
+  overflow: hidden;
+  background: var(--surface);
+}
+
+.skeleton-shimmer::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(
+    100deg,
+    transparent 30%,
+    rgba(217, 255, 87, 0.12) 50%,
+    rgba(255, 120, 200, 0.1) 60%,
+    transparent 70%
+  );
+  animation: shimmer 1.8s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton-shimmer::after {
+    animation: none;
+  }
+}
+
 .text-gradient-aurora {
   background: linear-gradient(
     100deg,

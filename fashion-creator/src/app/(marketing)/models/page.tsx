@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
 import { UploadCloud } from "lucide-react";
 import { fashionModels } from "@/data/models";
-import { ModelCard } from "@/components/ui/ModelCard";
 import { GlassPanel } from "@/components/ui/GlassPanel";
-import { Button } from "@/components/ui/Button";
+import { DemoActionButton } from "@/components/ui/DemoActionButton";
 import { PageIntro } from "@/components/home/PageIntro";
 import { Reveal } from "@/components/motion/Reveal";
+import { ModelGallery } from "@/components/home/ModelGallery";
+import { DemoLoader } from "@/components/feedback/demo-loader";
+import { ModelCardSkeleton } from "@/components/feedback/skeletons";
 
 export const metadata: Metadata = {
   title: "AI Models",
@@ -31,21 +33,25 @@ export default function ModelsPage() {
                 업로드 및 실제 AI 아바타 생성은 준비 중입니다.
               </p>
             </div>
-            <Button variant="secondary" disabled>
-              사진 업로드 (준비 중)
-            </Button>
+            <DemoActionButton variant="secondary" message="사진 업로드 및 AI 아바타 생성은 준비 중입니다">
+              사진 업로드
+            </DemoActionButton>
           </GlassPanel>
         </Reveal>
       </section>
 
       <section className="mx-auto max-w-7xl px-5 pb-24 sm:px-8">
-        <div className="grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-3">
-          {fashionModels.map((model, index) => (
-            <Reveal key={model.id} delay={index * 0.05}>
-              <ModelCard model={model} />
-            </Reveal>
-          ))}
-        </div>
+        <DemoLoader
+          skeleton={
+            <div className="grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-3">
+              {fashionModels.map((model) => (
+                <ModelCardSkeleton key={model.id} />
+              ))}
+            </div>
+          }
+        >
+          <ModelGallery models={fashionModels} />
+        </DemoLoader>
       </section>
     </>
   );

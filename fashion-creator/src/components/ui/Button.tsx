@@ -3,7 +3,7 @@ import Link from "next/link";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
-const buttonVariants = cva(
+export const buttonVariants = cva(
   "relative inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full text-sm font-medium transition-all duration-200 ease-out disabled:pointer-events-none disabled:opacity-40 min-h-11 px-6",
   {
     variants: {
@@ -39,22 +39,29 @@ type ButtonAsLink = ButtonBaseProps &
 
 export type ButtonProps = ButtonAsButton | ButtonAsLink;
 
-export function Button({ className, variant, children, ...props }: ButtonProps) {
-  const classes = cn(buttonVariants({ variant }), className);
+export const Button = React.forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonProps>(
+  function Button({ className, variant, children, ...props }, ref) {
+    const classes = cn(buttonVariants({ variant }), className);
 
-  if ("href" in props && props.href) {
-    const { href, ...anchorProps } = props;
+    if ("href" in props && props.href) {
+      const { href, ...anchorProps } = props;
+      return (
+        <Link
+          href={href}
+          ref={ref as React.Ref<HTMLAnchorElement>}
+          className={classes}
+          {...anchorProps}
+        >
+          {children}
+        </Link>
+      );
+    }
+
+    const buttonProps = props as React.ButtonHTMLAttributes<HTMLButtonElement>;
     return (
-      <Link href={href} className={classes} {...anchorProps}>
+      <button ref={ref as React.Ref<HTMLButtonElement>} className={classes} {...buttonProps}>
         {children}
-      </Link>
+      </button>
     );
-  }
-
-  const buttonProps = props as React.ButtonHTMLAttributes<HTMLButtonElement>;
-  return (
-    <button className={classes} {...buttonProps}>
-      {children}
-    </button>
-  );
-}
+  },
+);

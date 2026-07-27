@@ -7,7 +7,13 @@ export function AIModelPreview() {
   const featured = fashionModels.filter((model) => model.isFeatured).slice(0, 4);
 
   return (
-    <section className="mx-auto max-w-7xl px-5 py-20 sm:px-8">
+    <section
+      className="relative mx-auto max-w-7xl px-5 py-20 sm:px-8"
+      style={{
+        backgroundImage:
+          "radial-gradient(700px circle at 10% 10%, rgba(118,169,255,0.06), transparent 60%)",
+      }}
+    >
       <SectionHeading
         eyebrow="AI Models"
         title="정면 사진 한 장으로 나만의 아바타를"

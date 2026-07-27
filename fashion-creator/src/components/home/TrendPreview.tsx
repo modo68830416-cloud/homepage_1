@@ -5,7 +5,14 @@ import { SectionHeading } from "@/components/home/SectionHeading";
 
 export function TrendPreview() {
   return (
-    <section className="mx-auto max-w-7xl px-5 py-20 sm:px-8">
+    <section
+      id="trend-radar"
+      className="relative mx-auto max-w-7xl scroll-mt-20 px-5 py-20 sm:px-8"
+      style={{
+        backgroundImage:
+          "radial-gradient(700px circle at 85% 0%, rgba(255,120,200,0.06), transparent 60%), radial-gradient(600px circle at 0% 100%, rgba(255,139,93,0.05), transparent 60%)",
+      }}
+    >
       <SectionHeading
         eyebrow="Trend Radar"
         title="지금 가장 뜨는 패션 아이템"

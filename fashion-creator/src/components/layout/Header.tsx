@@ -27,7 +27,12 @@ export function Header() {
         scrolled ? "glass-panel border-b" : "border-b border-transparent",
       )}
     >
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-5 sm:px-8">
+      <div
+        className={cn(
+          "mx-auto flex max-w-7xl items-center justify-between px-5 transition-[height] duration-300 sm:px-8",
+          scrolled ? "h-14" : "h-20",
+        )}
+      >
         <Logo />
 
         <nav className="hidden items-center gap-8 md:flex" aria-label="Primary">

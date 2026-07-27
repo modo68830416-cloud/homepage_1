@@ -3,11 +3,14 @@ import { Megaphone } from "lucide-react";
 import { brandCampaigns, creators } from "@/data/creators";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
+import { DemoActionButton } from "@/components/ui/DemoActionButton";
 import { CreatorCard } from "@/components/ui/CreatorCard";
 import { GlassPanel } from "@/components/ui/GlassPanel";
 import { PlaceholderArt } from "@/components/ui/PlaceholderArt";
 import { PageIntro } from "@/components/home/PageIntro";
 import { Reveal } from "@/components/motion/Reveal";
+import { DemoLoader } from "@/components/feedback/demo-loader";
+import { CreatorCardSkeleton } from "@/components/feedback/skeletons";
 
 export const metadata: Metadata = {
   title: "Marketplace",
@@ -30,13 +33,23 @@ export default function MarketplacePage() {
             크리에이터로 등록하기
           </Button>
         </div>
-        <div className="grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-4">
-          {creators.map((creator, index) => (
-            <Reveal key={creator.id} delay={index * 0.05}>
-              <CreatorCard creator={creator} />
-            </Reveal>
-          ))}
-        </div>
+        <DemoLoader
+          skeleton={
+            <div className="grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-4">
+              {creators.map((creator) => (
+                <CreatorCardSkeleton key={creator.id} />
+              ))}
+            </div>
+          }
+        >
+          <div className="grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-4">
+            {creators.map((creator, index) => (
+              <Reveal key={creator.id} delay={index * 0.05}>
+                <CreatorCard creator={creator} />
+              </Reveal>
+            ))}
+          </div>
+        </DemoLoader>
       </section>
 
       <section className="mx-auto max-w-7xl px-5 pb-24 sm:px-8">
@@ -58,9 +71,13 @@ export default function MarketplacePage() {
                   <h3 className="mt-1 text-base font-semibold text-foreground">{campaign.title}</h3>
                 </div>
                 <p className="text-sm text-foreground-muted">{campaign.reward}</p>
-                <Button variant="outline" className="mt-1 text-xs" disabled>
-                  참여 신청 (준비 중)
-                </Button>
+                <DemoActionButton
+                  variant="outline"
+                  className="mt-1 text-xs"
+                  message="캠페인 지원 기능은 준비 중입니다"
+                >
+                  참여 신청
+                </DemoActionButton>
               </GlassPanel>
             </Reveal>
           ))}

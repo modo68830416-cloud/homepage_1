@@ -1,5 +1,10 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
+import { ReducedMotionProvider } from "@/components/motion/reduced-motion-provider";
+import { ScrollProgress } from "@/components/motion/scroll-progress";
+import { PointerGlow } from "@/components/motion/pointer-glow";
+import { GrainOverlay } from "@/components/motion/grain-overlay";
+import { ToastProvider } from "@/components/feedback/toast";
 
 const SITE_URL = "https://fashion-creator.vercel.app";
 const TITLE = "Fashion Creator — AI Fashion Content Commerce Platform";
@@ -53,7 +58,16 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko" className="h-full antialiased">
-      <body className="flex min-h-full flex-col">{children}</body>
+      <body className="relative flex min-h-full flex-col">
+        <ReducedMotionProvider>
+          <ScrollProgress />
+          <PointerGlow />
+          <GrainOverlay />
+          <ToastProvider>
+            <div className="relative z-[2] flex min-h-full flex-1 flex-col">{children}</div>
+          </ToastProvider>
+        </ReducedMotionProvider>
+      </body>
     </html>
   );
 }

@@ -4,7 +4,8 @@ import { PlayCircle, QrCode, ShoppingBag } from "lucide-react";
 import { looks } from "@/data/creators";
 import { products } from "@/data/products";
 import { Badge } from "@/components/ui/Badge";
-import { Button } from "@/components/ui/Button";
+import { DemoActionButton } from "@/components/ui/DemoActionButton";
+import { CopyLinkButton } from "@/components/ui/CopyLinkButton";
 import { GlassPanel } from "@/components/ui/GlassPanel";
 import { PlaceholderArt } from "@/components/ui/PlaceholderArt";
 import { MinimalHeader } from "@/components/layout/MinimalHeader";
@@ -81,10 +82,17 @@ export default async function LookPage({ params }: LookPageProps) {
               </div>
             </div>
 
-            <Button variant="primary" className="w-full" disabled>
-              <ShoppingBag className="h-4 w-4" aria-hidden="true" />
-              이 룩 전체 구매하기 (준비 중)
-            </Button>
+            <div className="flex flex-col gap-2 sm:flex-row">
+              <DemoActionButton
+                variant="primary"
+                className="flex-1"
+                message="실제 결제 연동은 준비 중입니다"
+              >
+                <ShoppingBag className="h-4 w-4" aria-hidden="true" />
+                이 룩 전체 구매하기
+              </DemoActionButton>
+              <CopyLinkButton path={`/look/${look.slug}`} />
+            </div>
           </div>
         </GlassPanel>
       </main>

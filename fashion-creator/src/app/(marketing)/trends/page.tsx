@@ -5,6 +5,8 @@ import { Badge } from "@/components/ui/Badge";
 import { ProductCard } from "@/components/ui/ProductCard";
 import { PageIntro } from "@/components/home/PageIntro";
 import { Reveal } from "@/components/motion/Reveal";
+import { DemoLoader } from "@/components/feedback/demo-loader";
+import { ProductCardSkeleton } from "@/components/feedback/skeletons";
 
 export const metadata: Metadata = {
   title: "Trend Radar",
@@ -27,16 +29,26 @@ export default function TrendsPage() {
             MOCK DATA
           </Badge>
         </Reveal>
-        <div className="grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-3">
-          {products
-            .slice()
-            .sort((a, b) => b.trendScore - a.trendScore)
-            .map((product, index) => (
-              <Reveal key={product.id} delay={index * 0.04}>
-                <ProductCard product={product} />
-              </Reveal>
-            ))}
-        </div>
+        <DemoLoader
+          skeleton={
+            <div className="grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-3">
+              {products.map((product) => (
+                <ProductCardSkeleton key={product.id} />
+              ))}
+            </div>
+          }
+        >
+          <div className="grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-3">
+            {products
+              .slice()
+              .sort((a, b) => b.trendScore - a.trendScore)
+              .map((product, index) => (
+                <Reveal key={product.id} delay={index * 0.04}>
+                  <ProductCard product={product} />
+                </Reveal>
+              ))}
+          </div>
+        </DemoLoader>
       </section>
     </>
   );
