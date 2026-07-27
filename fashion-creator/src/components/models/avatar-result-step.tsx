@@ -8,7 +8,7 @@ import { GlassPanel } from "@/components/ui/GlassPanel";
 import { PlaceholderArt } from "@/components/ui/PlaceholderArt";
 import { BodyPreview } from "@/components/models/body-preview";
 import type { AvatarBasicInfo, BodySettings } from "@/types/models";
-import { getAvatarSeed } from "@/lib/avatar-demo";
+import { DemoAvatarService } from "@/services/demo-avatar-service";
 
 type SliderField = {
   key: keyof BodySettings;
@@ -47,7 +47,7 @@ export function AvatarResultStep({
   const [name, setName] = useState("My Avatar");
   const [saved, setSaved] = useState(false);
   const nameId = useId();
-  const seed = getAvatarSeed(basicInfo.genderPresentation, bodySettings);
+  const seed = DemoAvatarService.buildPreviewSeed(basicInfo, bodySettings);
 
   function handleSliderChange(field: SliderField, index: number) {
     onBodySettingsChange({ ...bodySettings, [field.key]: field.options[index] });

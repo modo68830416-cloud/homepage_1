@@ -3,11 +3,19 @@
 import { Check } from "lucide-react";
 import type { SubscriptionPlan } from "@/types/creator-business";
 import { Badge } from "@/components/ui/Badge";
-import { DemoActionButton } from "@/components/ui/DemoActionButton";
+import { Button } from "@/components/ui/Button";
 import { GlassPanel } from "@/components/ui/GlassPanel";
 import { cn, formatKRW } from "@/lib/utils";
 
-export function PlanCard({ plan, isCurrent }: { plan: SubscriptionPlan; isCurrent: boolean }) {
+export function PlanCard({
+  plan,
+  isCurrent,
+  onSelect,
+}: {
+  plan: SubscriptionPlan;
+  isCurrent: boolean;
+  onSelect: () => void;
+}) {
   return (
     <GlassPanel
       className={cn("flex h-full flex-col gap-4 rounded-2xl p-6", plan.isRecommended && "border-accent-lime/50")}
@@ -35,14 +43,14 @@ export function PlanCard({ plan, isCurrent }: { plan: SubscriptionPlan; isCurren
           </li>
         ))}
       </ul>
-      <DemoActionButton
+      <Button
         variant={isCurrent ? "secondary" : plan.isRecommended ? "primary" : "outline"}
         className="w-full"
         disabled={isCurrent}
-        message="실제 구독 결제 연동은 준비 중입니다"
+        onClick={onSelect}
       >
         {isCurrent ? "현재 플랜" : "플랜 변경"}
-      </DemoActionButton>
+      </Button>
     </GlassPanel>
   );
 }

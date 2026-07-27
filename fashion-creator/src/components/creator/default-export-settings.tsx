@@ -7,18 +7,37 @@ import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { GlassPanel } from "@/components/ui/GlassPanel";
 import { OptionChips } from "@/components/content-studio/option-chips";
+import { useDefaultExportSettings } from "@/lib/creator-settings-store";
 import { useToast } from "@/components/feedback/toast";
 
 const CHANNELS = ["YouTube", "Shorts", "Instagram", "TikTok", "Blog"];
 const LANGUAGES = ["한국어", "English", "日本語"];
 
 export function DefaultExportSettings() {
-  const [aspectRatio, setAspectRatio] = useState<(typeof ASPECT_RATIOS)[number]>("9:16");
-  const [channel, setChannel] = useState(CHANNELS[0]);
-  const [language, setLanguage] = useState(LANGUAGES[0]);
-  const [watermark, setWatermark] = useState(true);
-  const [hashtags, setHashtags] = useState(true);
+  const { exportSettings, save } = useDefaultExportSettings();
+  const [loadedSettings, setLoadedSettings] = useState(exportSettings);
+  const [aspectRatio, setAspectRatio] = useState<(typeof ASPECT_RATIOS)[number]>(exportSettings.aspectRatio);
+  const [channel, setChannel] = useState(exportSettings.channel);
+  const [language, setLanguage] = useState(exportSettings.language);
+  const [watermark, setWatermark] = useState(exportSettings.watermark);
+  const [hashtags, setHashtags] = useState(exportSettings.hashtags);
   const { showToast } = useToast();
+
+  // Adjust local field state during render when the repository's real
+  // stored value replaces the SSR fallback — see brand-kit-form.tsx.
+  if (exportSettings !== loadedSettings) {
+    setLoadedSettings(exportSettings);
+    setAspectRatio(exportSettings.aspectRatio);
+    setChannel(exportSettings.channel);
+    setLanguage(exportSettings.language);
+    setWatermark(exportSettings.watermark);
+    setHashtags(exportSettings.hashtags);
+  }
+
+  function handleSave() {
+    save({ aspectRatio, channel, language, watermark, hashtags });
+    showToast("기본 설정이 저장되었습니다 (DEMO)");
+  }
 
   return (
     <GlassPanel className="rounded-xl p-6">
@@ -56,11 +75,7 @@ export function DefaultExportSettings() {
           </label>
         </div>
 
-        <Button
-          variant="primary"
-          className="self-start"
-          onClick={() => showToast("기본 설정이 저장되었습니다 (DEMO)")}
-        >
+        <Button variant="primary" className="self-start" onClick={handleSave}>
           저장하기
         </Button>
       </div>

@@ -8,6 +8,7 @@ import { PlaceholderArt } from "@/components/ui/PlaceholderArt";
 import { CommerceAnalyticsDashboard } from "@/components/commerce/commerce-analytics-dashboard";
 import { CreatorWelcome } from "@/components/creator/creator-welcome";
 import { CreatorTierCard } from "@/components/creator/creator-tier-card";
+import { MyActivitySummary } from "@/components/creator/my-activity-summary";
 import { QuickActions } from "@/components/creator/quick-actions";
 import { RecentContentTable } from "@/components/creator/recent-content-table";
 import { formatCompactNumber, formatKRW } from "@/lib/utils";
@@ -23,6 +24,8 @@ export default function CreatorPage() {
   return (
     <div className="mx-auto max-w-6xl px-5 py-8 sm:px-8 sm:py-10">
       <CreatorWelcome profile={creatorProfile} />
+
+      <MyActivitySummary />
 
       <CommerceAnalyticsDashboard />
 

@@ -1,17 +1,21 @@
 "use client";
 
+import { useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { Minus, Plus, ShoppingBag, X } from "lucide-react";
 import { products } from "@/data/products";
 import { Button } from "@/components/ui/Button";
-import { DemoActionButton } from "@/components/ui/DemoActionButton";
+import { DemoCheckoutModal } from "@/components/commerce/demo-checkout-modal";
 import { PlaceholderArt } from "@/components/ui/PlaceholderArt";
 import { useCart } from "@/lib/cart-store";
+import { useToast } from "@/components/feedback/toast";
 import { trackCommerceEvent } from "@/lib/commerce-events";
 import { formatKRW } from "@/lib/utils";
 
 export function CartDrawer({ open, onClose }: { open: boolean; onClose: () => void }) {
-  const { items, removeItem, setQuantity } = useCart();
+  const { items, removeItem, setQuantity, clearCart } = useCart();
+  const { showToast } = useToast();
+  const [checkoutOpen, setCheckoutOpen] = useState(false);
 
   const lines = items
     .map((item) => {
@@ -107,19 +111,36 @@ export function CartDrawer({ open, onClose }: { open: boolean; onClose: () => vo
                 <span className="text-foreground-subtle">총 금액</span>
                 <span className="text-lg font-semibold text-foreground">{formatKRW(total)}</span>
               </div>
-              <DemoActionButton
+              <Button
                 variant="primary"
                 className="w-full"
-                message="실제 결제 연동은 준비 중입니다"
                 disabled={lines.length === 0}
-                onClick={() => trackCommerceEvent("purchase_started")}
+                onClick={() => {
+                  trackCommerceEvent("purchase_started");
+                  setCheckoutOpen(true);
+                }}
               >
                 구매하기
-              </DemoActionButton>
+              </Button>
             </div>
           </motion.div>
         </>
       )}
+      <DemoCheckoutModal
+        open={checkoutOpen}
+        onClose={() => setCheckoutOpen(false)}
+        title="장바구니 결제"
+        lineItems={lines.map((line) => ({
+          label: `${line.product.name} × ${line.quantity}`,
+          amount: (line.product.salePrice ?? line.product.price) * line.quantity,
+        }))}
+        total={total}
+        onConfirmed={() => {
+          clearCart();
+          showToast("구매가 완료되었습니다 (DEMO)");
+          onClose();
+        }}
+      />
     </AnimatePresence>
   );
 }

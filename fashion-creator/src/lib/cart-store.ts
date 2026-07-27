@@ -1,32 +1,47 @@
 "use client";
 
 import { useSyncExternalStore } from "react";
-import { createLocalStore } from "@/lib/local-store";
-import type { CartItem } from "@/types/commerce";
+import { useUser } from "@clerk/nextjs";
+import { cartRepository } from "@/repositories/cart-repository";
+import { useCloudSync } from "@/lib/cloud-sync";
+import { getCartItemsRemote, replaceCartItemsRemote } from "@/db/actions/cart";
 import { trackCommerceEvent } from "@/lib/commerce-events";
-
-const cartStore = createLocalStore<CartItem[]>("fashion-creator:cart", []);
+import type { CartItem } from "@/types/commerce";
 
 export function useCart() {
-  const items = useSyncExternalStore(cartStore.subscribe, cartStore.getSnapshot, cartStore.getServerSnapshot);
+  const { isSignedIn } = useUser();
+  const items = useSyncExternalStore(
+    cartRepository.subscribe.bind(cartRepository),
+    cartRepository.get.bind(cartRepository),
+    cartRepository.getServerSnapshot.bind(cartRepository),
+  );
+
+  useCloudSync<CartItem[]>({
+    isSignedIn,
+    local: items,
+    setLocal: (value) => cartRepository.set(value),
+    isEmpty: (value) => value.length === 0,
+    load: getCartItemsRemote,
+    save: replaceCartItemsRemote,
+  });
 
   function addItem(productId: string) {
-    const current = cartStore.getSnapshot();
+    const current = cartRepository.get();
     const existing = current.find((item) => item.productId === productId);
     if (existing) {
-      cartStore.set(
+      cartRepository.set(
         current.map((item) =>
           item.productId === productId ? { ...item, quantity: item.quantity + 1 } : item,
         ),
       );
     } else {
-      cartStore.set([...current, { productId, quantity: 1, addedAt: new Date().toISOString() }]);
+      cartRepository.set([...current, { productId, quantity: 1, addedAt: new Date().toISOString() }]);
     }
     trackCommerceEvent("add_to_cart");
   }
 
   function removeItem(productId: string) {
-    cartStore.set(cartStore.getSnapshot().filter((item) => item.productId !== productId));
+    cartRepository.set(cartRepository.get().filter((item) => item.productId !== productId));
   }
 
   function setQuantity(productId: string, quantity: number) {
@@ -34,13 +49,13 @@ export function useCart() {
       removeItem(productId);
       return;
     }
-    cartStore.set(
-      cartStore.getSnapshot().map((item) => (item.productId === productId ? { ...item, quantity } : item)),
+    cartRepository.set(
+      cartRepository.get().map((item) => (item.productId === productId ? { ...item, quantity } : item)),
     );
   }
 
   function clearCart() {
-    cartStore.clear();
+    cartRepository.clear();
   }
 
   return { items, addItem, removeItem, setQuantity, clearCart };

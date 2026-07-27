@@ -5,6 +5,7 @@ import type { Product } from "@/types";
 import { CategorySidebar } from "@/components/studio/category-sidebar";
 import { ModelPreviewPanel } from "@/components/studio/model-preview-panel";
 import { LookPanel } from "@/components/studio/look-panel";
+import { AiGateway } from "@/ai/gateway/ai-gateway";
 import { useSelectedModel } from "@/lib/model-store";
 import { useRecentlyViewed, useSavedLooks, useStudioSession } from "@/lib/studio-store";
 import { useToast } from "@/components/feedback/toast";
@@ -36,17 +37,8 @@ export function StudioWorkspace({ products }: { products: Product[] }) {
     markViewed(productId);
   }
 
-  function handleRecommend() {
-    const wornCategories = new Set(wornProducts.map((p) => p.category));
-    const candidates = products
-      .filter((p) => !wornProductIds.includes(p.id))
-      .sort((a, b) => {
-        const aIsNewCategory = wornCategories.has(a.category) ? 1 : 0;
-        const bIsNewCategory = wornCategories.has(b.category) ? 1 : 0;
-        if (aIsNewCategory !== bIsNewCategory) return aIsNewCategory - bIsNewCategory;
-        return b.trendScore - a.trendScore;
-      })
-      .slice(0, 3);
+  async function handleRecommend() {
+    const candidates = await AiGateway.recommend(wornProducts, 3);
 
     if (candidates.length === 0) {
       showToast("추천할 새로운 상품이 없습니다", "info");

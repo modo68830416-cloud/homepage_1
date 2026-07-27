@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Menu } from "lucide-react";
+import { UserButton, useUser } from "@clerk/nextjs";
 import { Logo } from "@/components/brand/Logo";
 import { MobileNav } from "@/components/layout/MobileNav";
 import { navLinks } from "@/components/layout/nav-links";
@@ -13,6 +14,7 @@ import { cn } from "@/lib/utils";
 export function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const { isSignedIn } = useUser();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -50,9 +52,13 @@ export function Header() {
 
         <div className="flex items-center gap-3">
           <CartButton />
-          <Button variant="ghost" className="hidden sm:inline-flex">
-            로그인
-          </Button>
+          {isSignedIn ? (
+            <UserButton />
+          ) : (
+            <Button href="/sign-in" variant="ghost" className="hidden sm:inline-flex">
+              로그인
+            </Button>
+          )}
           <Button href="/studio" variant="primary" className="hidden sm:inline-flex">
             Create a Look
           </Button>

@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useUser } from "@clerk/nextjs";
 import { GlassPanel } from "@/components/ui/GlassPanel";
 import { WizardProgress, type WizardStepKey } from "@/components/models/wizard-progress";
 import { PhotoUploadStep } from "@/components/models/photo-upload-step";
@@ -9,7 +10,9 @@ import { BasicInfoStep } from "@/components/models/basic-info-step";
 import { BodyProfileStep } from "@/components/models/body-profile-step";
 import { AvatarGeneratingStep } from "@/components/models/avatar-generating-step";
 import { AvatarResultStep } from "@/components/models/avatar-result-step";
-import { useSavedAvatars, useSelectedModel } from "@/lib/model-store";
+import { AiGateway } from "@/ai/gateway/ai-gateway";
+import { DemoAvatarService } from "@/services/demo-avatar-service";
+import { uploadAvatarPhotoRemote } from "@/db/actions/photos";
 import { useToast } from "@/components/feedback/toast";
 import { DEFAULT_BODY_SETTINGS, type AvatarBasicInfo, type BodySettings } from "@/types/models";
 
@@ -21,6 +24,7 @@ function isValidStep(value: string | null): value is WizardStepKey {
 
 export function AvatarWizard() {
   const router = useRouter();
+  const { isSignedIn } = useUser();
   const searchParams = useSearchParams();
   const stepParam = searchParams.get("step");
   const step: WizardStepKey = isValidStep(stepParam) ? stepParam : "photo";
@@ -34,9 +38,8 @@ export function AvatarWizard() {
   });
   const [bodySettings, setBodySettings] = useState<BodySettings>(DEFAULT_BODY_SETTINGS);
   const [description, setDescription] = useState("");
+  const [avatarJobId, setAvatarJobId] = useState<string | null>(null);
 
-  const { saveAvatar } = useSavedAvatars();
-  const { selectModel } = useSelectedModel();
   const { showToast } = useToast();
 
   const headingRef = useRef<HTMLHeadingElement>(null);
@@ -44,6 +47,16 @@ export function AvatarWizard() {
   useEffect(() => {
     headingRef.current?.focus();
   }, [step]);
+
+  // A hard refresh/direct link to ?step=generating has no job (jobs live
+  // only in-memory) — send the visitor back to re-run body profile instead
+  // of rendering a generating step with nothing to show.
+  useEffect(() => {
+    if (step === "generating" && !avatarJobId) {
+      goToStep("body");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [step, avatarJobId]);
 
   useEffect(() => {
     return () => {
@@ -54,6 +67,12 @@ export function AvatarWizard() {
 
   function goToStep(next: WizardStepKey) {
     router.push(`/models/create?step=${next}`, { scroll: false });
+  }
+
+  function handleStartGenerating() {
+    const job = AiGateway.startAvatarJob();
+    setAvatarJobId(job.id);
+    goToStep("generating");
   }
 
   function handleRestart() {
@@ -67,30 +86,26 @@ export function AvatarWizard() {
     goToStep("photo");
   }
 
-  function handleSave(name: string) {
-    const avatarId = `avatar-${Date.now()}`;
-    const previewImage = `avatar-${basicInfo.genderPresentation}-${bodySettings.bodyType}`;
-    saveAvatar({
-      id: avatarId,
+  async function handleSave(name: string) {
+    let photoBlobPathname: string | undefined;
+    if (isSignedIn && photoFile) {
+      try {
+        const formData = new FormData();
+        formData.set("photo", photoFile);
+        const uploaded = await uploadAvatarPhotoRemote(formData);
+        photoBlobPathname = uploaded.pathname;
+      } catch {
+        showToast("사진 업로드에 실패해 미리보기만 저장되었습니다", "info");
+      }
+    }
+    const avatar = DemoAvatarService.saveAvatar({
       name,
-      createdAt: new Date().toISOString(),
       source: photoFile ? "photo" : "preset",
-      previewImage,
-      genderPresentation: basicInfo.genderPresentation,
-      ageGroup: basicInfo.ageGroup,
-      height: basicInfo.height,
-      weight: basicInfo.weight,
+      basicInfo,
       bodySettings,
-      isDemo: true,
+      photoBlobPathname,
     });
-    selectModel({
-      modelId: avatarId,
-      modelType: "avatar",
-      modelName: name,
-      previewImage,
-      bodyProfileSummary: `${bodySettings.bodyType} · ${basicInfo.ageGroup}`,
-      styleTags: [],
-    });
+    DemoAvatarService.selectAvatarAsModel(avatar);
     showToast(`${name} 아바타를 저장했습니다`);
   }
 
@@ -130,13 +145,19 @@ export function AvatarWizard() {
             onChange={setBodySettings}
             description={description}
             onDescriptionChange={setDescription}
-            onNext={() => goToStep("generating")}
+            onNext={handleStartGenerating}
             onBack={() => goToStep("info")}
           />
         )}
 
-        {step === "generating" && (
-          <AvatarGeneratingStep onComplete={() => goToStep("result")} onCancel={() => goToStep("body")} />
+        {step === "generating" && avatarJobId && (
+          <AvatarGeneratingStep
+            jobId={avatarJobId}
+            basicInfo={basicInfo}
+            bodySettings={bodySettings}
+            onComplete={() => goToStep("result")}
+            onCancel={() => goToStep("body")}
+          />
         )}
 
         {step === "result" && (

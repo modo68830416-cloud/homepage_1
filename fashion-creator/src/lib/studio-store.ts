@@ -1,31 +1,31 @@
 "use client";
 
 import { useSyncExternalStore } from "react";
-import { createLocalStore } from "@/lib/local-store";
+import { useUser } from "@clerk/nextjs";
+import { lookRepository } from "@/repositories/look-repository";
+import { recentlyViewedRepository, wornProductsRepository } from "@/repositories/studio-repository";
+import { useCloudSync } from "@/lib/cloud-sync";
+import { getSavedLooksRemote, replaceSavedLooksRemote } from "@/db/actions/looks";
 import type { Look } from "@/types/studio";
-
-const wornProductsStore = createLocalStore<string[]>("fashion-creator:studio-worn-products", []);
-const recentlyViewedStore = createLocalStore<string[]>("fashion-creator:studio-recently-viewed", []);
-const savedLooksStore = createLocalStore<Look[]>("fashion-creator:saved-looks", []);
 
 export function useStudioSession() {
   const wornProductIds = useSyncExternalStore(
-    wornProductsStore.subscribe,
-    wornProductsStore.getSnapshot,
-    wornProductsStore.getServerSnapshot,
+    wornProductsRepository.subscribe.bind(wornProductsRepository),
+    wornProductsRepository.get.bind(wornProductsRepository),
+    wornProductsRepository.getServerSnapshot.bind(wornProductsRepository),
   );
 
   function toggleProduct(productId: string) {
-    const current = wornProductsStore.getSnapshot();
+    const current = wornProductsRepository.get();
     if (current.includes(productId)) {
-      wornProductsStore.set(current.filter((id) => id !== productId));
+      wornProductsRepository.set(current.filter((id) => id !== productId));
     } else {
-      wornProductsStore.set([...current, productId]);
+      wornProductsRepository.set([...current, productId]);
     }
   }
 
   function clearSession() {
-    wornProductsStore.clear();
+    wornProductsRepository.clear();
   }
 
   return { wornProductIds, toggleProduct, clearSession };
@@ -33,32 +33,42 @@ export function useStudioSession() {
 
 export function useRecentlyViewed() {
   const recentlyViewedIds = useSyncExternalStore(
-    recentlyViewedStore.subscribe,
-    recentlyViewedStore.getSnapshot,
-    recentlyViewedStore.getServerSnapshot,
+    recentlyViewedRepository.subscribe.bind(recentlyViewedRepository),
+    recentlyViewedRepository.get.bind(recentlyViewedRepository),
+    recentlyViewedRepository.getServerSnapshot.bind(recentlyViewedRepository),
   );
 
   function markViewed(productId: string) {
-    const current = recentlyViewedStore.getSnapshot().filter((id) => id !== productId);
-    recentlyViewedStore.set([productId, ...current].slice(0, 8));
+    const current = recentlyViewedRepository.get().filter((id) => id !== productId);
+    recentlyViewedRepository.set([productId, ...current].slice(0, 8));
   }
 
   return { recentlyViewedIds, markViewed };
 }
 
 export function useSavedLooks() {
+  const { isSignedIn } = useUser();
   const savedLooks = useSyncExternalStore(
-    savedLooksStore.subscribe,
-    savedLooksStore.getSnapshot,
-    savedLooksStore.getServerSnapshot,
+    lookRepository.subscribe.bind(lookRepository),
+    lookRepository.getAll.bind(lookRepository),
+    lookRepository.getServerSnapshot.bind(lookRepository),
   );
 
+  useCloudSync<Look[]>({
+    isSignedIn,
+    local: savedLooks,
+    setLocal: (value) => lookRepository.set(value),
+    isEmpty: (value) => value.length === 0,
+    load: getSavedLooksRemote,
+    save: replaceSavedLooksRemote,
+  });
+
   function saveLook(look: Look) {
-    savedLooksStore.set([...savedLooksStore.getSnapshot(), look]);
+    lookRepository.upsert(look, "end");
   }
 
   function removeLook(id: string) {
-    savedLooksStore.set(savedLooksStore.getSnapshot().filter((look) => look.id !== id));
+    lookRepository.remove(id);
   }
 
   return { savedLooks, saveLook, removeLook };

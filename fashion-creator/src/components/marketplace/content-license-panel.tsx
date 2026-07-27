@@ -5,10 +5,12 @@ import { AlertTriangle } from "lucide-react";
 import type { ContentLicenseSelection, LicenseType, MarketplaceContent } from "@/types/marketplace";
 import { LICENSE_DESCRIPTION, LICENSE_LABEL } from "@/types/marketplace";
 import { Badge } from "@/components/ui/Badge";
-import { DemoActionButton } from "@/components/ui/DemoActionButton";
+import { Button } from "@/components/ui/Button";
+import { DemoCheckoutModal } from "@/components/commerce/demo-checkout-modal";
 import { GlassPanel } from "@/components/ui/GlassPanel";
 import { OptionChips } from "@/components/content-studio/option-chips";
-import { calculateLicensePrice } from "@/lib/license-pricing";
+import { useToast } from "@/components/feedback/toast";
+import { DemoMarketplaceService } from "@/services/demo-marketplace-service";
 import { formatKRW } from "@/lib/utils";
 
 const LICENSE_TYPES: LicenseType[] = ["personal", "social-commercial", "advertising", "exclusive"];
@@ -26,8 +28,10 @@ export function ContentLicensePanel({ content }: { content: MarketplaceContent }
     exclusive: false,
     sourceFileIncluded: false,
   });
+  const [checkoutOpen, setCheckoutOpen] = useState(false);
+  const { showToast } = useToast();
 
-  const price = useMemo(() => calculateLicensePrice(selection), [selection]);
+  const price = useMemo(() => DemoMarketplaceService.calculateLicensePrice(selection), [selection]);
   const canPurchase = !content.isPhotoAvatar || content.commercialConsent;
 
   function toggleChannel(channel: string) {
@@ -150,14 +154,18 @@ export function ContentLicensePanel({ content }: { content: MarketplaceContent }
         </div>
       )}
 
-      <DemoActionButton
-        variant="primary"
-        className="w-full"
-        disabled={!canPurchase}
-        message="실제 결제 및 라이선스 발급 연동은 준비 중입니다"
-      >
+      <Button variant="primary" className="w-full" disabled={!canPurchase} onClick={() => setCheckoutOpen(true)}>
         사용권 구매하기
-      </DemoActionButton>
+      </Button>
+
+      <DemoCheckoutModal
+        open={checkoutOpen}
+        onClose={() => setCheckoutOpen(false)}
+        title={`${content.title} 사용권`}
+        lineItems={[{ label: `${LICENSE_LABEL[selection.licenseType]} 라이선스`, amount: price }]}
+        total={price}
+        onConfirmed={() => showToast("사용권 구매가 완료되었습니다 (DEMO)")}
+      />
     </GlassPanel>
   );
 }

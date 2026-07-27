@@ -18,24 +18,37 @@ import { GenerationPreview } from "@/components/content-studio/generation-previe
 import { StoryboardEditor } from "@/components/content-studio/storyboard-editor";
 import { ChannelCopyEditor } from "@/components/content-studio/channel-copy-editor";
 import { GenerationError } from "@/components/content-studio/generation-error";
-import { contentGenerationProvider } from "@/lib/content-provider";
-import { generateAllChannelCopies } from "@/lib/copy-generator";
-import { useContentProjects } from "@/lib/content-store";
+import { AiGateway } from "@/ai/gateway/ai-gateway";
+import { DemoContentService } from "@/services/demo-content-service";
 import { useToast } from "@/components/feedback/toast";
-import type { ContentProject } from "@/types/content";
 
 type Phase = "configure" | "generating" | "result" | "error";
 
 export function ContentStudioShell({ looks }: { looks: ContentSourceLook[] }) {
   const router = useRouter();
-  const { upsertProject } = useContentProjects();
   const { showToast } = useToast();
 
   const [state, setState] = useState<ContentStudioState>({
     ...DEFAULT_STUDIO_STATE,
     sourceLookId: looks[0]?.id ?? null,
   });
+  const [lastLooks, setLastLooks] = useState(looks);
+
+  // `looks` starts as the SSR/pre-hydration fallback (a demo Look, since the
+  // real saved Looks live in a Repository that's empty on the server) and
+  // then gets replaced once the real value hydrates in. Re-point
+  // sourceLookId when that happens so it doesn't stay locked onto a Look
+  // that no longer exists in the list — see brand-kit-form.tsx for the same
+  // "adjust state during render" pattern.
+  if (looks !== lastLooks) {
+    setLastLooks(looks);
+    if (!looks.some((look) => look.id === state.sourceLookId)) {
+      setState((current) => ({ ...current, sourceLookId: looks[0]?.id ?? null }));
+    }
+  }
+
   const [phase, setPhase] = useState<Phase>("configure");
+  const [generationJobId, setGenerationJobId] = useState<string | null>(null);
   const [projectId, setProjectId] = useState<string | null>(null);
   const [content, setContent] = useState<GeneratedContent | null>(null);
   const [scenes, setScenes] = useState(content?.scenes ?? []);
@@ -53,40 +66,32 @@ export function ContentStudioShell({ looks }: { looks: ContentSourceLook[] }) {
       setPhase("error");
       return;
     }
+    const job = AiGateway.startContentJob(state.format);
+    setGenerationJobId(job.id);
     setPhase("generating");
   }
 
-  function handleGenerationComplete() {
+  async function handleGenerationComplete(jobId: string) {
     if (!selectedLook) {
       setPhase("error");
       return;
     }
-    const id = `project-${Date.now()}`;
-    const generated = contentGenerationProvider.generate(state, selectedLook, id);
-    const generatedCopies = generateAllChannelCopies(selectedLook, state);
-    setProjectId(id);
-    setContent(generated);
-    setScenes(generated.scenes);
-    setCopies(generatedCopies);
-    setPhase("result");
-
-    const project: ContentProject = {
-      id,
-      title: `${selectedLook.name} · ${state.format}`,
-      sourceLookId: selectedLook.id,
-      format: state.format,
-      status: "completed",
-      thumbnailSeed: generated.mediaSeed,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-      settings: state,
-      output: generated,
-      channelCopies: generatedCopies,
-      isFavorite: false,
-      isDemo: true,
-    };
-    upsertProject(project);
-    showToast("콘텐츠 생성이 완료되었습니다");
+    try {
+      const { content: generated } = await AiGateway.completeContentJob(jobId, {
+        settings: state,
+        sourceLook: selectedLook,
+        projectId: `project-${Date.now()}`,
+      });
+      const { project, copies: generatedCopies } = DemoContentService.saveProject(state, selectedLook, generated);
+      setProjectId(project.id);
+      setContent(generated);
+      setScenes(generated.scenes);
+      setCopies(generatedCopies);
+      setPhase("result");
+      showToast("콘텐츠 생성이 완료되었습니다");
+    } catch {
+      setPhase("error");
+    }
   }
 
   const summary = useMemo(() => {
@@ -110,10 +115,14 @@ export function ContentStudioShell({ looks }: { looks: ContentSourceLook[] }) {
     );
   }
 
-  if (phase === "generating") {
+  if (phase === "generating" && generationJobId) {
     return (
       <div className="mx-auto max-w-xl px-5 py-16 sm:px-8">
-        <GenerationProgress onComplete={handleGenerationComplete} onCancel={() => setPhase("configure")} />
+        <GenerationProgress
+          jobId={generationJobId}
+          onComplete={handleGenerationComplete}
+          onCancel={() => setPhase("configure")}
+        />
       </div>
     );
   }

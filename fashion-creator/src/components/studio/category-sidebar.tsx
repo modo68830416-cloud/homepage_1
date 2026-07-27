@@ -1,10 +1,11 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { Search } from "lucide-react";
+import { Heart, Search } from "lucide-react";
 import type { Product } from "@/types";
 import { STUDIO_CATEGORIES, CATEGORY_TO_STUDIO, type StudioCategory } from "@/types/studio";
 import { StudioProductCard } from "@/components/studio/studio-product-card";
+import { useFavoriteProducts } from "@/lib/favorites-store";
 import { cn } from "@/lib/utils";
 
 type CategorySidebarProps = {
@@ -22,16 +23,19 @@ export function CategorySidebar({
 }: CategorySidebarProps) {
   const [activeCategory, setActiveCategory] = useState<StudioCategory | "전체">("전체");
   const [query, setQuery] = useState("");
+  const [favoritesOnly, setFavoritesOnly] = useState(false);
+  const { favoriteIds } = useFavoriteProducts();
 
   const filtered = useMemo(() => {
     const lower = query.trim().toLowerCase();
     return products.filter((product) => {
+      if (favoritesOnly && !favoriteIds.includes(product.id)) return false;
       const studioCategory = CATEGORY_TO_STUDIO[product.category] ?? product.category;
       if (activeCategory !== "전체" && studioCategory !== activeCategory) return false;
       if (!lower) return true;
       return product.name.toLowerCase().includes(lower) || product.brand.toLowerCase().includes(lower);
     });
-  }, [products, activeCategory, query]);
+  }, [products, activeCategory, query, favoritesOnly, favoriteIds]);
 
   const popular = useMemo(
     () => products.slice().sort((a, b) => b.trendScore - a.trendScore).slice(0, 4),
@@ -89,9 +93,23 @@ export function CategorySidebar({
             {category}
           </button>
         ))}
+        <button
+          type="button"
+          onClick={() => setFavoritesOnly((current) => !current)}
+          className={cn(
+            "flex items-center gap-1 rounded-full border px-2.5 py-1 text-[11px] font-medium transition-colors",
+            favoritesOnly
+              ? "border-danger/60 bg-danger/10 text-danger"
+              : "border-border text-foreground-muted hover:text-foreground",
+          )}
+          aria-pressed={favoritesOnly}
+        >
+          <Heart className={cn("h-3 w-3", favoritesOnly && "fill-danger")} aria-hidden="true" />
+          즐겨찾기 {favoriteIds.length > 0 && `(${favoriteIds.length})`}
+        </button>
       </div>
 
-      {!query && activeCategory === "전체" && (
+      {!query && activeCategory === "전체" && !favoritesOnly && (
         <>
           <div>
             <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-foreground-subtle">
@@ -131,11 +149,13 @@ export function CategorySidebar({
 
       <div className="flex-1">
         <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-foreground-subtle">
-          {activeCategory === "전체" ? "전체 상품" : activeCategory}
+          {favoritesOnly ? "즐겨찾기" : activeCategory === "전체" ? "전체 상품" : activeCategory}
         </p>
         <div className="flex flex-col gap-2">
           {filtered.length === 0 ? (
-            <p className="py-8 text-center text-xs text-foreground-subtle">상품이 없습니다.</p>
+            <p className="py-8 text-center text-xs text-foreground-subtle">
+              {favoritesOnly ? "즐겨찾기한 상품이 없습니다." : "상품이 없습니다."}
+            </p>
           ) : (
             filtered.map((product) => (
               <StudioProductCard

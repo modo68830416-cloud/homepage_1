@@ -5,18 +5,36 @@ import { Palette, Upload } from "lucide-react";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { GlassPanel } from "@/components/ui/GlassPanel";
+import { useBrandKit } from "@/lib/creator-settings-store";
 import { useToast } from "@/components/feedback/toast";
 
 const SWATCHES = ["#D9FF57", "#FF78C8", "#A98BFF", "#76A9FF", "#FF8B5D"];
 
 export function BrandKitForm() {
-  const [brandName, setBrandName] = useState("Fashion Creator Studio");
-  const [color, setColor] = useState(SWATCHES[0]);
-  const [ctaCopy, setCtaCopy] = useState("Shop the Look");
-  const [disclosure, setDisclosure] = useState(
-    "이 콘텐츠에는 제휴 링크가 포함될 수 있으며, 구매 시 크리에이터에게 일정 수익이 발생할 수 있습니다.",
-  );
+  const { brandKit, save } = useBrandKit();
+  const [loadedBrandKit, setLoadedBrandKit] = useState(brandKit);
+  const [brandName, setBrandName] = useState(brandKit.brandName);
+  const [color, setColor] = useState(brandKit.color);
+  const [ctaCopy, setCtaCopy] = useState(brandKit.ctaCopy);
+  const [disclosure, setDisclosure] = useState(brandKit.disclosure);
   const { showToast } = useToast();
+
+  // Repository loads asynchronously (server snapshot is the default on first
+  // paint) — adjust local field state during render once the real stored
+  // value is known, rather than in an effect (react.dev: "Adjusting state
+  // when a prop changes").
+  if (brandKit !== loadedBrandKit) {
+    setLoadedBrandKit(brandKit);
+    setBrandName(brandKit.brandName);
+    setColor(brandKit.color);
+    setCtaCopy(brandKit.ctaCopy);
+    setDisclosure(brandKit.disclosure);
+  }
+
+  function handleSave() {
+    save({ brandName, color, ctaCopy, disclosure });
+    showToast("Brand Kit을 저장했습니다 (DEMO)");
+  }
 
   return (
     <GlassPanel className="rounded-xl p-6">
@@ -43,7 +61,7 @@ export function BrandKitForm() {
           <p className="mb-2 text-xs text-foreground-subtle">로고 업로드 (DEMO)</p>
           <button
             type="button"
-            onClick={() => showToast("로고 업로드는 DEMO 모드에서 저장되지 않습니다", "info")}
+            onClick={() => showToast("로고 업로드는 아직 지원하지 않습니다 (파일 저장 연동 예정)", "info")}
             className="flex h-20 w-20 flex-col items-center justify-center gap-1 rounded-xl border-2 border-dashed border-border text-foreground-subtle hover:border-border-strong"
           >
             <Upload className="h-4 w-4" aria-hidden="true" />
@@ -88,11 +106,7 @@ export function BrandKitForm() {
           />
         </label>
 
-        <Button
-          variant="primary"
-          className="self-start"
-          onClick={() => showToast("DEMO 모드에서는 실제 저장되지 않습니다", "info")}
-        >
+        <Button variant="primary" className="self-start" onClick={handleSave}>
           저장하기
         </Button>
       </div>

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { AnimatePresence, motion } from "motion/react";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef } from "react";
+import { UserButton, useUser } from "@clerk/nextjs";
 import { navLinks } from "@/components/layout/nav-links";
 import { Button } from "@/components/ui/Button";
 import { Stagger } from "@/components/motion/stagger";
@@ -16,6 +17,7 @@ type MobileNavProps = {
 
 export function MobileNav({ open, onClose }: MobileNavProps) {
   const pathname = usePathname();
+  const { isSignedIn } = useUser();
   const containerRef = useRef<HTMLDivElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
 
@@ -100,9 +102,16 @@ export function MobileNav({ open, onClose }: MobileNavProps) {
             </Stagger>
           </nav>
           <div className="flex flex-col gap-3 p-8">
-            <Button variant="secondary" className="w-full" onClick={onClose}>
-              로그인
-            </Button>
+            {isSignedIn ? (
+              <div className="flex items-center gap-3">
+                <UserButton />
+                <span className="text-sm text-foreground-muted">내 계정</span>
+              </div>
+            ) : (
+              <Button href="/sign-in" variant="secondary" className="w-full" onClick={onClose}>
+                로그인
+              </Button>
+            )}
             <Button href="/studio" variant="primary" className="w-full">
               Create a Look
             </Button>

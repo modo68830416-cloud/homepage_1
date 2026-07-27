@@ -87,7 +87,12 @@ export default async function LookPage({ params }: LookPageProps) {
             </div>
 
             <div className="flex flex-col gap-2 sm:flex-row">
-              <LookPurchaseButton className="flex-1" />
+              <LookPurchaseButton
+                className="flex-1"
+                lookTitle={look.title}
+                items={items.map((product) => ({ name: product.name, price: product.salePrice ?? product.price }))}
+                total={look.totalPrice}
+              />
               <CopyLinkButton path={`/look/${look.slug}`} />
             </div>
 

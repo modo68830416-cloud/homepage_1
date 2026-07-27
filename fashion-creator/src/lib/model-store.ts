@@ -1,49 +1,71 @@
 "use client";
 
-// TODO before this leaves DEMO mode: signed upload URLs, encrypted private
-// storage for photos, an automatic deletion policy, consent versioning, an
-// audit log for avatar generation, account-deletion cascade, and a
-// biometric/privacy legal review. Right now avatars persist only in
-// localStorage as placeholder asset paths + settings — no photo bytes.
+// TODO before this leaves DEMO mode: signed upload URLs, an automatic
+// deletion policy, consent versioning, an audit log for avatar generation,
+// account-deletion cascade, and a biometric/privacy legal review. Signed-in
+// avatars now sync to Postgres (settings + seed only) and photo uploads go
+// to a private Blob store (see src/services/demo-avatar-service.ts) — but
+// none of the TODOs above are implemented yet.
 
 import { useSyncExternalStore } from "react";
-import { createLocalStore } from "@/lib/local-store";
+import { useUser } from "@clerk/nextjs";
+import { savedAvatarsRepository, selectedModelRepository } from "@/repositories/model-repository";
+import { useCloudSync } from "@/lib/cloud-sync";
+import {
+  getSavedAvatarsRemote,
+  getSelectedModelRemote,
+  replaceSavedAvatarsRemote,
+  setSelectedModelRemote,
+} from "@/db/actions/models";
 import type { SavedAvatar, SelectedModel } from "@/types/models";
 
-const selectedModelStore = createLocalStore<SelectedModel | null>(
-  "fashion-creator:selected-model",
-  null,
-);
-
-const savedAvatarsStore = createLocalStore<SavedAvatar[]>("fashion-creator:saved-avatars", []);
-
 export function useSelectedModel() {
+  const { isSignedIn } = useUser();
   const selectedModel = useSyncExternalStore(
-    selectedModelStore.subscribe,
-    selectedModelStore.getSnapshot,
-    selectedModelStore.getServerSnapshot,
+    selectedModelRepository.subscribe.bind(selectedModelRepository),
+    selectedModelRepository.get.bind(selectedModelRepository),
+    selectedModelRepository.getServerSnapshot.bind(selectedModelRepository),
   );
+
+  useCloudSync<SelectedModel | null>({
+    isSignedIn,
+    local: selectedModel,
+    setLocal: (value) => selectedModelRepository.set(value),
+    isEmpty: (value) => value === null,
+    load: getSelectedModelRemote,
+    save: (value) => (value ? setSelectedModelRemote(value) : Promise.resolve()),
+  });
 
   return {
     selectedModel,
-    selectModel: (model: SelectedModel) => selectedModelStore.set(model),
-    clearSelection: () => selectedModelStore.clear(),
+    selectModel: (model: SelectedModel) => selectedModelRepository.set(model),
+    clearSelection: () => selectedModelRepository.clear(),
   };
 }
 
 export function useSavedAvatars() {
+  const { isSignedIn } = useUser();
   const savedAvatars = useSyncExternalStore(
-    savedAvatarsStore.subscribe,
-    savedAvatarsStore.getSnapshot,
-    savedAvatarsStore.getServerSnapshot,
+    savedAvatarsRepository.subscribe.bind(savedAvatarsRepository),
+    savedAvatarsRepository.getAll.bind(savedAvatarsRepository),
+    savedAvatarsRepository.getServerSnapshot.bind(savedAvatarsRepository),
   );
 
+  useCloudSync<SavedAvatar[]>({
+    isSignedIn,
+    local: savedAvatars,
+    setLocal: (value) => savedAvatarsRepository.set(value),
+    isEmpty: (value) => value.length === 0,
+    load: getSavedAvatarsRemote,
+    save: replaceSavedAvatarsRemote,
+  });
+
   function saveAvatar(avatar: SavedAvatar) {
-    savedAvatarsStore.set([...savedAvatarsStore.getSnapshot(), avatar]);
+    savedAvatarsRepository.upsert(avatar, "end");
   }
 
   function removeAvatar(id: string) {
-    savedAvatarsStore.set(savedAvatarsStore.getSnapshot().filter((avatar) => avatar.id !== id));
+    savedAvatarsRepository.remove(id);
   }
 
   return { savedAvatars, saveAvatar, removeAvatar };

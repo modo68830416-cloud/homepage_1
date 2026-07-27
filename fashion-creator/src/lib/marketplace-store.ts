@@ -1,39 +1,36 @@
 "use client";
 
 import { useSyncExternalStore } from "react";
-import { createLocalStore } from "@/lib/local-store";
-import { marketplaceOrders } from "@/data/marketplace";
-import type {
-  CampaignApplication,
-  CustomProductionRequest,
-  MarketplaceOrder,
-  OrderAuditEvent,
-  OrderReview,
-} from "@/types/marketplace";
-
-const applicationsStore = createLocalStore<CampaignApplication[]>("fashion-creator:campaign-applications", []);
-const requestsStore = createLocalStore<CustomProductionRequest[]>("fashion-creator:custom-requests", []);
-const ordersStore = createLocalStore<MarketplaceOrder[]>("fashion-creator:marketplace-orders", marketplaceOrders);
+import {
+  campaignApplicationRepository,
+  customRequestRepository,
+  marketplaceOrderRepository,
+} from "@/repositories/marketplace-repository";
+import type { CampaignApplication, CustomProductionRequest, MarketplaceOrder, OrderAuditEvent, OrderReview } from "@/types/marketplace";
 
 export function useCampaignApplications() {
   const applications = useSyncExternalStore(
-    applicationsStore.subscribe,
-    applicationsStore.getSnapshot,
-    applicationsStore.getServerSnapshot,
+    campaignApplicationRepository.subscribe.bind(campaignApplicationRepository),
+    campaignApplicationRepository.getAll.bind(campaignApplicationRepository),
+    campaignApplicationRepository.getServerSnapshot.bind(campaignApplicationRepository),
   );
 
   function submitApplication(application: CampaignApplication) {
-    applicationsStore.set([...applicationsStore.getSnapshot(), application]);
+    campaignApplicationRepository.add(application, "end");
   }
 
   return { applications, submitApplication };
 }
 
 export function useCustomRequests() {
-  const requests = useSyncExternalStore(requestsStore.subscribe, requestsStore.getSnapshot, requestsStore.getServerSnapshot);
+  const requests = useSyncExternalStore(
+    customRequestRepository.subscribe.bind(customRequestRepository),
+    customRequestRepository.getAll.bind(customRequestRepository),
+    customRequestRepository.getServerSnapshot.bind(customRequestRepository),
+  );
 
   function submitRequest(request: CustomProductionRequest) {
-    requestsStore.set([...requestsStore.getSnapshot(), request]);
+    customRequestRepository.add(request, "end");
   }
 
   return { requests, submitRequest };
@@ -47,10 +44,14 @@ function appendAudit(order: MarketplaceOrder, event: Omit<OrderAuditEvent, "id">
 }
 
 export function useMarketplaceOrders() {
-  const orders = useSyncExternalStore(ordersStore.subscribe, ordersStore.getSnapshot, ordersStore.getServerSnapshot);
+  const orders = useSyncExternalStore(
+    marketplaceOrderRepository.subscribe.bind(marketplaceOrderRepository),
+    marketplaceOrderRepository.getAll.bind(marketplaceOrderRepository),
+    marketplaceOrderRepository.getServerSnapshot.bind(marketplaceOrderRepository),
+  );
 
   function updateOrder(id: string, updater: (order: MarketplaceOrder) => MarketplaceOrder) {
-    ordersStore.set(ordersStore.getSnapshot().map((order) => (order.id === id ? updater(order) : order)));
+    marketplaceOrderRepository.update(id, updater);
   }
 
   function submitWork(id: string) {

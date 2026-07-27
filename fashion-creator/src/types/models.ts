@@ -58,6 +58,10 @@ export type SavedAvatar = {
   weight?: number;
   bodySettings: BodySettings;
   isDemo: true;
+  // Set only for signed-in users who uploaded a real photo — points at a
+  // private Vercel Blob object, never the photo bytes themselves. Absent
+  // for Guest Mode and preset-based avatars.
+  photoBlobPathname?: string;
 };
 
 export type SelectedModelType = "preset" | "avatar";

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { AlertTriangle } from "lucide-react";
 import { Logo } from "@/components/brand/Logo";
 import { Button } from "@/components/ui/Button";
@@ -12,6 +13,8 @@ export default function GlobalError({
   error: Error & { digest?: string };
   reset: () => void;
 }) {
+  const router = useRouter();
+
   useEffect(() => {
     console.error(error);
   }, [error]);
@@ -26,9 +29,12 @@ export default function GlobalError({
           일시적인 오류입니다. 잠시 후 다시 시도해주세요.
         </p>
       </div>
-      <div className="flex gap-3">
+      <div className="flex flex-wrap justify-center gap-3">
         <Button variant="secondary" onClick={reset}>
           다시 시도
+        </Button>
+        <Button variant="outline" onClick={() => router.back()}>
+          이전 화면
         </Button>
         <Button href="/" variant="primary">
           홈으로 이동

@@ -1,38 +1,56 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Check, Loader2 } from "lucide-react";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { GlassPanel } from "@/components/ui/GlassPanel";
-import { getGenerationSteps } from "@/lib/avatar-demo";
+import { AiGateway } from "@/ai/gateway/ai-gateway";
+import { useAiJob } from "@/ai/gateway/use-ai-job";
 import { useReducedMotionContext } from "@/components/motion/reduced-motion-provider";
+import type { AvatarBasicInfo, BodySettings } from "@/types/models";
 
 type AvatarGeneratingStepProps = {
+  jobId: string;
+  basicInfo: AvatarBasicInfo;
+  bodySettings: BodySettings;
   onComplete: () => void;
   onCancel: () => void;
 };
 
-const STEPS = getGenerationSteps();
 const STEP_DURATION_MS = 800;
 
-export function AvatarGeneratingStep({ onComplete, onCancel }: AvatarGeneratingStepProps) {
+// The job is created by the caller (a click handler, not a render/effect)
+// before this step ever mounts — this component only ticks and displays an
+// existing AI Gateway Job Queue entry, it never creates one itself.
+export function AvatarGeneratingStep({ jobId, basicInfo, bodySettings, onComplete, onCancel }: AvatarGeneratingStepProps) {
   const reduced = useReducedMotionContext();
-  const [activeIndex, setActiveIndex] = useState(0);
+  const job = useAiJob(jobId);
 
   useEffect(() => {
     if (reduced) {
-      onComplete();
+      AiGateway.completeAvatarJob(jobId, { basicInfo, bodySettings }).then(onComplete, onComplete);
       return;
     }
-    if (activeIndex >= STEPS.length) {
-      const timer = setTimeout(onComplete, 400);
+    if (!job) return;
+    if (job.activeStepIndex >= job.steps.length) {
+      const timer = setTimeout(() => {
+        AiGateway.completeAvatarJob(jobId, { basicInfo, bodySettings }).then(onComplete, onComplete);
+      }, 400);
       return () => clearTimeout(timer);
     }
-    const timer = setTimeout(() => setActiveIndex((i) => i + 1), STEP_DURATION_MS);
+    const timer = setTimeout(() => AiGateway.advanceStep(jobId), STEP_DURATION_MS);
     return () => clearTimeout(timer);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeIndex, reduced]);
+  }, [jobId, job?.activeStepIndex, job?.steps.length, reduced]);
+
+  function handleCancel() {
+    AiGateway.cancelJob(jobId);
+    onCancel();
+  }
+
+  const steps = job?.steps ?? [];
+  const activeIndex = job?.activeStepIndex ?? 0;
 
   return (
     <div className="flex flex-col items-center gap-6 py-10 text-center">
@@ -44,7 +62,7 @@ export function AvatarGeneratingStep({ onComplete, onCancel }: AvatarGeneratingS
 
       <GlassPanel className="w-full max-w-sm rounded-xl p-5 text-left" aria-live="polite">
         <ul className="flex flex-col gap-3">
-          {STEPS.map((step, index) => {
+          {steps.map((step, index) => {
             const done = index < activeIndex;
             const current = index === activeIndex;
             return (
@@ -65,7 +83,7 @@ export function AvatarGeneratingStep({ onComplete, onCancel }: AvatarGeneratingS
         </ul>
       </GlassPanel>
 
-      <Button variant="ghost" className="text-xs" onClick={onCancel}>
+      <Button variant="ghost" className="text-xs" onClick={handleCancel}>
         취소하고 이전으로
       </Button>
     </div>

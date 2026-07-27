@@ -1,38 +1,51 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Check, Loader2 } from "lucide-react";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { GlassPanel } from "@/components/ui/GlassPanel";
-import { GENERATION_STEPS } from "@/lib/content-provider";
+import { AiGateway } from "@/ai/gateway/ai-gateway";
+import { useAiJob } from "@/ai/gateway/use-ai-job";
 import { useReducedMotionContext } from "@/components/motion/reduced-motion-provider";
 
-const STEP_DURATION_MS = 1100;
-
+// The job is created by the caller (a click handler) before this step
+// mounts — this component only ticks and displays an existing AI Gateway
+// Job Queue entry, same pattern as AvatarGeneratingStep.
 export function GenerationProgress({
+  jobId,
   onComplete,
   onCancel,
 }: {
-  onComplete: () => void;
+  jobId: string;
+  onComplete: (jobId: string) => void;
   onCancel: () => void;
 }) {
   const reduced = useReducedMotionContext();
-  const [activeIndex, setActiveIndex] = useState(0);
+  const job = useAiJob(jobId);
 
   useEffect(() => {
     if (reduced) {
-      onComplete();
+      onComplete(jobId);
       return;
     }
-    if (activeIndex >= GENERATION_STEPS.length) {
-      const timer = setTimeout(onComplete, 400);
+    if (!job) return;
+    if (job.activeStepIndex >= job.steps.length) {
+      const timer = setTimeout(() => onComplete(jobId), 400);
       return () => clearTimeout(timer);
     }
-    const timer = setTimeout(() => setActiveIndex((i) => i + 1), STEP_DURATION_MS);
+    const timer = setTimeout(() => AiGateway.advanceStep(jobId), 1100);
     return () => clearTimeout(timer);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeIndex, reduced]);
+  }, [jobId, job?.activeStepIndex, job?.steps.length, reduced]);
+
+  function handleCancel() {
+    AiGateway.cancelJob(jobId);
+    onCancel();
+  }
+
+  const steps = job?.steps ?? [];
+  const activeIndex = job?.activeStepIndex ?? 0;
 
   return (
     <div className="flex flex-col items-center gap-6 py-10 text-center">
@@ -44,7 +57,7 @@ export function GenerationProgress({
 
       <GlassPanel className="w-full max-w-sm rounded-xl p-5 text-left" aria-live="polite">
         <ul className="flex flex-col gap-3">
-          {GENERATION_STEPS.map((step, index) => {
+          {steps.map((step, index) => {
             const done = index < activeIndex;
             const current = index === activeIndex;
             return (
@@ -63,7 +76,7 @@ export function GenerationProgress({
         </ul>
       </GlassPanel>
 
-      <Button variant="ghost" className="text-xs" onClick={onCancel}>
+      <Button variant="ghost" className="text-xs" onClick={handleCancel}>
         취소하고 설정으로 돌아가기
       </Button>
     </div>

@@ -1,39 +1,40 @@
 "use client";
 
 import { useSyncExternalStore } from "react";
-import { createLocalStore } from "@/lib/local-store";
+import { useUser } from "@clerk/nextjs";
+import { contentDraftRepository, contentRepository } from "@/repositories/content-repository";
+import { useCloudSync } from "@/lib/cloud-sync";
+import { getContentProjectsRemote, replaceContentProjectsRemote } from "@/db/actions/content";
 import type { ContentProject, ContentStudioState } from "@/types/content";
 import { DEFAULT_STUDIO_STATE } from "@/types/content";
 
-const MAX_PROJECTS = 30;
-
-const projectsStore = createLocalStore<ContentProject[]>("fashion-creator:content-projects", []);
-
-type Draft = { settings: ContentStudioState; updatedAt: string } | null;
-const draftStore = createLocalStore<Draft>("fashion-creator:content-draft", null);
-
 export function useContentProjects() {
+  const { isSignedIn } = useUser();
   const projects = useSyncExternalStore(
-    projectsStore.subscribe,
-    projectsStore.getSnapshot,
-    projectsStore.getServerSnapshot,
+    contentRepository.subscribe.bind(contentRepository),
+    contentRepository.getAll.bind(contentRepository),
+    contentRepository.getServerSnapshot.bind(contentRepository),
   );
 
+  useCloudSync<ContentProject[]>({
+    isSignedIn,
+    local: projects,
+    setLocal: (value) => contentRepository.set(value),
+    isEmpty: (value) => value.length === 0,
+    load: getContentProjectsRemote,
+    save: replaceContentProjectsRemote,
+  });
+
   function upsertProject(project: ContentProject) {
-    const current = projectsStore.getSnapshot();
-    const exists = current.some((item) => item.id === project.id);
-    const next = exists
-      ? current.map((item) => (item.id === project.id ? project : item))
-      : [project, ...current];
-    projectsStore.set(next.slice(0, MAX_PROJECTS));
+    contentRepository.upsert(project);
   }
 
   function removeProject(id: string) {
-    projectsStore.set(projectsStore.getSnapshot().filter((item) => item.id !== id));
+    contentRepository.remove(id);
   }
 
   function duplicateProject(id: string) {
-    const source = projectsStore.getSnapshot().find((item) => item.id === id);
+    const source = contentRepository.getById(id);
     if (!source) return null;
     const copy: ContentProject = {
       ...source,
@@ -47,29 +48,29 @@ export function useContentProjects() {
   }
 
   function toggleFavorite(id: string) {
-    const current = projectsStore.getSnapshot();
-    projectsStore.set(
-      current.map((item) => (item.id === id ? { ...item, isFavorite: !item.isFavorite } : item)),
-    );
+    contentRepository.update(id, (item) => ({ ...item, isFavorite: !item.isFavorite }));
   }
 
   function renameProject(id: string, title: string) {
-    const current = projectsStore.getSnapshot();
-    projectsStore.set(current.map((item) => (item.id === id ? { ...item, title } : item)));
+    contentRepository.update(id, (item) => ({ ...item, title }));
   }
 
   return { projects, upsertProject, removeProject, duplicateProject, toggleFavorite, renameProject };
 }
 
 export function useContentDraft() {
-  const draft = useSyncExternalStore(draftStore.subscribe, draftStore.getSnapshot, draftStore.getServerSnapshot);
+  const draft = useSyncExternalStore(
+    contentDraftRepository.subscribe.bind(contentDraftRepository),
+    contentDraftRepository.get.bind(contentDraftRepository),
+    contentDraftRepository.getServerSnapshot.bind(contentDraftRepository),
+  );
 
   function saveDraft(settings: ContentStudioState) {
-    draftStore.set({ settings, updatedAt: new Date().toISOString() });
+    contentDraftRepository.set({ settings, updatedAt: new Date().toISOString() });
   }
 
   function clearDraft() {
-    draftStore.clear();
+    contentDraftRepository.clear();
   }
 
   return { draft, saveDraft, clearDraft, DEFAULT_STUDIO_STATE };

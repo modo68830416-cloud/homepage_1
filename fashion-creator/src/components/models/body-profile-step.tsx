@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/Button";
 import { GlassPanel } from "@/components/ui/GlassPanel";
 import { BodyOptionCard } from "@/components/models/body-option-card";
 import { BodyPreview } from "@/components/models/body-preview";
-import { analyzeBodyDescription } from "@/lib/avatar-demo";
+import { DemoAvatarService } from "@/services/demo-avatar-service";
 import type { BodySettings } from "@/types/models";
 
 type BodyProfileStepProps = {
@@ -27,7 +27,7 @@ export function BodyProfileStep({
   onBack,
 }: BodyProfileStepProps) {
   const [advanced, setAdvanced] = useState(false);
-  const analysis = useMemo(() => analyzeBodyDescription(description), [description]);
+  const analysis = useMemo(() => DemoAvatarService.analyzeBodyDescription(description), [description]);
 
   return (
     <div className="grid gap-8 lg:grid-cols-[1fr_240px] lg:items-start">
