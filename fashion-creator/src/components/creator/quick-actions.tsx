@@ -1,4 +1,4 @@
-import { Clapperboard, Link2, Megaphone, Receipt, ShoppingBag, TrendingUp } from "lucide-react";
+import { Briefcase, Clapperboard, Link2, Megaphone, Receipt, ShoppingBag, TrendingUp } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 
 const ACTIONS = [
@@ -6,8 +6,9 @@ const ACTIONS = [
   { label: "저장한 Look 열기", href: "/studio", icon: ShoppingBag },
   { label: "인기 상품으로 만들기", href: "/trends", icon: TrendingUp },
   { label: "구매 링크 만들기", href: "/look/demo-look", icon: Link2 },
-  { label: "캠페인 확인", href: "/marketplace", icon: Megaphone },
+  { label: "캠페인 확인", href: "/marketplace/campaigns", icon: Megaphone },
   { label: "정산 내역 보기", href: "/creator/settlements", icon: Receipt },
+  { label: "진행 중인 거래 보기", href: "/marketplace/orders/order-demo-01", icon: Briefcase },
 ];
 
 export function QuickActions() {

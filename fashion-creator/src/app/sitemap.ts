@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { looks } from "@/data/creators";
 import { products } from "@/data/products";
+import { marketplaceCampaigns, marketplaceContent, marketplaceCreators } from "@/data/marketplace";
 
 const SITE_URL = "https://fashion-creator.vercel.app";
 
@@ -13,8 +14,17 @@ const routes = [
   "/create",
   "/create/new",
   "/marketplace",
+  "/marketplace/creators",
+  "/marketplace/content",
+  "/marketplace/campaigns",
+  "/marketplace/requests/new",
   "/pricing",
   "/creator",
+  "/creator/analytics",
+  "/creator/revenue",
+  "/creator/settlements",
+  "/creator/subscription",
+  "/creator/settings",
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -33,5 +43,27 @@ export default function sitemap(): MetadataRoute.Sitemap {
     lastModified: new Date(),
   }));
 
-  return [...staticRoutes, ...lookRoutes, ...productRoutes];
+  const creatorRoutes = marketplaceCreators.map((creator) => ({
+    url: `${SITE_URL}/marketplace/creators/${creator.handle.replace("@", "")}`,
+    lastModified: new Date(),
+  }));
+
+  const contentRoutes = marketplaceContent.map((content) => ({
+    url: `${SITE_URL}/marketplace/content/${content.slug}`,
+    lastModified: new Date(),
+  }));
+
+  const campaignRoutes = marketplaceCampaigns.map((campaign) => ({
+    url: `${SITE_URL}/marketplace/campaigns/${campaign.slug}`,
+    lastModified: new Date(),
+  }));
+
+  return [
+    ...staticRoutes,
+    ...lookRoutes,
+    ...productRoutes,
+    ...creatorRoutes,
+    ...contentRoutes,
+    ...campaignRoutes,
+  ];
 }
