@@ -1,13 +1,15 @@
 import type { Metadata } from "next";
-import { DollarSign, Eye, Play, ShoppingBag } from "lucide-react";
-import { creators, looks } from "@/data/creators";
-import { Badge } from "@/components/ui/Badge";
+import { Play } from "lucide-react";
+import { looks } from "@/data/creators";
+import { creatorProfile } from "@/data/creator-business";
 import { Button } from "@/components/ui/Button";
 import { GlassPanel } from "@/components/ui/GlassPanel";
-import { MetricCard } from "@/components/ui/MetricCard";
-import { MinimalHeader } from "@/components/layout/MinimalHeader";
 import { PlaceholderArt } from "@/components/ui/PlaceholderArt";
 import { CommerceAnalyticsDashboard } from "@/components/commerce/commerce-analytics-dashboard";
+import { CreatorWelcome } from "@/components/creator/creator-welcome";
+import { CreatorTierCard } from "@/components/creator/creator-tier-card";
+import { QuickActions } from "@/components/creator/quick-actions";
+import { RecentContentTable } from "@/components/creator/recent-content-table";
 import { formatCompactNumber, formatKRW } from "@/lib/utils";
 
 export const metadata: Metadata = {
@@ -16,35 +18,17 @@ export const metadata: Metadata = {
 };
 
 export default function CreatorPage() {
-  const creator = creators[0];
   const look = looks[0];
 
   return (
-    <>
-      <MinimalHeader />
-      <main className="mx-auto max-w-5xl px-5 py-16 sm:px-8">
-        <div className="mb-2 flex items-center gap-2">
-          <h1 className="text-3xl font-bold text-foreground">{creator.displayName}님의 대시보드</h1>
-          <Badge tone="mock">MOCK DATA</Badge>
-        </div>
-        <p className="mb-10 text-sm text-foreground-subtle">
-          실제 로그인, 정산, 결제 연동은 이후 단계에서 제공됩니다.
-        </p>
+    <div className="mx-auto max-w-6xl px-5 py-8 sm:px-8 sm:py-10">
+      <CreatorWelcome profile={creatorProfile} />
 
-        <div className="grid gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-4">
-          <MetricCard icon={Eye} label="총 조회수" value={formatCompactNumber(creator.totalViews)} trend="+12.4%" />
-          <MetricCard
-            icon={DollarSign}
-            label="누적 판매 기여액"
-            value={formatKRW(creator.attributedSales)}
-            trend="+8.1%"
-          />
-          <MetricCard icon={ShoppingBag} label="활성 LOOK" value="6" trend="+2" />
-          <MetricCard icon={Play} label="생성된 콘텐츠" value="24" trend="+5" />
-        </div>
+      <CommerceAnalyticsDashboard />
 
-        <div className="mt-10">
-          <h2 className="mb-4 text-lg font-semibold text-foreground">최근 LOOK 성과</h2>
+      <div className="mt-8 grid gap-6 lg:grid-cols-[1fr_280px]">
+        <div>
+          <h2 className="mb-4 text-lg font-semibold text-foreground">가장 잘 팔린 Look</h2>
           <GlassPanel className="flex flex-col gap-4 rounded-xl p-5 sm:flex-row sm:items-center">
             <div className="h-24 w-full shrink-0 overflow-hidden rounded-lg sm:w-32">
               <PlaceholderArt seed={look.slug} icon={Play} label={look.title} />
@@ -59,10 +43,18 @@ export default function CreatorPage() {
               View LOOK
             </Button>
           </GlassPanel>
+
+          <h2 className="mb-4 mt-8 text-lg font-semibold text-foreground">빠른 작업</h2>
+          <QuickActions />
         </div>
 
-        <CommerceAnalyticsDashboard />
-      </main>
-    </>
+        <CreatorTierCard tier={creatorProfile.tier} credits={creatorProfile.creditsRemaining} />
+      </div>
+
+      <div className="mt-8">
+        <h2 className="mb-4 text-lg font-semibold text-foreground">최근 콘텐츠</h2>
+        <RecentContentTable />
+      </div>
+    </div>
   );
 }

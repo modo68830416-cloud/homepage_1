@@ -41,7 +41,7 @@ export function PointerGlow() {
     <div
       ref={ref}
       aria-hidden="true"
-      className="pointer-events-none fixed inset-0 z-0 opacity-70"
+      className="pointer-events-none fixed inset-0 z-0 opacity-70 print:hidden"
       style={{
         background:
           "radial-gradient(600px circle at var(--pointer-x, 50%) var(--pointer-y, 30%), rgba(217,255,87,0.05), transparent 70%)",
