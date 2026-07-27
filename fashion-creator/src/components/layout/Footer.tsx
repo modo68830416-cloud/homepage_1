@@ -41,6 +41,12 @@ export function Footer() {
             >
               Creator Dashboard
             </Link>
+            <Link
+              href="/create"
+              className="text-sm text-foreground-muted transition-colors hover:text-foreground"
+            >
+              My Content
+            </Link>
           </nav>
 
           <nav className="flex flex-col gap-3" aria-label="Company">

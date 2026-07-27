@@ -4,7 +4,18 @@ import { products } from "@/data/products";
 
 const SITE_URL = "https://fashion-creator.vercel.app";
 
-const routes = ["/", "/trends", "/models", "/studio", "/marketplace", "/pricing", "/creator"];
+const routes = [
+  "/",
+  "/trends",
+  "/models",
+  "/models/create",
+  "/studio",
+  "/create",
+  "/create/new",
+  "/marketplace",
+  "/pricing",
+  "/creator",
+];
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const staticRoutes = routes.map((route) => ({

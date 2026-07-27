@@ -5,7 +5,6 @@ import { Sparkles, TrendingUp, X } from "lucide-react";
 import type { Product } from "@/types";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
-import { DemoActionButton } from "@/components/ui/DemoActionButton";
 import { GlassPanel } from "@/components/ui/GlassPanel";
 import { formatKRW } from "@/lib/utils";
 
@@ -107,9 +106,9 @@ export function LookPanel({ wornProducts, onRemove, onSave, onRecommend, canSave
         <Button variant="primary" className="w-full" disabled={!canSave} onClick={() => onSave(name.trim() || "My Look")}>
           Look 저장
         </Button>
-        <DemoActionButton variant="secondary" className="w-full" message="콘텐츠 제작 기능은 준비 중입니다">
+        <Button href="/create/new" variant="secondary" className="w-full">
           콘텐츠 만들기
-        </DemoActionButton>
+        </Button>
       </div>
     </GlassPanel>
   );
