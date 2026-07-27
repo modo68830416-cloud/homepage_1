@@ -1,0 +1,58 @@
+import type { FashionModel } from "@/types";
+
+export const fashionModels: FashionModel[] = [
+  {
+    id: "m-01",
+    name: "Aria",
+    image: "model-aria",
+    style: "Editorial Minimal",
+    bodyType: "Tall / Slim",
+    genderPresentation: "Feminine",
+    isFeatured: true,
+  },
+  {
+    id: "m-02",
+    name: "Rowan",
+    image: "model-rowan",
+    style: "Street Luxury",
+    bodyType: "Athletic",
+    genderPresentation: "Masculine",
+    isFeatured: true,
+  },
+  {
+    id: "m-03",
+    name: "Noa",
+    image: "model-noa",
+    style: "Soft Genderless",
+    bodyType: "Petite",
+    genderPresentation: "Androgynous",
+    isFeatured: true,
+  },
+  {
+    id: "m-04",
+    name: "Kai",
+    image: "model-kai",
+    style: "Avant-garde",
+    bodyType: "Curvy",
+    genderPresentation: "Feminine",
+    isFeatured: false,
+  },
+  {
+    id: "m-05",
+    name: "Theo",
+    image: "model-theo",
+    style: "Classic Tailoring",
+    bodyType: "Broad",
+    genderPresentation: "Masculine",
+    isFeatured: false,
+  },
+  {
+    id: "m-06",
+    name: "Yuna",
+    image: "model-yuna",
+    style: "K-Contemporary",
+    bodyType: "Slim",
+    genderPresentation: "Feminine",
+    isFeatured: true,
+  },
+];
