@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { BadgeCheck, Sparkles, UserPlus } from "lucide-react";
 import type { Creator } from "@/types";
 import { Badge } from "@/components/ui/Badge";
@@ -8,14 +7,16 @@ import { Button } from "@/components/ui/Button";
 import { PlaceholderArt } from "@/components/ui/PlaceholderArt";
 import { Spotlight } from "@/components/motion/spotlight";
 import { useToast } from "@/components/feedback/toast";
+import { useFavoriteCreators } from "@/lib/favorites-store";
 import { formatCompactNumber, formatKRW } from "@/lib/utils";
 
 export function CreatorCard({ creator }: { creator: Creator }) {
-  const [following, setFollowing] = useState(false);
+  const { isFavorite, toggleFavorite } = useFavoriteCreators();
   const { showToast } = useToast();
+  const following = isFavorite(creator.id);
 
   function toggleFollow() {
-    setFollowing((current) => !current);
+    toggleFavorite(creator.id);
     showToast(following ? `${creator.displayName} 팔로우를 취소했습니다` : `${creator.displayName}님을 팔로우했습니다`);
   }
 

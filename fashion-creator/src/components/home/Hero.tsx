@@ -158,7 +158,9 @@ export function Hero() {
             transition={{ duration: 0.6, delay: 0.5 }}
             className="mt-6 max-w-md text-lg leading-relaxed text-foreground-muted"
           >
-            AI 모델에게 패션을 입히고, 영상과 쇼츠를 만들어 구매와 수익으로 연결하세요.
+            AI 모델에게 패션을 입히고, 영상과 쇼츠를 만들어 구매와
+            <br />
+            수익으로 연결하세요.
           </motion.p>
 
           <motion.div

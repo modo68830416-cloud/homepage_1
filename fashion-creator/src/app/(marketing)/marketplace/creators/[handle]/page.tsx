@@ -71,7 +71,7 @@ export default async function CreatorProfilePage({ params }: CreatorProfileProps
           <Button href="/marketplace/requests/new" variant="primary">
             제작 의뢰하기
           </Button>
-          <FollowButton displayName={creator.displayName} />
+          <FollowButton creatorId={creator.id} displayName={creator.displayName} />
         </div>
       </div>
 
